@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+JEDONNE_PATH = "/111/jedonne"
+
+current_entry_files = Dir["#{JEDONNE_PATH}/jou*.txt"].sort
+latest_entry_file = current_entry_files.last
+
+class TimeEncoder
+  
+  START_DATE = Time.utc(1968,7,5)
+  SECONDS_PER_HOUR = 60 * 60
+  SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR
+
+  attr_reader :tzone, :zone_diff, :time, :days, :weekday_code, :minutes, :time_str
+  
+  def initialize(time)
+    p time
+    @tzone = time.zone
+    @zone_diff = time.utc_offset / SECONDS_PER_HOUR
+    @time = time.utc
+    p time
+    age_in_seconds = time - START_DATE
+    @days = age_in_seconds.to_i / SECONDS_PER_DAY
+    @weekday_code = "FSHMTWG"[ days % 7, 1 ]
+    @minutes = (age_in_seconds - days * SECONDS_PER_DAY) / 60 
+    @time_str = "%04.1f" % (minutes/60)
+
+    p [zone_diff, days, weekday_code, minutes/6, (minutes/6.0).round, time_str]
+    
+  end
+
+  def filename
+    File.join( JEDONNE_PATH, "jou-#{days}#{weekday_code}-#{time_str.gsub".",""}.txt")
+  end
+
+  def first_line
+    date_part = "#{days} #{weekday_code} #{time.strftime'%Y-%m-%d'}"
+    time_part = "#{time_str}GMT (=#{time.hour + zone_diff}:#{"%02d"%time.min}#{tzone})"
+    "jou #{date_part} ~ #{time_part}"
+  end
+end
+
+te = TimeEncoder.new(Time.now)
+
+new_file = te.filename
+first_line = te.first_line
+
+p new_file
+p first_line
+
+last_content = File.read(latest_entry_file)
+perm_part = last_content.slice(/\[(mantra|credo|ziele?|disziplin|todo|diary)\].+$/m)
+
+File.open(new_file, "a") do |f|
+  f.puts first_line
+  f.puts 
+  f.puts "[ort]"
+  f.puts 
+  f.puts "[jetzt]"
+  f.puts 
+  f.puts   
+  f.puts perm_part
+end  
+
+system "kate #{new_file} >/tmp/kde-$USER/jednew.log 2>&1"
