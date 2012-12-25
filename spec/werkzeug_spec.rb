@@ -1,7 +1,14 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+# encoding: utf-8
 
 require 'werkzeug'
+
+class String
+  unless method_defined?(:grep)
+    def grep(regexp)
+      split("\n").grep(regexp)
+    end
+  end
+end
 
 describe Werkzeug do
   before(:each) do

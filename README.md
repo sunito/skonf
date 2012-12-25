@@ -1,4 +1,4 @@
-SvensKde
-========
+syver
+=====
 
-Sammelsurium von Scripts für die Installation von Kubuntu-Derivaten
+SystemverwaltungsScriptSammelsurium für die Installation von Kubuntu-Derivaten
