@@ -1,0 +1,10 @@
+#!/bin/bash
+function conf_diff() {
+  echo "diff ~/$1/ /dat/conf-dot/$1/"
+  diff -r ~/$1/ /dat/conf-dot/$1/
+
+}
+
+conf_diff .config
+conf_diff .kde/share/config
+#diff -r .kde/share/ /dat/conf-dot/.kde/share/

@@ -1,0 +1,9 @@
+#!/bin/bash
+function conf_store() {
+  echo "rsync -av ~/$1/ /dat/conf-dot/$1/"
+  rsync -avL --del  ~/$1/ /dat/conf-dot/$1/
+
+}
+
+conf_store .config
+conf_store .kde/share/config/ 
