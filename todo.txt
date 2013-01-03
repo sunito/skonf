@@ -1,0 +1,6 @@
+*** Datum nicht doppelt an History anhängen
+bei 
+export PROMPT_COMMAND='history -a; truncate -s-1 /home/sunito/.bash_history; date +" %t%t# %F %X" >>/home/sunito/.bash_history'
+die -1 des truncate-Kommandos durch einen Aufruf ersetzen, der zum Abschneiden des Datum-Kommentars führt
+
+
