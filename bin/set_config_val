@@ -2,15 +2,22 @@
 # encoding: utf-8
 
 
-require '/yay/288/lib/rubylin/lib/werkzeug'
+require '/yay/288/bin/syver/lib/werkzeug'
 #require File.join( File.dirname(__FILE__), 'werkzeug')
+
+section = nil
+ARGV.delete_if do |arg|
+  if arg =~ /\[([^\]]+)\]/
+    section = $1
+  end
+end
 
 dateiname, name, wert = ARGV
 
 if ARGV.size < 3 
-  puts "Benötigt 3 Parameter!!"
+  puts "Benötigt 3 oder 4 Parameter"
   puts "Usage: "
-  puts "ini_setzen.rb <name> <wert> <dateiname>"
+  puts "#{File.basename(__FILE__)} <file name> [<section name>] <key name> <value>"
   exit 1
 end
 
