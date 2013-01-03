@@ -1,7 +1,8 @@
 #!/bin/bash
+args=$*
 function conf_diff() {
-  echo "diff ~/$1/ /dat/conf-dot/$1/"
-  diff -r ~/$1/ /dat/conf-dot/$1/
+  echo "diff -r $args ~/$1/ /dat/conf-dot/$1/"
+  diff -r $args ~/$1/ /dat/conf-dot/$1/
 
 }
 
