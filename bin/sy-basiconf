@@ -1,0 +1,100 @@
+#!/bin/bash
+
+function syve_section {
+echo
+echo $*
+echo
+}
+
+syve_section Erste Schritte
+# Wir brauchen NFS und Ruby:
+sudo apt-get --yes install nfs-kernel-server ruby
+
+syve_section Gruppenzugehörigkeit und Rechte
+
+# Umask auf 002 setzen
+echo "Aktuelle Default-UMASK:"
+grep ^UMASK /etc/login.defs
+sudo sed -ri "s/^(UMASK\s+).+$/\1002/" /etc/login.defs
+# Nachschauen, ob Umask auch 002 ist.
+echo "Neue Default-UMASK:"
+grep ^UMASK /etc/login.defs
+# echter Test, ob es wirkt:
+su $USER -c umask
+
+# Die Hauptgruppe für normale User sollte users sein, damit die Benutzer untereinander
+# leichter Daten austauschen können.
+# Der folgende Befehl setzt die primäre Gruppe des aktuellen Users:
+sudo usermod -g users $USER
+# Erfolg kann überprüft werden, indem in einer neuen Login-Shell geschaut wird, ob die Gruppe users an erster Stelle genannt wird:
+su $USER -c groups
+
+# die Gruppen syslog, scanner und dialout werden bei Ubuntu nicht per Default gesetzt, hier setzten wir gleich alle, die wir brauchen (alles in einer Zeile):
+for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip; do sudo addgroup $USER $group; done
+
+syve_section Mehr Komfort in der Shell
+
+# .bashrc erweitert (Uhrzeit + History wird sofort und mit Ausführungszeit gespeichert und die Kapazität erhöht)
+if [[ -z `grep truncate -s-1"" .bashrc` ]] ;then cat >>~/.bashrc <<EOT
+
+# Sven: Zeit im Prompt:
+PS1="\t "\$PS1
+
+# Sven: History wird hiermit sofort nach jedem Kommando und mit Zeitstempel gespeichert:
+shopt -s histappend
+export PROMPT_COMMAND='history -a; truncate -s-`tail -1 /home/sunito/.bash_history|ruby -ne "print 1+(\\$_.slice(/([ \t]*# *[-\d\t: ]{0,19})+/).size rescue 0)"` /home/sunito/.bash_history; date +" %t%t# %F %X" >>/home/sunito/.bash_history'
+# einfache Variante: export PROMPT_COMMAND='history -a; truncate -s-1 $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
+export HISTSIZE=9999
+export HISTFILESIZE=22000
+EOT
+else
+echo "History-Sofortspeicherung schon zu wurde .bashrc hingefügt"
+fi
+
+syve_section Netzwerk
+sudo apt-get --yes install nmap ssh curl
+# Exportieren der Dat-Partition:
+sudo apt-get --yes install nfs-kernel-server # (falls nicht oben schon erledigt)
+if [[ -z `grep "/dat" /etc/exports` ]] ;then
+  echo '/dat *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
+else
+  echo
+  echo "/dat war schon in /etc/exports"
+  echo
+fi
+syve_section Wichtige Programme installieren
+# Entwicklung
+sudo apt-get --yes install git vim
+
+# Kommunikation
+sudo apt-get --yes install twinkle pidgin
+sudo apt-get install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
+
+# Sound auf Konsole
+sudo apt-get --yes install beep sox jovie
+
+# Damit der CDDN.Dialog in K3B funktioniert
+sudo apt-get --yes install kde-config-cddb
+
+# Wichtige graphische Tools
+sudo apt-get --yes install k4dirstat
+
+# Java
+# (entspr: http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
+sudo add-apt-repository ppa:webupd8team/java
+# im Original steht hier noch: sudo mkdir -p /usr/lib/mozilla/plugins
+sudo apt-get update; sudo apt-get --yes install oracle-jdk7-installer
+# Test mit
+echo -n "Java-Version: ";java -version
+
+# Virtuelle Umgebungen
+sudo apt-get --yes install virtualbox
+
+# Svens Apps, dafür Ruby mit KDE-Bindings installieren:
+sudo apt-get --yes install ruby
+sudo apt-get --yes install korundum4
+
+# Install more browsers
+sudo apt-get --yes install chromium-browser
+sudo apt-get --yes install rekonq
+ 
