@@ -1,30 +1,94 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
+require 'optparse'
 
-require '/yay/288/bin/syver/lib/werkzeug'
+#require '/yay/288/bin/syver/lib/werkzeug'
 #require File.join( File.dirname(__FILE__), 'werkzeug')
 
-section = nil
-ARGV.delete_if do |arg|
-  if arg =~ /\[([^\]]+)\]/
-    section = $1
+class Werkzeug
+  def initialize(dateiname)
+    @dateiname = dateiname
+    @content = File.read(@dateiname)
+    
+    @content_type = case dateiname 
+    when /\.json$/i 
+      :json
+    else
+    end
   end
+  
+  def setze(name, wert, type)
+    case type 
+    when :bool 
+      wert = ( wert =~ /^(true|wahr|y|j|1)$/i )
+    end
+    case @content_type
+    when :json
+      require 'json'
+      @config_hash = JSON.parse(@content)
+      old_val = @config_hash[name]
+      @config_hash[name] = wert
+      @content = JSON.pretty_generate(@config_hash)
+    else
+ #  system %Q(sed -ri "s/^(#{name}=).*$/#{name}=7#{wert}/" #{@dateiname})
+      # hack
+      @content.gsub!(/^(#{Regexp.escape(name)}(\s*)=).*$/, "#{name}=#{wert}" )
+    end
+    write
+  end
+  
+private
+  def write
+    File.open(@dateiname, "w") do |datei|
+      datei.puts @content
+    end    
+  end  
+
 end
 
-dateiname, name, wert = ARGV
 
-if ARGV.size < 3 
-  puts "Benötigt 3 oder 4 Parameter"
-  puts "Usage: "
-  puts "#{File.basename(__FILE__)} <file name> [<section name>] <key name> <value>"
-  exit 1
+if __FILE__ == $0 
+  dateiname, section, name, wert, type = nil
+
+  unless :old_syntax 
+    section = nil
+    ARGV.delete_if do |arg|
+      if arg =~ /\[([^\]]+)\]/
+	section = $1
+      end
+    end
+
+    dateiname, name, wert = ARGV
+
+    if ARGV.size < 3 
+      puts "Benötigt 3 oder 4 Parameter"
+      puts "Usage: "
+      puts "#{File.basename(__FILE__)} <file name> [<section name>] <key name> <value>"
+      exit 1
+    end
+    
+  else # syntax as kwriteconfig --file <file>  --group <group>  --key <key>  --type <type>  value
+    OptionParser.new do |opts|
+      opts.banner = "Usage: #{File.basename(__FILE__)} [options] value"
+
+      opts.on("-f", "--file", "file name") do |fn|
+	dateiname = fn
+      end
+      opts.on("-g", "--group", "group (or 'section')") do |gr|
+	section = gr
+      end
+      opts.on("-k", "--key", "key (or property name)") do |k|
+	name = k
+      end
+      opts.on("--type", "type of the value, if not to be treated as string (can be 'bool')") do |t|
+	type = :bool if t =~ /bool/i
+      end             
+    end.parse!
+  end
+    
+  w = Werkzeug.new(dateiname, content)
+  w.setze name, wert, type
 end
-
-
-werkzeug_eingabe = Werkzeug.new(dateiname)
-werkzeug_eingabe.setze(name, wert)
-
-
-
-
+	     
+             
