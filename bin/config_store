@@ -1,9 +1,14 @@
 #!/bin/bash
 function conf_store() {
-  echo "rsync -av ~/$1/ /dat/conf-dot/$1/"
-  rsync -avL --del  ~/$1/ /dat/conf-dot/$1/
-
+  if [[ -d $1 ]]; then
+    echo "rsync -av ~/$1/ /dat/conf-dot/$1/"
+    rsync -avL --del  ~/$1/ /dat/conf-dot/$1/
+  else
+    echo "rsync -av ~/$1 /dat/conf-dot/$1"
+    rsync -avL  ~/$1 /dat/conf-dot/$1
+  fi
 }
 
 conf_store .config
 conf_store .kde/share/config 
+conf_store .linphonerc
