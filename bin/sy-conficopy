@@ -1,0 +1,53 @@
+#!/bin/bash
+
+function syve_section {
+echo
+echo $*
+echo
+logger syve_section $*
+}
+
+# Todo!!
+
+syve_section Wichtige Teile des Home-Ordners holen
+
+ORIG=$1
+if [[ -z $ORIG ]] ; then 
+  echo "ORIG host not supplied!!"
+  exit 22
+fi
+
+echo "copying from user 'sunito' on $ORIG"
+
+function get_subdirs {
+for dir in $*; do
+echo "getting $dir"
+rsync -avx /mnt/$dir . || echo "failed getting $dir"
+done
+echo "copied (or just updated) $*"
+}
+
+sudo mount $ORIG:/home/sunito /mnt
+cd $HOME
+get_subdirs .ssh
+
+sudo umount /mnt
+sudo mount $ORIG:/dat/aaa /mnt
+
+sudo chown sunito.users /dat
+mkdir -p /dat/aaa
+cd /dat/aaa || exit
+
+get_subdirs 288 111
+
+syve_section Yay-System installieren und einrichten
+
+/dat/aaa/288/bin/yo-install.rb /dat/aaa
+/dat/aaa/288/bin/yo-restore.rb
+
+# Zum PATH den bin-Ordner hinzugefügt,
+# also in .bashrc angehänht:
+export PATH="~/bin:$PATH"
+
+syve_section Zum testen Fototrans aufrufen:
+fototrans.rb 

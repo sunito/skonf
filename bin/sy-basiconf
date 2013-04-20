@@ -4,6 +4,7 @@ function syve_section {
 echo
 echo $*
 echo
+logger syve_section $*
 }
 
 syve_section Erste Schritte
