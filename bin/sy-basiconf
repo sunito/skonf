@@ -36,14 +36,14 @@ for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout di
 syve_section Mehr Komfort in der Shell
 
 # .bashrc erweitert (Uhrzeit + History wird sofort und mit Ausführungszeit gespeichert und die Kapazität erhöht)
-if [[ -z `grep "truncate -s-" .bashrc` ]] ;then cat >>~/.bashrc <<EOT
+if [[ -z `grep "truncate -s-" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<EOT
 
 # Sven: Zeit im Prompt:
 PS1="\t "\$PS1
-
+ 
 # Sven: History wird hiermit sofort nach jedem Kommando und mit Zeitstempel gespeichert, doppelte Zeitstempel werden verhindert:
 shopt -s histappend
-export PROMPT_COMMAND='history -a; truncate -s-`tail -1 /home/sunito/.bash_history|ruby -ne "print 1+(\\$_.slice(/([ \t]*# *[-\d\t: ]{0,19})+/).size rescue 0)"` /home/sunito/.bash_history; date +" %t%t# %F %X" >>/home/sunito/.bash_history'
+export PROMPT_COMMAND='history -a; truncate -s-`tail -1 $HOME/.bash_history|ruby -ne "print 1+(\\$_.slice(/([ \t]*# *[-\d\t: ]{0,19})+/).size rescue 0)"` $HOME/.bash_history; date +" %t%t# %F %X" >>/home/sunito/.bash_history'
 # einfache Variante: export PROMPT_COMMAND='history -a; truncate -s-1 $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
 export HISTSIZE=9999
 export HISTFILESIZE=22000
