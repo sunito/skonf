@@ -1,0 +1,21 @@
+#!/bin/bash
+
+function syve_section {
+echo
+echo $*
+echo
+logger syve_section $*
+}
+
+syve_section git-Defaults
+
+git config --global credential.helper cache
+git config --global push.default simple
+
+
+syve_section git-Personalisierung
+
+git config --global user.email sven838git@suska.org
+git config --global user.name "Sven Suska"
+
+
