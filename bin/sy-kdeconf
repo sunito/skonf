@@ -1,0 +1,217 @@
+#!/bin/bash
+
+
+
+function syve_section {
+echo
+echo $*
+echo
+logger syve_section $*
+}
+
+
+
+syve_section "Lid without action"
+
+kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
+kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
+kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
+
+syve_section "Free the Ctrl-Fn keys"
+
+kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 1" "none,Ctrl+F1,Auf Arbeitsfläche 1 umschalten"
+kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 2" "none,Ctrl+F2,Auf Arbeitsfläche 2 umschalten"
+kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 3" "none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten"
+kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 4" "none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten"
+#---  diff -r /dat/conf-dot/.kde/share/config/kglobalshortcutsrc /home/sunito/.kde/share/config/kglobalshortcutsrc
+#---  188c188
+#---  < 3=Ctrl+F1,Ctrl+F1,Auf Arbeitsfläche 1 umschalten
+#---  ---
+#---  > Switch to Desktop 1=none,Ctrl+F1,Auf Arbeitsfläche 1 umschalten
+#---  201,202c201,202
+#---  < Switch to Desktop 3=Ctrl+F3,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
+#---  < Switch to Desktop 4=Ctrl+F4,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
+#---  ---
+#---  > Switch to Desktop 3=none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
+#---  > Switch to Desktop 4=none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
+
+kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
+#---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
+#---  27a28
+#---  > HomeUrl=file:///111
+
+kwriteconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 0
+kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" true 
+#---  diff -r /dat/conf-dot/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
+#---  152c152
+#---  < SwitchingMode=1
+#---  ---
+#---  > SwitchingMode=0
+#---  196c196,197
+#---  < MoveResizeMaximizedWindows=false
+#---  ---
+#---  > MoveResizeMaximizedWindows=true
+
+
+exit 0
+
+###############################################################################
+# Die folgenden Änderungen müssten noch in Script-Stücke umgewandelt werden:
+
+# <ActionProperties scheme="Default">
+#  <Action shortcut="Del; Backspace" name="akonadi_move_to_trash"/>
+# </ActionProperties>
+#</kpartgui>
+
+diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
+140a141,143
+> [Containments][2][Applets][112][Configuration][General]
+> show_suspend=true
+> 
+diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
+122c122
+< geometry=0,594.791666666667,115,71.875
+---
+> geometry=0,613.791666666667,115,71.875
+200c200
+< geometry=0,776.666666666667,115,57
+---
+> geometry=0,795.666666666667,115,38
+218c218
+< plainClockFont=Roboto,12,-1,5,50,0,0,0,0,0
+---
+> plainClockFont=Roboto,57,-1,5,50,0,0,0,0,0
+220c220
+< showSeconds=false
+---
+> showSeconds=true
+diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/config/powerdevilrc
+3a4,6
+> [General]
+> configLockScreen=false
+> 
+
+diff -r /dat/conf-dot/.kde/share/config/kiorc /home/sunito/.kde/share/config/kiorc
+3c3
+< ConfirmTrash=false
+---
+> ConfirmTrash=true
+
+diff -r /dat/conf-dot/.kde/share/config/emailidentities /home/sunito/.kde/share/config/emailidentities
+10c10
+< Drafts=148
+---
+> Drafts=544
+13c13
+< Fcc=163
+---
+> Fcc=554
+22c22
+< Templates=164
+---
+> Templates=617
+
+
+20:50:14 sunito@NetZen:~$ grep -A 20 sven2013 /111/ye-sys/kmail-neu/emailidentities
+Bcc=sven2013@suska.org
+Dictionary=Deutsch
+Drafts=544
+Email Address=sven2013@suska.org
+Email Aliases=
+Fcc=554
+Identity=7 Sven (2013)
+Image Location=
+Inline Signature=
+Name=Sven Suska
+Preferred Crypto Message Format=auto
+Signature Enabled=true
+Signature File[]=/home/sunito/.mail-signaturen/mailsig-std.txt
+Signature Type=file
+Templates=617
+VCardFile=
+X-FaceEnabled=false
+uoid=1282982449
+
+
+diff -r /dat/conf-dot/.kde/share/config/ksmserverrc /home/sunito/.kde/share/config/ksmserverrc
+2a3
+> 
+3a5,6
+> confirmLogout=true
+> excludeApps=
+4a8,9
+> offerShutdown=true
+> shutdownType=2
+
+[$Version]
+update_info=ksmserver.upd:kde3
+
+[General]
+confirmLogout=true
+excludeApps=
+loginMode=default
+offerShutdown=true
+shutdownType=2
+
+
+diff -r /dat/conf-dot/.kde/share/config/systemsettingsrc /home/sunito/.kde/share/config/systemsettingsrc
+25c25
+< History=sflphone-client-gnome,linphone
+---
+> History=workrave,sflphone-client-gnome,linphone
+So 10. Feb 18:45:16 CET 2013
+
+/home/sunito/.config/autostart/workrave.desktop
+
+
+diff -r /dat/conf-dot/.kde/share/config/kscreensaverrc /home/sunito/.kde/share/config/kscreensaverrc
+2,3c2,3
+< Enabled=true
+< LegacySaverEnabled=true
+---
+> Enabled=false
+> LegacySaverEnabled=false
+6c6
+< PlasmaEnabled=false
+---
+> PlasmaEnabled=true
+8c8
+< Timeout=60
+---
+> Timeout=300
+
+kmail Filter anwenden:
+  <ActionList name="toolbar_messagetag_actions"/>
+  <Action name="create_todo"/>
+  <Action name="apply_filters"/>
+ </ToolBar>
+in /home/sunito/.kde/share/apps/kmail2/kmmainwin.rc
+diff -r /dat/conf-dot/.config/synaptiks/management.json /home/sunito/.config/synaptiks/management.json
+5c5
+<   "monitor_keyboard": false, 
+---
+>   "monitor_keyboard": true, 
+
+diff -r /dat/conf-dot/.config/synaptiks/touchpad-config.json /home/sunito/.config/synaptiks/touchpad-config.json
+12c12
+<   "f2_tap_action": 0, 
+---
+>   "f2_tap_action": 3, 
+22c22
+<   "f1_tap_action": 0, 
+---
+>   "f1_tap_action": 1, 
+25c25
+<   "f3_tap_action": 0, 
+---
+>   "f3_tap_action": 2, 
+
+
+diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
+229,230c229,230
+< maxRecentApps=5
+< views=RecentlyUsedApplications,Applications,RunCommand,Leave
+---
+> maxRecentApps=8
+> views=RecentlyUsedApplications,Applications,Favorites,RecentlyUsed,RunCommand,Leave
+
