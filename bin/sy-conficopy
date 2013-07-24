@@ -30,7 +30,7 @@ echo "copied (or just updated) $*"
 sudo mount $ORIG:/home/sunito /mnt
 ls -la /mnt
 cd $HOME
-get_subdirs .ssh
+#get_subdirs .ssh
 
 sudo umount /mnt
 sudo mount $ORIG:/dat/aaa /mnt
