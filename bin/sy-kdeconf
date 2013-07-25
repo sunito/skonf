@@ -11,6 +11,27 @@ logger syve_section $*
 
 
 
+syve_section "Dolphin settings"
+
+kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
+#---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
+#---  27a28
+#---  > HomeUrl=file:///111
+
+syve_section "Plasma settings"
+
+kwriteconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 0
+kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" true 
+#---  diff -r /dat/conf-dot/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
+#---  152c152
+#---  < SwitchingMode=1
+#---  ---
+#---  > SwitchingMode=0
+#---  196c196,197
+#---  < MoveResizeMaximizedWindows=false
+#---  ---
+#---  > MoveResizeMaximizedWindows=true
+
 syve_section "Lid without action"
 
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
@@ -35,23 +56,15 @@ kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --k
 #---  > Switch to Desktop 3=none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
 #---  > Switch to Desktop 4=none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
 
-kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
-#---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
-#---  27a28
-#---  > HomeUrl=file:///111
 
-kwriteconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 0
-kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" true 
-#---  diff -r /dat/conf-dot/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
-#---  152c152
-#---  < SwitchingMode=1
-#---  ---
-#---  > SwitchingMode=0
-#---  196c196,197
-#---  < MoveResizeMaximizedWindows=false
-#---  ---
-#---  > MoveResizeMaximizedWindows=true
 
+syve_section "Packages"
+
+sudo apt-get --yes install digikam
+
+
+
+syve_section "Finished."
 
 exit 0
 
