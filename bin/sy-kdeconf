@@ -56,7 +56,10 @@ kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --k
 #---  > Switch to Desktop 3=none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
 #---  > Switch to Desktop 4=none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
 
+syve_section "Tweaking the Clock"
 
+sed -i -r -e 's/^(announceInterval *)=.*$/\1=15/' /home/sunito/.kde/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(showSeconds *)=.*$/\1=true/' /home/sunito/.kde/share/config/plasma-desktop-appletsrc
 
 syve_section "Packages"
 
