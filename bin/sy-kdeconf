@@ -71,6 +71,29 @@ syve_section "Finished."
 
 exit 0
 
+----
+kmail Rücktaste
+
+--- -	2013-08-02 20:53:39.241669321 +0200
++++ /home/sunito/.kde/share/apps/kmail2/kmmainwin.rc	2013-08-02 20:53:19.880011709 +0200
+@@ -292,7 +292,6 @@
+   <Action name="create_todo"/>
+  </ToolBar>
+  <ActionProperties scheme="Default">
+-  <Action shortcut="Backspace" name="akonadi_item_delete"/>
++  <Action shortcut="Del; Backspace" name="akonadi_move_to_trash"/>
+  </ActionProperties>
+ </kpartgui>
+-
+
+
+
+
+
+----------
+
+
+
 ###############################################################################
 # Die folgenden Änderungen müssten noch in Script-Stücke umgewandelt werden:
 
