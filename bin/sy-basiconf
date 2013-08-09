@@ -99,8 +99,14 @@ echo -n "Java-Version: ";java -version
 sudo apt-get --yes install virtualbox
 
 # Svens Apps, dafür Ruby mit KDE-Bindings installieren:
-sudo apt-get --yes install ruby
-sudo apt-get --yes install korundum4
+sudo apt-get --yes install ruby-dev
+sudo apt-get --yes install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
+sudo apt-get --yes install g++
+sudo apt-get --yes install libqt4-dev
+sudo apt-get --yes install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
+#sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
+sudo gem install qtbindings 
+
 
 # Install more browsers
 sudo apt-get --yes install chromium-browser
