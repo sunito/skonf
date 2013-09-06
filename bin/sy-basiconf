@@ -71,7 +71,7 @@ sudo apt-get --yes install git vim
 
 sudo add-apt-repository ppa:savoirfairelinux
 sudo apt-get update >/dev/null
-sudo apt-get install sflphone-client-gnome-video
+sudo apt-get install sflphone-client-gnome
 sudo apt-get install sflphone-client-kde
 #veraltet:
 #sudo apt-get --yes install twinkle pidgin
