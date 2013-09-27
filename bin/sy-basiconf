@@ -123,7 +123,7 @@ kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --g
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
 
-sudo apt-get upgrade 
+sudo apt-get dist-upgrade 
 
 exit 0
 
