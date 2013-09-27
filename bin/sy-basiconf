@@ -1,15 +1,22 @@
 #!/bin/bash
 
 function syve_section {
-echo
-echo $*
-echo
-logger syve_section $*
+  echo
+  echo $*
+  echo
+  logger syve_section $*
+}
+
+function apt_install {
+  echo
+  echo Installing $*
+  logger SyveInstalling $*
+  sudo apt-get --yes install $*
 }
 
 syve_section Erste Schritte
 # Wir brauchen NFS und Ruby:
-sudo apt-get --yes install nfs-kernel-server ruby
+apt_install nfs-kernel-server ruby
 
 syve_section Gruppenzugehörigkeit und Rechte
 
@@ -21,14 +28,14 @@ sudo sed -ri "s/^(UMASK\s+).+$/\1002/" /etc/login.defs
 echo "Neue Default-UMASK:"
 grep ^UMASK /etc/login.defs
 # echter Test, ob es wirkt:
-su $USER -c umask
+if [ ] ;then su $USER -c umask ;fi
 
 # Die Hauptgruppe für normale User sollte users sein, damit die Benutzer untereinander
 # leichter Daten austauschen können.
 # Der folgende Befehl setzt die primäre Gruppe des aktuellen Users:
 sudo usermod -g users $USER
 # Erfolg kann überprüft werden, indem in einer neuen Login-Shell geschaut wird, ob die Gruppe users an erster Stelle genannt wird:
-su $USER -c groups
+if [ ] ;then su $USER -c groups ;fi
 
 # die Gruppen syslog, scanner und dialout werden bei Ubuntu nicht per Default gesetzt, hier setzten wir gleich alle, die wir brauchen (alles in einer Zeile):
 for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip; do sudo addgroup $USER $group; done
@@ -53,9 +60,9 @@ echo "History-Sofortspeicherung schon zu wurde .bashrc hingefügt"
 fi
 
 syve_section Netzwerk
-sudo apt-get --yes install nmap ssh curl
+apt_install nmap ssh curl
 # Exportieren der Dat-Partition:
-sudo apt-get --yes install nfs-kernel-server # (falls nicht oben schon erledigt)
+apt_install nfs-kernel-server # (falls nicht oben schon erledigt)
 if [[ -z `grep "/dat" /etc/exports` ]] ;then
   echo '/dat *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
 else
@@ -65,58 +72,58 @@ else
 fi
 syve_section Wichtige Programme installieren
 # Entwicklung
-sudo apt-get --yes install git vim
+apt_install git vim
 
 # Kommunikation
 
 sudo add-apt-repository ppa:savoirfairelinux
 sudo apt-get update >/dev/null
-sudo apt-get install sflphone-client-gnome
-sudo apt-get install sflphone-client-kde
+apt_install sflphone-client-gnome sflphone-client-kde
 #veraltet:
 #sudo apt-get --yes install twinkle pidgin
-sudo apt-get install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
+apt_install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
 
 # Sound auf Konsole
-sudo apt-get --yes install beep sox jovie
+apt_install beep sox jovie
 
 # Damit der CDDN.Dialog in K3B funktioniert
-sudo apt-get --yes install kde-config-cddb
+apt_install kde-config-cddb
 
 # Wichtige graphische Tools
-sudo apt-get --yes install k4dirstat
+apt_install k4dirstat
 
 # Java
 # (entspr: http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
 sudo add-apt-repository ppa:webupd8team/java
 # im Original steht hier noch: sudo mkdir -p /usr/lib/mozilla/plugins
-sudo apt-get update
-sudo apt-get --yes install oracle-jdk7-installer
+sudo apt-get update >/dev/null
+apt_install oracle-jdk7-installer
 # Test mit
 echo -n "Java-Version: ";java -version
 
 # Virtuelle Umgebungen
-sudo apt-get --yes install virtualbox
+apt_install virtualbox
 
 # Svens Apps, dafür Ruby mit KDE-Bindings installieren:
-sudo apt-get --yes install ruby-dev
-sudo apt-get --yes install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
-sudo apt-get --yes install g++
-sudo apt-get --yes install libqt4-dev
-sudo apt-get --yes install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
+apt_install ruby-dev
+apt_install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
+apt_install g++
+apt_install libqt4-dev
+apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
 #sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
 sudo gem install qtbindings 
 
 
 # Install more browsers
-sudo apt-get --yes install chromium-browser
-sudo apt-get --yes install rekonq
+apt_install chromium-browser
+apt_install rekonq
 
 # !! gehört eigentlich in die KDE-Konfiguration:
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
 
+sudo apt-get upgrade 
 
 exit 0
 
