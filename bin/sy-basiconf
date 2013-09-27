@@ -28,14 +28,22 @@ sudo sed -ri "s/^(UMASK\s+).+$/\1002/" /etc/login.defs
 echo "Neue Default-UMASK:"
 grep ^UMASK /etc/login.defs
 # echter Test, ob es wirkt:
+<<<<<<< HEAD
 if [ ] ;then su $USER -c umask ;fi
+=======
+if 0 ;then su $USER -c umask ;fi
+>>>>>>> 4f80089f9e2cc761d5c517cbbfc0d1f09d81591e
 
 # Die Hauptgruppe für normale User sollte users sein, damit die Benutzer untereinander
 # leichter Daten austauschen können.
 # Der folgende Befehl setzt die primäre Gruppe des aktuellen Users:
 sudo usermod -g users $USER
 # Erfolg kann überprüft werden, indem in einer neuen Login-Shell geschaut wird, ob die Gruppe users an erster Stelle genannt wird:
+<<<<<<< HEAD
 if [ ] ;then su $USER -c groups ;fi
+=======
+if 0 ;then su $USER -c groups ;fi
+>>>>>>> 4f80089f9e2cc761d5c517cbbfc0d1f09d81591e
 
 # die Gruppen syslog, scanner und dialout werden bei Ubuntu nicht per Default gesetzt, hier setzten wir gleich alle, die wir brauchen (alles in einer Zeile):
 for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip; do sudo addgroup $USER $group; done
