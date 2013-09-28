@@ -71,8 +71,14 @@ Terminal=false
 Type=Application
 EOT
 
+syve_section Weitere Software installieren
+
+sudo add-apt-repository ppa:csoler-users/retroshare
+sudo apt-get update >/dev/null
+apt_install retroshare
 
 apt_install wine
+
 
 syve_section Lern-Programme installieren
 
