@@ -14,109 +14,115 @@ function apt_install {
   sudo apt-get --yes install $*
 }
 
-syve_section Erste Schritte
-# Wir brauchen NFS und Ruby:
-apt_install nfs-kernel-server ruby
+# syve_section Skype
+# apt_install skype
 
-syve_section Gruppenzugehörigkeit und Rechte
+syve_section Wuala
 
-# Umask auf 002 setzen
-echo "Aktuelle Default-UMASK:"
-grep ^UMASK /etc/login.defs
-sudo sed -ri "s/^(UMASK\s+).+$/\1002/" /etc/login.defs
-# Nachschauen, ob Umask auch 002 ist.
-echo "Neue Default-UMASK:"
-grep ^UMASK /etc/login.defs
-# echter Test, ob es wirkt:
-if [ ] ;then su $USER -c umask ;fi
-
-# Die Hauptgruppe für normale User sollte users sein, damit die Benutzer untereinander
-# leichter Daten austauschen können.
-# Der folgende Befehl setzt die primäre Gruppe des aktuellen Users:
-sudo usermod -g users $USER
-# Erfolg kann überprüft werden, indem in einer neuen Login-Shell geschaut wird, ob die Gruppe users an erster Stelle genannt wird:
-if [ ] ;then su $USER -c groups ;fi
-
-# die Gruppen syslog, scanner und dialout werden bei Ubuntu nicht per Default gesetzt, hier setzten wir gleich alle, die wir brauchen (alles in einer Zeile):
-for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip; do sudo addgroup $USER $group; done
-
-syve_section Mehr Komfort in der Shell
-
-# .bashrc erweitert (Uhrzeit + History wird sofort und mit Ausführungszeit gespeichert und die Kapazität erhöht)
-if [[ -z `grep "truncate -s-" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
-
-# Sven: Zeit im Prompt:
-PS1="\t "$PS1
- 
-# Sven: History wird hiermit sofort nach jedem Kommando und mit Zeitstempel gespeichert, doppelte Zeitstempel werden verhindert:
-shopt -s histappend
-export PROMPT_COMMAND='history -a; truncate -s-`tail -1 $HOME/.bash_history|ruby -ne "print 1+(\\$_.slice(/([ \t]*# *[-\d\t: ]{0,19})+/).size rescue 0)"` $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
-# einfache Variante: export PROMPT_COMMAND='history -a; truncate -s-1 $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
-export HISTSIZE=9999
-export HISTFILESIZE=22000
+if [ `which wuala` = "" ] ; then
+  if [ `uname -i` = "x86_64" ] ; then
+    wget https://cdn.wuala.com/repo/deb/wuala_current_amd64.deb
+    sudo dpkg -i wuala_current_amd64.deb
+  else
+    wget https://cdn.wuala.com/repo/deb/wuala_current_i386.deb
+    sudo dpkg -i wuala_current_i386.deb
+  fi
+fi
+cat >$HOME/.config/autostart/wuala.desktop <<EOT
+[Desktop Entry]
+Exec=wuala >/var/log/wuala/wuala-NEW.log
+Icon=system-run
+Name[de]=Wuala-Starten
+Name=Wuala-Starten
+StartupNotify=true
+Terminal=false
+Type=Application
 EOT
-else
-echo "History-Sofortspeicherung schon zu wurde .bashrc hingefügt"
-fi
 
-syve_section Netzwerk
-apt_install nmap ssh curl
-# Exportieren der Dat-Partition:
-apt_install nfs-kernel-server # (falls nicht oben schon erledigt)
-if [[ -z `grep "/dat" /etc/exports` ]] ;then
-  echo '/dat *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
-else
-  echo
-  echo "/dat war schon in /etc/exports"
-  echo
-fi
-syve_section Wichtige Programme installieren
-# Entwicklung
-apt_install git vim
+sudo mkdir /var/log/wuala
+sudo chown $USER.users /var/log/wuala
+
+
+syve_section Pfade
+
+rmdir $HOME/*
+
+cat <<EOT >$HOME/.config/user-dirs.dirs
+XDG_DESKTOP_DIR="/dat/N.E.W.-Daten/Desktop"
+XDG_DOCUMENTS_DIR="/dat/N.E.W.-Daten/Geschriebseltes"
+XDG_DOWNLOAD_DIR="/dat/N.E.W.-Daten/Downloads"
+XDG_MUSIC_DIR="/dat/N.E.W.-Daten/Musik"
+XDG_PICTURES_DIR="/dat/N.E.W.-Daten/Bilder"
+XDG_VIDEOS_DIR="/dat/N.E.W.-Daten/Bilder"
+EOT
+
+ln -s /dat/N.E.W.-Daten $HOME
+
+
+mkdir -p $HOME/.kde/share/apps/solid/actions
+
+cat <<EOT >$HOME/.kde/share/apps/solid/actions/Comp-NachHandykarte.desktop
+[Desktop Action open]
+Exec=if fehler=`rsync -a --delete /dat/N.E.W.-Daten/HandyKarte/ /media/*/ 2>&1`; then kdialog --msgbox "Kopieren und Löschen auf Handykarte erfolgreich"; else kdialog --msgbox "Fehler beim Synchronisieren Computer --> Karte \\n\\nFehlermeldung:   \\n$fehler"; fi
+Icon=kverbos
+Name=VonComp-NachHandykarte
+
+[Desktop Entry]
+Actions=open;
+Type=Service
+X-KDE-Action-Custom=true
+X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == false]
+EOT
+
+cat <<EOT >$HOME/.kde/share/apps/solid/actions/VonHandykarte-AufComputer.desktop
+[Desktop Action open]
+Exec=if fehler=`rsync -au /media/*/ /dat/N.E.W.-Daten/HandyKarte/ 2>&1`; then kdialog --msgbox "Alle Daten der Karte sind jetzt auf dem Computer. \\n(Auf Computer nichts gelöscht)"; else kdialog --msgbox "Fehler beim Synchronisieren Karte --> Computer  \\n\\nFehlermeldung:   \\n$fehler"; fi
+Icon=preferences-plugin-script
+Name=VonHandykarte-AufComputer
+
+[Desktop Entry]
+Actions=open;
+Type=Service
+X-KDE-Action-Custom=true
+X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == 'false']
+EOT
+
+
+syve_section Telefon
+
+cat <<EOT >$HOME/.config/autostart/slowstart-sflphone.desktop
+[Desktop Entry]
+Exec=sleep 11;sflphone-client-kde
+Icon=system-run
+Name[de]=Slowstart-Sflphone
+Name=Slowstart-Sflphone
+StartupNotify=true
+Terminal=false
+Type=Application
+EOT
+
+syve_section Weitere Software installieren
+
+sudo add-apt-repository ppa:csoler-users/retroshare
+sudo apt-get update >/dev/null
+apt_install retroshare
+
+apt_install wine
+
+
+syve_section Lern-Programme installieren
+
+sudo dpkg -i /dat/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb 
+
+
+apt_install ktouch
 
 # Kommunikation
 
-sudo add-apt-repository ppa:savoirfairelinux
-sudo apt-get update >/dev/null
-apt_install sflphone-client-gnome sflphone-client-kde
-#veraltet:
-#sudo apt-get --yes install twinkle pidgin
-apt_install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
-
-# Sound auf Konsole
-apt_install beep sox jovie
-
-# Damit der CDDN.Dialog in K3B funktioniert
-apt_install kde-config-cddb
-
-# Wichtige graphische Tools
-apt_install k4dirstat
-
-# Java
-# (entspr: http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
-sudo add-apt-repository ppa:webupd8team/java
-# im Original steht hier noch: sudo mkdir -p /usr/lib/mozilla/plugins
-sudo apt-get update >/dev/null
-apt_install oracle-jdk7-installer
-# Test mit
-echo -n "Java-Version: ";java -version
-
-# Virtuelle Umgebungen
-apt_install virtualbox
-
-# Svens Apps, dafür Ruby mit KDE-Bindings installieren:
-apt_install ruby-dev
-apt_install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
-apt_install g++
-apt_install libqt4-dev
-apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
-#sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
-sudo gem install qtbindings 
+apt_install edubuntu-desktop
 
 
-# Install more browsers
-apt_install chromium-browser
-apt_install rekonq
+exit 0
 
 # !! gehört eigentlich in die KDE-Konfiguration:
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
