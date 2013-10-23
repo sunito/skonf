@@ -1,10 +1,17 @@
 #!/bin/bash
 
 function syve_section {
-echo
-echo $*
-echo
-logger syve_section $*
+  echo
+  echo $*
+  echo
+  logger syve_section $*
+}
+
+function apt_install {
+  echo
+  echo Installing $*
+  logger SyveInstalling $*
+  sudo apt-get --yes install $*
 }
 
 syve_section git-Defaults
@@ -18,4 +25,7 @@ syve_section git-Personalisierung
 git config --global user.email sven838git@suska.org
 git config --global user.name "Sven Suska"
 
+syve_section git-Goodies
+
+apt_install gitk
 
