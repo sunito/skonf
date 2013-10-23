@@ -56,7 +56,16 @@ export HISTSIZE=9999
 export HISTFILESIZE=22000
 EOT
 else
-echo "History-Sofortspeicherung schon zu wurde .bashrc hingefügt"
+echo "History-Sofortspeicherung wurde schon zu .bashrc hingefügt"
+fi
+
+if [[ -z `grep "syver/bin" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+
+# Sven: syver mit im $PATH
+PATH=$PATH:$HOME/bin/syver/bin
+EOT
+else
+echo "'bin/syver/bin' schon zum $PATH hingefügt"
 fi
 
 syve_section Netzwerk
