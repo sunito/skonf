@@ -1,0 +1,85 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          suska_backup
+# Required-Start:    $syslog $remote_fs
+# Required-Stop:     $syslog $remote_fs
+# Should-Start:      $network avahi
+# Should-Stop:
+# X-Start-Before:    samba
+# X-Stop-After:      samba
+# Default-Start:     2
+# Default-Stop:      0
+# Short-Description: CUPS Printing spooler and server
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+#DAEMON=/usr/sbin/cupsd
+NAME=suska_backup
+#PIDFILE=/var/run/cups/$NAME.pid
+DESC="SuskaBackup"
+
+unset TMPDIR
+
+#test -x $DAEMON || exit 0
+
+#mkdir -p /var/run/cups/certs
+
+. /lib/lsb/init-functions
+
+# Get the timezone set.
+
+LOGGER="logger -t$NAME "
+
+sync_dir() {
+    #if [ -n "$success" ] && [ -x /etc/init.d/xprint ]; then
+    $LOGGER "backup sync of /$1 to /zbackup/grasprung-$1 in progress ..."
+    echo
+    echo "######## STARTING BACKUP OF /$1 #########"
+    echo
+    rsync -av --del /$1/ /zbackup/grasprung-$1/ 3>&1 1>&2 2>&3 | tee | $LOGGER
+    echo
+    echo "######## BACKUP /$1 FINISHED. #########"
+    echo
+    $LOGGER "backup sync of /$1 done."
+    #fi
+}
+
+
+
+case "$1" in
+  start)
+	log_begin_msg "Duumy-Starting $DESC: $NAME"
+	success=1
+	log_end_msg $?
+	;;
+  stop)
+	log_begin_msg "Stopping for $DESC: $NAME"
+	mount /zbackup || $LOGGER "/zbackup already mounted??"
+	if mountpoint /zbackup ; then
+	  success=0
+	  sync_dir "daten" || success=2
+	  sync_dir "etc"   || success=4
+	  sync_dir "home"  || success=8
+	else
+	  success=1
+	fi
+	#log_end_msg $?
+	log_end_msg $success
+	;;
+  reload|force-reload)
+       log_begin_msg "Reloading $DESC: $NAME"
+       log_end_msg $?
+       ;;
+  restart)
+	log_begin_msg "Restarting $DESC: $NAME"
+	log_end_msg $?
+	;;
+  status)
+	echo -n "Status of $DESC: "
+	N=/etc/init.d/${0##*/}
+	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
+	exit 1
+	;;
+esac
+
+exit 0
