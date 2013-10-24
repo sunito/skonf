@@ -14,6 +14,17 @@ function apt_install {
   sudo apt-get --yes install $*
 }
 
+dat_dir=/dat
+
+if [ $USER = "sunito" ] ;then
+  user_dat_dir=/dat/aaa
+elif [ $USER = "NEW" ] ;then
+  user_dat_dir=/dat/N.E.W.-Daten
+else
+  user_dat_dir=/dat/$USER
+fi
+
+
 # syve_section Skype
 apt_install skype
 
@@ -50,20 +61,37 @@ fi # syve_section Wuala
 
 syve_section Pfade
 
-if [ $USER = "NEW" ] ;then
+desktop_dir=$user_dat_dir/Desktop
+documents_dir=$user_dat_dir/Documents
+download_dir=$user_dat_dir/Downloads
+music_dir=$user_dat_dir/Musik
+pictures_dir=$user_dat_dir/Bilder
+videos_dir=$user_dat_dir/Videos
+
+
+if [ $USER = "sunito" ] ;then
+documents_dir=$user_dat_dir/111
+desktop_dir=$documents_dir
+music_dir=$user_dat_dir/455/Musik
+pictures_dir=$user_dat_dir/422/Fotos
+videos_dir=$pictures_dir
 rmdir $HOME/*
+elif [ $USER = "NEW" ] ;then
+documents_dir=$user_dat_dir/Geschriebseltes
+videos_dir=$pictures_dir
+rmdir $HOME/*
+ln -s $user_dat_dir $HOME
+fi
 
 cat <<EOT >$HOME/.config/user-dirs.dirs
-XDG_DESKTOP_DIR="/dat/N.E.W.-Daten/Desktop"
-XDG_DOCUMENTS_DIR="/dat/N.E.W.-Daten/Geschriebseltes"
-XDG_DOWNLOAD_DIR="/dat/N.E.W.-Daten/Downloads"
-XDG_MUSIC_DIR="/dat/N.E.W.-Daten/Musik"
-XDG_PICTURES_DIR="/dat/N.E.W.-Daten/Bilder"
-XDG_VIDEOS_DIR="/dat/N.E.W.-Daten/Bilder"
+XDG_DESKTOP_DIR=$desktop_dir
+XDG_DOCUMENTS_DIR=$documents_dir
+XDG_DOWNLOAD_DIR=$download_dir
+XDG_MUSIC_DIR=$music_dir
+XDG_PICTURES_DIR=$pictures_dir
+XDG_VIDEOS_DIR=$videos_dir
 EOT
 
-ln -s /dat/N.E.W.-Daten $HOME
-fi # if [ $USER = "NEW" ] ;then
 
 mkdir -p $HOME/.kde/share/apps/solid/actions
 
