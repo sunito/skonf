@@ -132,6 +132,12 @@ kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --g
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
 kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
 
+syve_section "grub default"
+grep GRUB_TIMEOUT /etc/default/grub
+sudo sed -ri "s/^(GRUB_TIMEOUT\s*)=.+$/\1=2/" /etc/default/grub
+grep GRUB_TIMEOUT /etc/default/grub
+sudo update-grub2
+
 sudo apt-get dist-upgrade 
 
 exit 0
