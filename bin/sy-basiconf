@@ -59,10 +59,11 @@ else
 echo "History-Sofortspeicherung wurde schon zu .bashrc hingefügt"
 fi
 
-if [[ -z `grep "syver/bin" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+if [[ -z `grep "syver/binolder" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
 # Sven: syver mit im $PATH
 PATH=$PATH:$HOME/bin/syver/bin
+PATH=$PATH:$HOME/bin/syver/binolder
 EOT
 else
 echo "'bin/syver/bin' schon zum $PATH hingefügt"
