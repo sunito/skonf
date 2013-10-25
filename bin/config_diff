@@ -1,12 +1,1 @@
-#!/bin/bash
-args=$*
-function conf_diff() {
-  echo "diff -r $args /dat/conf-dot/$1 ~/$1"
-  diff -r $args /dat/conf-dot/$1 ~/$1
-
-}
-
-conf_diff .config
-conf_diff .kde/share/config
-#diff -r .kde/share/ /dat/conf-dot/.kde/share/
-conf_diff .linphonerc
+config_store

@@ -1,19 +1,43 @@
-#!/bin/bash
+#!/usr/bin/ruby
 
-function conf_store() {
-  if [[ -d ~/$1 ]]; then
-    echo "rsync -av ~/$1/ /dat/conf-dot/$1/"
-    rsync -avL --del  ~/$1/ /dat/conf-dot/$1/
+PROGNAME = File.basename($0)
+
+LAST_CONFIG_DIR="/yay/233/last-config"
+
+def puts_and_execute command
+  puts   command  + "   \t\t     ###"
+  system command
+end  
+  
+
+def conf_store(subdir)
+  if File.directory?(subdir)
+    puts_and_execute "rsync -avL --del ~/#{subdir}/ '#{LAST_CONFIG_DIR}/#{subdir}/'"
   else
-    echo "rsync -av ~/$1 /dat/conf-dot/$1"
-    rsync -avL  ~/$1 /dat/conf-dot/$1
-  fi
-  echo
-}
+    puts_and_execute "rsync -avL  ~/#{subdir}  '#{LAST_CONFIG_DIR}/#{subdir}'"
+  end
+  puts
+end 
 
-mkdir -p /dat/conf-dot/
-mkdir -p /dat/conf-dot/.kde/share
+def conf_diff(subdir)
+  puts_and_execute "diff -r #{ARGV.first} #{LAST_CONFIG_DIR}/#{subdir} ~/#{subdir}"
+end
+      
+      
+if PROGNAME =~ /store/
+  puts_and_execute "mkdir -p #{LAST_CONFIG_DIR}" unless File.directory?(LAST_CONFIG_DIR)
+  puts_and_execute "mkdir -p #{LAST_CONFIG_DIR}/.kde/share" unless File.directory?(File.join(LAST_CONFIG_DIR, ".kde/share"))
 
-conf_store .config
-conf_store .kde/share/config 
-conf_store .linphonerc
+  conf_store ".config"
+  conf_store ".kde/share/config"
+  conf_store ".linphonerc" if File.exist?("~/.linphonerc")
+  
+elsif  PROGNAME =~ /diff/
+  conf_diff ".config"
+  conf_diff ".kde/share/config"
+  #diff -r .kde/share/ /dat/conf-dot/.kde/share/
+  conf_diff ".linphonerc" if File.exist?("~/.linphonerc")
+  
+else
+  puts "falscher Programmname: #{PROGNAME}\n\n"
+end 
