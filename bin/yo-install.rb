@@ -189,6 +189,7 @@ if ya233_dir
   create_dir_unless_exists "#{ya233_link}/233"
 end
 
+move_and_symlink_or_ensure_correctness "#{install_ziel_dir}/Downloads", "#{HOME}/Downloads"
 
 if File.symlink?(ya288_link)
   puts "Performing ya288 actions"
