@@ -7,7 +7,15 @@ echo
 logger syve_section $*
 }
 
-# Todo!!
+syve_section At the moment, this ist just a collection of script lines to copy from  
+
+exit 0
+
+syve_section  Copy all Akonadi files
+rsync -avx --del /acehome/sunito/.local/share/akonadi/ $HOME/.local/share/akonadi
+rsync -avx --del /mnt/aaa/233/conf-akonadi/ /yay/233/conf-akonadi           # 2013-10-24 15:07:39
+rsync -avx --del /mnt/aaa/233/kde-config//akonadi* /yay/233/kde-config/             # 2013-10-24 15:16:08
+
 
 syve_section Wichtige Teile des Home-Ordners holen
 
