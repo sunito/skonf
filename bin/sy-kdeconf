@@ -9,6 +9,13 @@ echo
 logger syve_section $*
 }
 
+function apt_install {
+  echo
+  echo Installing $*
+  logger SyveInstalling $*
+  sudo apt-get --yes install $*
+}
+
 
 
 syve_section "Dolphin settings"
@@ -63,13 +70,19 @@ sed -i -r -e 's/^(showSeconds *)=.*$/\1=true/' $HOME/.kde/share/config/plasma-de
 
 syve_section "Packages"
 
-sudo apt-get --yes install digikam
+apt_install digikam
 
-
+#apt_install xscreensaver-data xscreensaver-gl-extra xscreensaver-gl xscreensaver-screensaver-bsod libjpeg-progs 
+apt_install kscreensaver
 
 syve_section "Finished."
 
 exit 0
+
+
+# Lautstärke 
+Binärdateien /yay/233/last-config/.config/pulse/20b347d3ae6a5455335a9b0052678c64-stream-volumes.tdb und /home/sunito/.config/pulse/20b347d3ae6a5455335a9b0052678c64-stream-volumes.tdb sind verschieden.
+
 
 ----
 kmail Rücktaste
