@@ -12,13 +12,15 @@ if ARGV.size > 1 or ARGV[0] =~ /-h/
   
   Der Ordner <Hauptordner> wird erstellt, falls nicht vorhanden.
   Darin wird der Unterordner 288 angelegt (falls nicht vorhanden) und darin
-  werden dann der #{HOME}/bin-Orner und einige Dot-Filesŝ gespeichert.
+  werden dann einige Dot-Files (bzw. Ordner) gespeichert.
   Außerdem werden sämtliche yay-Segmente auf diesen Ordner gerichtet, falls
   sie noch nicht erstellt wurden.
   EOT
   exit
 end
   
+install_ziel_dir = ARGV[0] || "/dat/aaa"
+
 
 def puts_and_execute command
   puts   "##!!## " + command
@@ -162,10 +164,12 @@ create_dir_unless_exists YAY_SWITCH_DIR
 create_link "#{YAH111_LINK}/111", "#{HOME}/111"
 create_link "#{YAH111_LINK}/111", "/111"
 
+create_link YAY_ENTRY_DIR, "#{HOME}/aa"
+create_link YAY_ENTRY_DIR, "/aa"
+
+# deprecated:
 create_link YAY_ENTRY_DIR, "#{HOME}/222"
 create_link YAY_ENTRY_DIR, "/222"
-
-install_ziel_dir = ARGV[0] || "/dat/aaa"
 
 ya288_dir = ARGV[0] || ya288_dir  # robuster machen
 ya288_link = "#{YAY_SWITCH_DIR}/ya288"
@@ -188,7 +192,8 @@ end
 
 if File.symlink?(ya288_link)
   puts "Performing ya288 actions"
-  move_and_symlink_or_ensure_correctness "#{ya288_link}/288/bin/",                "#{HOME}/bin"
+  # this is now maintained solely through git:
+  # move_and_symlink_or_ensure_correctness "#{ya288_link}/288/bin/",                "#{HOME}/bin"
   
   create_dir_unless_exists       "#{ya288_link}/288/yc-dot/"
   move_and_symlink_or_ensure_correctness "#{ya288_link}/288/yc-dot/twinkle/",     "#{HOME}/.twinkle"
