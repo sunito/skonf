@@ -86,7 +86,10 @@ apt_install git vim
 
 # Kommunikation
 
-sudo add-apt-repository ppa:savoirfairelinux
+# 2013-10-24, Sven: Problem bei Saucy: 
+#sudo add-apt-repository ppa:savoirfairelinux
+sudo add-apt-repository ppa:savoirfairelinux/sflphone-nightly
+
 sudo apt-get update >/dev/null
 apt_install sflphone-client-gnome sflphone-client-kde
 #veraltet:
