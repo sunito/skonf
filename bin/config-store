@@ -11,7 +11,7 @@ end
   
 
 def conf_store(subdir)
-  if File.directory?(subdir)
+  if File.directory?(File.join(ENV['HOME'], subdir))
     puts_and_execute "rsync -avL --del ~/#{subdir}/ '#{LAST_CONFIG_DIR}/#{subdir}/'"
   else
     puts_and_execute "rsync -avL  ~/#{subdir}  '#{LAST_CONFIG_DIR}/#{subdir}'"
