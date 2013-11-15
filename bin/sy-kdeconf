@@ -137,11 +137,24 @@ diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.k
 < showSeconds=false
 ---
 > showSeconds=true
+
+
+
 diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/config/powerdevilrc
 3a4,6
 > [General]
 > configLockScreen=false
 > 
+
+# 2013-11-04: 
+cat <<eot >/home/sunito/.kde/share/config/powerdevilrc
+[BatteryManagement]
+BatteryCriticalAction=0
+
+[General]
+configLockScreen=false
+eot
+
 
 diff -r /dat/conf-dot/.kde/share/config/kiorc /home/sunito/.kde/share/config/kiorc
 3c3
