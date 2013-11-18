@@ -39,6 +39,13 @@ kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveRe
 #---  ---
 #---  > MoveResizeMaximizedWindows=true
 
+# 2013-11-17 TODO!!
+# diff -r /yay/233/last-config/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
+# 41c41
+< kwin4_effect_fallapartEnabled=false
+# ---
+# > kwin4_effect_fallapartEnabled=true
+
 syve_section "Lid without action"
 
 kwriteconfig --file $HOME/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
@@ -251,11 +258,29 @@ kmail Filter anwenden:
   <Action name="apply_filters"/>
  </ToolBar>
 in /home/sunito/.kde/share/apps/kmail2/kmmainwin.rc
+
+# wieder in 2013-11-17 TODO:
 diff -r /dat/conf-dot/.config/synaptiks/management.json /home/sunito/.config/synaptiks/management.json
 5c5
 <   "monitor_keyboard": false, 
 ---
 >   "monitor_keyboard": true, 
+
+cat /home/sunito/.config/synaptiks/management.json
+{
+  "monitor_mouses": false, 
+  "idle_time": 2.0, 
+  "ignored_mouses": [], 
+  "monitor_keyboard": true, 
+  "keys_to_ignore": 2
+}
+
+cat /home/sunito/.kde/share/config/synaptiksrc
+[General]
+Autostart=true
+
+
+
 
 diff -r /dat/conf-dot/.config/synaptiks/touchpad-config.json /home/sunito/.config/synaptiks/touchpad-config.json
 12c12
