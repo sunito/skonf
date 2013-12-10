@@ -31,7 +31,7 @@ apt_install skype
 
 syve_section Wuala
 
-if [ `which wuala` = "" ] ; then
+if [ `which wuala`x = "x" ] ; then
   if [ `uname -i` = "x86_64" ] ; then
     wget https://cdn.wuala.com/repo/deb/wuala_current_amd64.deb
     sudo dpkg -i wuala_current_amd64.deb
