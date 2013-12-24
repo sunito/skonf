@@ -42,7 +42,7 @@ kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveRe
 # 2013-11-17 TODO!!
 # diff -r /yay/233/last-config/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
 # 41c41
-< kwin4_effect_fallapartEnabled=false
+#< kwin4_effect_fallapartEnabled=false
 # ---
 # > kwin4_effect_fallapartEnabled=true
 

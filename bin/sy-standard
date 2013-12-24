@@ -25,16 +25,14 @@ else
 fi
 
 
-syve_section Zusätzliche Programme
-
-apt_install skype
+syve_section Multimedia-Programme
 
 apt_install libdvdread4
 sudo /usr/share/doc/libdvdread4/install-css.sh
 
 apt_install vlc
-apt_install scribus
 apt_install pavucontrol
+apt_install audacity
 
 syve_section Wuala
 
@@ -144,6 +142,10 @@ Terminal=false
 Type=Application
 EOT
 
+apt_install linphone
+
+apt_install skype
+
 syve_section Weitere Software installieren
 
 sudo add-apt-repository ppa:csoler-users/retroshare
@@ -151,6 +153,13 @@ sudo apt-get update >/dev/null
 apt_install retroshare
 
 apt_install wine winetricks
+
+apt_install scribus
+
+
+syve_section Spiele
+
+apt_install supertux
 
 syve_section Lern-Programme installieren
 

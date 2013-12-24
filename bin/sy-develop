@@ -29,3 +29,8 @@ syve_section git-Goodies
 
 apt_install gitk
 
+syve_section System-Tools
+
+apt_install trash-cli
+apt_install bonnie++  # disk benchmark
+apt_install akonadiconsole
