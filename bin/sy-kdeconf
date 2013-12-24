@@ -77,6 +77,8 @@ sed -i -r -e 's/^(showSeconds *)=.*$/\1=true/' $HOME/.kde/share/config/plasma-de
 
 syve_section "Packages"
 
+apt_install kubuntu-restricted-extras
+
 apt_install digikam
 
 #apt_install xscreensaver-data xscreensaver-gl-extra xscreensaver-gl xscreensaver-screensaver-bsod libjpeg-progs 

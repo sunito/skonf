@@ -25,9 +25,16 @@ else
 fi
 
 
-# syve_section Skype
+syve_section Zusätzliche Programme
+
 apt_install skype
 
+apt_install libdvdread4
+sudo /usr/share/doc/libdvdread4/install-css.sh
+
+apt_install vlc
+apt_install scribus
+apt_install pavucontrol
 
 syve_section Wuala
 
