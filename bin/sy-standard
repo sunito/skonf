@@ -152,10 +152,11 @@ sudo add-apt-repository ppa:csoler-users/retroshare
 sudo apt-get update >/dev/null
 apt_install retroshare
 
-apt_install wine winetricks
-
 apt_install scribus
 
+apt_install wine winetricks
+
+apt_install cups-pdf
 
 syve_section Spiele
 
