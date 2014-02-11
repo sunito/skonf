@@ -34,6 +34,10 @@ apt_install vlc
 apt_install pavucontrol
 apt_install audacity
 
+sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
+sudo apt-get update >/dev/null
+apt_install simplescreenrecorder
+
 syve_section Wuala
 
 if [ `which wuala`x = "x" ] ; then
