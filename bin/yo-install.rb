@@ -22,6 +22,9 @@ end
 install_ziel_dir = ARGV[0] || "/dat/aaa"
 
 
+class RelevantDataInTwoPlacesError < RuntimeError; end
+
+
 def puts_and_execute command
   puts   "##!!## " + command
   system command
@@ -93,7 +96,7 @@ def move_and_symlink_or_ensure_correctness(store_name, orig_name)
     end
   else
     if File.exist?(orig_name) and not File.symlink?(orig_name)
-      raise "!!!!!\n!!!!! Please manually merge #{orig_name} into #{store_name} !!!!!!\n!!!!!"
+      raise RelevantDataInTwoPlacesError, "!!!!!\n!!!!! Please manually merge #{orig_name} into #{store_name} !!!!!!\n!!!!!"
     end
   end
   create_link( store_name, orig_name)
@@ -189,7 +192,13 @@ if ya233_dir
   create_dir_unless_exists "#{ya233_link}/233"
 end
 
-move_and_symlink_or_ensure_correctness "#{install_ziel_dir}/Downloads", "#{HOME}/Downloads"
+ya177_link = "#{YAY_SWITCH_DIR}/ya177"
+if File.symlink?(ya177_link)
+  puts "Performing ya177 actions"
+  move_and_symlink_or_ensure_correctness "#{ya177_link}/177/Downloads", "#{HOME}/Downloads"
+else
+  puts "no symlink creation for 177, because #{ya177_link} does not exist." 
+end
 
 if File.symlink?(ya288_link)
   puts "Performing ya288 actions"

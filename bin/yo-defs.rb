@@ -6,8 +6,8 @@ POSSIBLE_YAY_SWITCH_DIRS = [BEST_YAY_SWITCH_DIR, "/yay", "/etc/yay", HOME]
 
 YAY_ENTRY_DIR = (BEST_YAY_SWITCH_DIR=="/yay/switch") ? "/yay" : BEST_YAY_SWITCH_DIR
 
-SEGMENTS = %w[111 133 155 233 288 411 422 455 811 822]
-
+# SEGMENTS = %w[111 133 311 233 288 411 422 455 811 822]
+SEGMENTS = %w[111 133 177 233 288 311 444  477  511  533  555  566  644  766  777  811  888  999]
 
 def symlink_target link_path
   `ls -l #{link_path}`.split(" ").last
