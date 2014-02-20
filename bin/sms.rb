@@ -7,7 +7,7 @@ if text.nil? or rest then
   exit 1
 end
 
-if text.size > 140 
+if text.size > 160 
   puts "Text too long (#{text.size})"
   puts "text: " + text
   exit 2
