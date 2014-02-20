@@ -170,9 +170,6 @@ create_link "#{YAH111_LINK}/111", "/111"
 create_link YAY_ENTRY_DIR, "#{HOME}/aa"
 create_link YAY_ENTRY_DIR, "/aa"
 
-# deprecated:
-create_link YAY_ENTRY_DIR, "#{HOME}/222"
-create_link YAY_ENTRY_DIR, "/222"
 
 ya288_dir = ARGV[0] || ya288_dir  # robuster machen
 ya288_link = "#{YAY_SWITCH_DIR}/ya288"
