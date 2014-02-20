@@ -34,7 +34,7 @@ pairs = %w[
   
   /111/ye-sys/mozilla-neu/       ~/.mozilla  
 
-  /yay/133/ye-vbox/dotVirtualBox  ~/.VirtualBox
+  /yay/211/ye-vbox/dotVirtualBox  ~/.VirtualBox
 
   
 ].inject([[]]) do |result, new_val|
