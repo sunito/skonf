@@ -40,7 +40,7 @@ kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveRe
 #---  > MoveResizeMaximizedWindows=true
 
 # 2013-11-17 TODO!!
-# diff -r /yay/233/last-config/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
+# diff -r /yay/322/last-config/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
 # 41c41
 #< kwin4_effect_fallapartEnabled=false
 # ---
@@ -90,7 +90,7 @@ exit 0
 
 
 # Lautstärke 
-Binärdateien /yay/233/last-config/.config/pulse/20b347d3ae6a5455335a9b0052678c64-stream-volumes.tdb und /home/sunito/.config/pulse/20b347d3ae6a5455335a9b0052678c64-stream-volumes.tdb sind verschieden.
+Binärdateien /yay/322/last-config/.config/pulse/20b347d3ae6a5455335a9b0052678c64-stream-volumes.tdb und /home/sunito/.config/pulse/20b347d3ae6a5455335a9b0052678c64-stream-volumes.tdb sind verschieden.
 
 
 ----
@@ -309,7 +309,7 @@ diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.k
 
 
 # 2013-12-02
-diff -r /yay/233/last-config/.kde/share/config/kglobalshortcutsrc /home/sunito/.kde/share/config/kglobalshortcutsrc
+diff -r /yay/322/last-config/.kde/share/config/kglobalshortcutsrc /home/sunito/.kde/share/config/kglobalshortcutsrc
 199c199
 < Window Minimize=none,none,Fenster minimieren
 ---

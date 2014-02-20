@@ -6,7 +6,7 @@ require File::dirname(__FILE__) + '/yo-gemeinsam'
 #ziel = "/media/SD_8GB_ext3"
 #ziel = "/media/Fusion"
 if YAY_SCHEME[:multi]
-  update288 ARGV
+  update122 ARGV
 
   do_multi :sync_to, ARGV + ["--backup"]
     

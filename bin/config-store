@@ -2,7 +2,7 @@
 
 PROGNAME = File.basename($0)
 
-LAST_CONFIG_DIR="/yay/233/last-config"
+LAST_CONFIG_DIR="/yay/322/last-config"
 
 def puts_and_execute command
   puts   command  + "   \t\t     ###"

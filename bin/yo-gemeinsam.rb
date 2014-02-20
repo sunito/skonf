@@ -71,11 +71,11 @@ def expandiere_basis_pfad pfad_angabe
   end
 end
 
-def update288 argv
+def update122 argv
 # ToDo: Besser formulieren
   main_part = argv.grep(/(111\+?=)?[^=\s]+/).first
   main_path = main_part.split("=").last
-  do_multi :update_both, ["288=#{main_path}"]
+  do_multi :update_both, ["122=#{main_path}"]
 end
 
 # ToDo: Konsolidieren der Optionenübergabe!!
@@ -222,9 +222,9 @@ def sync_nach ziel_basis_pfad, opts
     
   end
 
-  quell_288_pfad = "/288/"
-  ziel_288_pfad = File.join(ziel_basis_pfad, "288/")
-  rsync quell_288_pfad, ziel_288_pfad, {:update=>true}
+  quell_122_pfad = "/122/"
+  ziel_122_pfad = File.join(ziel_basis_pfad, "122/")
+  rsync quell_122_pfad, ziel_122_pfad, {:update=>true}
 
   if sync_111_ok and not backup_only then
     schalte_auf ziel_basis_pfad

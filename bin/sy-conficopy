@@ -13,8 +13,8 @@ exit 0
 
 syve_section  Copy all Akonadi files
 rsync -avx --del /acehome/sunito/.local/share/akonadi/ $HOME/.local/share/akonadi
-rsync -avx --del /mnt/aaa/233/conf-akonadi/ /yay/233/conf-akonadi           # 2013-10-24 15:07:39
-rsync -avx --del /mnt/aaa/233/kde-config//akonadi* /yay/233/kde-config/             # 2013-10-24 15:16:08
+rsync -avx --del /mnt/aaa/322/conf-akonadi/ /yay/322/conf-akonadi           # 2013-10-24 15:07:39
+rsync -avx --del /mnt/aaa/322/kde-config//akonadi* /yay/322/kde-config/             # 2013-10-24 15:16:08
 
 
 syve_section Wichtige Teile des Home-Ordners holen
@@ -47,12 +47,12 @@ sudo chown sunito.users /dat
 mkdir -p /dat/aaa
 cd /dat/aaa || exit
 
-get_subdirs 288 111
+get_subdirs 122 111
 
 syve_section Yay-System installieren und einrichten
 
-/dat/aaa/288/bin/yo-install.rb /dat/aaa
-/dat/aaa/288/bin/yo-restore.rb
+/dat/aaa/122/bin/yo-install.rb /dat/aaa
+/dat/aaa/122/bin/yo-restore.rb
 
 # Zum PATH den bin-Ordner hinzugefügt,
 # also in .bashrc angehänht:

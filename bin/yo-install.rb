@@ -11,7 +11,7 @@ if ARGV.size > 1 or ARGV[0] =~ /-h/
   Usage: yo-install.rb <Hauptordner>
   
   Der Ordner <Hauptordner> wird erstellt, falls nicht vorhanden.
-  Darin wird der Unterordner 288 angelegt (falls nicht vorhanden) und darin
+  Darin wird der Unterordner 122 angelegt (falls nicht vorhanden) und darin
   werden dann einige Dot-Files (bzw. Ordner) gespeichert.
   Außerdem werden sämtliche yay-Segmente auf diesen Ordner gerichtet, falls
   sie noch nicht erstellt wurden.
@@ -120,12 +120,12 @@ end
 
 
 if YAY_SWITCH_DIR != BEST_YAY_SWITCH_DIR 
-  possible_288_link_locations = [
-    "#{BEST_YAY_SWITCH_DIR}/ya288", 
+  possible_122_link_locations = [
+    "#{BEST_YAY_SWITCH_DIR}/ya122", 
     
-    "#{YAY_SWITCH_DIR}/ya288", 
-    "#{YAY_SWITCH_DIR}/288", 
-    "/288"
+    "#{YAY_SWITCH_DIR}/ya122", 
+    "#{YAY_SWITCH_DIR}/122", 
+    "/122"
   ]
 
   if File.exist?(YAH111_LINK)
@@ -148,13 +148,13 @@ if YAY_SWITCH_DIR != BEST_YAY_SWITCH_DIR
   end
   
   
-  ya288_link = possible_288_link_locations.find {|dir| File.exist? dir}
-  if ya288_link
-    folder288 = symlink_target(ya288_link)
+  ya122_link = possible_122_link_locations.find {|dir| File.exist? dir}
+  if ya122_link
+    folder122 = symlink_target(ya122_link)
     # Hier wird zwischen direkten Links und Switch-Links unterschieden
-    # bei ersteren müssen wir den 288-Ordner noch wegnehmen
-    ya288_dir = File.dirname(folder288) if ( folder288 and ya288_link =~ /\/288$/ )
-    possible_288_link_locations.each do |link|
+    # bei ersteren müssen wir den 122-Ordner noch wegnehmen
+    ya122_dir = File.dirname(folder122) if ( folder122 and ya122_link =~ /\/122$/ )
+    possible_122_link_locations.each do |link|
       delete_link_if_exists link
     end    
   end
@@ -171,22 +171,22 @@ create_link YAY_ENTRY_DIR, "#{HOME}/aa"
 create_link YAY_ENTRY_DIR, "/aa"
 
 
-ya288_dir = ARGV[0] || ya288_dir  # robuster machen
-ya288_link = "#{YAY_SWITCH_DIR}/ya288"
+ya122_dir = ARGV[0] || ya122_dir  # robuster machen
+ya122_link = "#{YAY_SWITCH_DIR}/ya122"
 
-if ya288_dir
-  create_dir_unless_exists ya288_dir 
-  #create_link_unless_exists ya288_dir, "/288"  
+if ya122_dir
+  create_dir_unless_exists ya122_dir 
+  #create_link_unless_exists ya122_dir, "/122"  
   # Hier Orts-Änderung einbauen, falls Link schon existiert!
-  create_link_unless_exists ya288_dir, ya288_link
-  create_dir_unless_exists "#{ya288_link}/288"
+  create_link_unless_exists ya122_dir, ya122_link
+  create_dir_unless_exists "#{ya122_link}/122"
 end
 
-ya233_dir = ya288_dir
-ya233_link = "#{YAY_SWITCH_DIR}/ya233"
-if ya233_dir
-  create_link_unless_exists ya233_dir, ya233_link
-  create_dir_unless_exists "#{ya233_link}/233"
+ya322_dir = ya122_dir
+ya322_link = "#{YAY_SWITCH_DIR}/ya322"
+if ya322_dir
+  create_link_unless_exists ya322_dir, ya322_link
+  create_dir_unless_exists "#{ya322_link}/322"
 end
 
 ya177_link = "#{YAY_SWITCH_DIR}/ya177"
@@ -197,26 +197,26 @@ else
   puts "no symlink creation for 177, because #{ya177_link} does not exist." 
 end
 
-if File.symlink?(ya288_link)
-  puts "Performing ya288 actions"
+if File.symlink?(ya122_link)
+  puts "Performing ya122 actions"
   # this is now maintained solely through git:
-  # move_and_symlink_or_ensure_correctness "#{ya288_link}/288/bin/",                "#{HOME}/bin"
+  # move_and_symlink_or_ensure_correctness "#{ya122_link}/122/bin/",                "#{HOME}/bin"
   
-  create_dir_unless_exists       "#{ya288_link}/288/yc-dot/"
-  move_and_symlink_or_ensure_correctness "#{ya288_link}/288/yc-dot/twinkle/",     "#{HOME}/.twinkle"
-  move_and_symlink_or_ensure_correctness "#{ya288_link}/288/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
-  move_and_symlink_or_ensure_correctness "#{ya288_link}/288/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
+  create_dir_unless_exists       "#{ya122_link}/122/yc-dot/"
+  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/twinkle/",     "#{HOME}/.twinkle"
+  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
+  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
 else
-  puts "no symlink creation for 288, because #{ya288_link} does not exist."  
+  puts "no symlink creation for 122, because #{ya122_link} does not exist."  
 end
 
-if File.symlink?(ya233_link)
-  puts "Performing ya233 actions"
-  move_and_symlink_or_ensure_correctness "#{ya233_link}/233/conf-akonadi/",       "#{HOME}/.config/akonadi"
+if File.symlink?(ya322_link)
+  puts "Performing ya322 actions"
+  move_and_symlink_or_ensure_correctness "#{ya322_link}/322/conf-akonadi/",       "#{HOME}/.config/akonadi"
   # Die folgende Verlinkung würde den Akonadi-Server lahmlegen
-  # move_and_symlink_or_ensure_correctness "#{ya233_link}/233/loc-sh-akonadi/",     "#{HOME}/.local/share/akonadi"
+  # move_and_symlink_or_ensure_correctness "#{ya322_link}/322/loc-sh-akonadi/",     "#{HOME}/.local/share/akonadi"
 
-  move_and_symlink_or_ensure_correctness "#{ya233_link}/233/kde-config/",         "#{HOME}/.kde/share/config"
+  move_and_symlink_or_ensure_correctness "#{ya322_link}/322/kde-config/",         "#{HOME}/.kde/share/config"
   
   create_dir_unless_exists       "#{HOME}/.kde/share/config-local"  
   Dir["#{HOME}/.kde/share/config/plasm*"].each do |komplett_name|
@@ -225,7 +225,7 @@ if File.symlink?(ya233_link)
     move_and_symlink_or_ensure_correctness "#{HOME}/.kde/share/config-local/#{basename}",     komplett_name
   end	
 else
-  puts "no 233-symlink creation, #{ya233_link} does not exist."  
+  puts "no 322-symlink creation, #{ya322_link} does not exist."  
 end
 
 
