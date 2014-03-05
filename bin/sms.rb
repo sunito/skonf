@@ -33,6 +33,7 @@ username = File.basename(uname_file)
 
 puts "Text size = #{text.size} characters"
 
-cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4939877052998&to=#{number}&text=#{text}'"
+#cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4939877052998&to=#{number}&text=#{text}'"
+cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4915792311751&to=#{number}&text=#{text}'"
 puts cmd
 system cmd
