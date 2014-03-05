@@ -84,6 +84,10 @@ syve_section Wichtige Programme installieren
 # Entwicklung
 apt_install git vim
 
+# Konsole
+apt_install mmv
+
+
 # Kommunikation
 
 # 2013-10-24, Sven: Problem bei Saucy: 
