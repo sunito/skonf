@@ -20,6 +20,7 @@ syve_section Multimedia-Programme
 apt_install libdvdread4
 sudo /usr/share/doc/libdvdread4/install-css.sh
 
+apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
 apt_install vlc
 apt_install pavucontrol
 apt_install audacity
