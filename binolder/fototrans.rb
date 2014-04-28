@@ -188,7 +188,7 @@ begin
       fortschritt_pbar.maximum = 300
  
       transf_button = Qt::PushButton.new('Hier klicken um die Fotos und Videos zu verschieben') do
-        self.width = 300
+        self.width = 400  # wirkungslos??
         connect(SIGNAL :clicked) do 
           main_label.text = "Beginne :" + beschr_edit.text
 	  
@@ -197,6 +197,7 @@ begin
             main_label.text = foto_file_name.sub(/^.+...(.{30})/, '...\1')
           end
           main_label.text = result
+          self.enabled = false
           #Qt::Application.instance.quit 
         end
       end
