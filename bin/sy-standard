@@ -14,29 +14,21 @@ function apt_install {
   sudo apt-get --yes install $*
 }
 
-dat_dir=/dat
-
-if [ $USER = "sunito" ] ;then
-  user_dat_dir=/dat/aaa
-elif [ $USER = "NEW" ] ;then
-  user_dat_dir=/dat/N.E.W.-Daten
-else
-  user_dat_dir=/dat/$USER
-fi
-
 
 syve_section Multimedia-Programme
 
 apt_install libdvdread4
 sudo /usr/share/doc/libdvdread4/install-css.sh
 
+apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
 apt_install vlc
 apt_install pavucontrol
 apt_install audacity
 
-sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
-sudo apt-get update >/dev/null
-apt_install simplescreenrecorder
+syve_section "### simplescreenrecorder" deaktiviert, da Netrunner schon gut ausgestattet
+# sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
+# sudo apt-get update >/dev/null
+# apt_install simplescreenrecorder
 
 syve_section Wuala
 
@@ -69,6 +61,19 @@ sudo chown $USER.users /var/log/wuala
 fi # syve_section Wuala
 
 syve_section Pfade
+
+
+dat_dir=/dat
+
+if [ $USER = "sunito" ] ;then
+  user_dat_dir=/dat/aaa
+elif [ $USER = "NEW" ] ;then
+  user_dat_dir=/dat/N.E.W.-Daten
+else
+  # soll in Großbuchstaben!!
+  user_dat_dir=/dat/$USER
+fi
+
 
 desktop_dir=$user_dat_dir/Desktop
 documents_dir=$user_dat_dir/Documents
