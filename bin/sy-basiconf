@@ -128,6 +128,7 @@ apt_install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
 apt_install g++
 apt_install libqt4-dev
 apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
+apt_install cmake   # für Compilieren von qtbindings gebraucht
 #sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
 sudo gem install qtbindings 
 

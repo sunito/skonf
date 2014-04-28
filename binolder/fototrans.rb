@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
  
+require 'thread' # workaround for NameError: "const_missing': uninitialized constant Qt::RubyThreadFix::Queue"
 require 'Qt4'
 require 'fileutils'
 
@@ -28,13 +29,11 @@ end
 class Transfer
   attr_reader :fehlermeldung
   def initialize
-#    unless @sd_card_path 
-      sd_card_paths = Dir["/media/*"].map do |pfad|
+      sd_card_paths = (Dir["/media/*"] + Dir["/media/#{ENV['USER']}/*"]).map do |pfad|
 	trc :pfad, pfad
 	ziel = File.join( pfad, "DCIM")
 	ziel if File.directory?(pfad) and pfad !~ /cdrom/i and File.directory?(ziel)
       end.compact
-      trc :sd_card_path, @sd_card_path
       if sd_card_paths.size > 1
 	@fehlermeldung = Iconv.conv("LATIN1", "UTF8", "Es sind mehrere Foto-Karten angeschlossen.\nBitte alle zur Zeit nicht benötigten entfernen!")
       elsif sd_card_paths.empty?
@@ -43,19 +42,17 @@ class Transfer
 	@fehlermeldung = nil
 	@sd_card_path = sd_card_paths.first
       end
-
- #   end
-    #raise "Absturz-Test"    
+      trc :sd_card_path, @sd_card_path
   end
   
   def target_base_dir
     [
       "/dat/Sabine/Bilder/", # Sabine
-      "/yay/422/Fotos/",  # Sven
-      "/dat/Static/sPana/",  # Sven old
-      "/fest/Static/sPana/", # Sven very-old
+      "/aa/533/Fotos/",  # Sven
       "/daten/Eigene/Fotos",  # Mapa
-      "#{ENV['HOME']}/Bilder/"
+      "/aa/422/Fotos/",  # Sven veraltet
+      "#{ENV['HOME']}/Bilder/",
+      "#{ENV['HOME']}/Fotos/"
     ].find do |dir|
       File.exist?(dir)
     end
@@ -167,7 +164,13 @@ begin
       transfer = Transfer.new
       if transfer.sd_card_path
         source_label.text = "<font color=grey>Quelle: #{transfer.sd_card_path}</color>"
-        target_label.text = "<font color=grey>Ziel: #{transfer.target_base_dir.to_s}</color>"
+        if transfer.target_base_dir 
+          target_label.text = "<font color=grey>Ziel: #{transfer.target_base_dir.to_s}</color>"
+        else
+          target_label.text = "<font color=grey>Ziel: </font><font color=red>Keinen Ziel-Ordner gefunden! 
+                               <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sven anrufen! (039881-49194) </color>
+                               <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Dann auf [Beenden] clicken! </color>"
+        end
         true
       else
         source_label.text = transfer.fehlermeldung 
@@ -176,7 +179,7 @@ begin
     end  
     
     if init_folders.call
-      main_label = Qt::Label.new('<big>Was ist auf den Fotos?   (kurz, wenige Worte)</big>')
+      main_label = Qt::Label.new('<big>Was ist auf den Fotos (bzw. Videos)?   (kurz, wenige Worte)</big>')
       beschr_edit = Qt::LineEdit.new(self)
       beschr_edit.size = 300
       fortschritt_pbar =  Qt::ProgressBar.new(self)
@@ -184,7 +187,7 @@ begin
       fortschritt_pbar.minimum = 0
       fortschritt_pbar.maximum = 300
  
-      transf_button = Qt::PushButton.new('Hier klicken um Fotos zu verschieben') do
+      transf_button = Qt::PushButton.new('Hier klicken um die Fotos und Videos zu verschieben') do
         self.width = 300
         connect(SIGNAL :clicked) do 
           main_label.text = "Beginne :" + beschr_edit.text
