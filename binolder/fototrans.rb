@@ -63,6 +63,10 @@ class Transfer
   end
   
   def start(content_desc)
+    p content_desc
+    p content_desc.encoding rescue nil
+    content_desc_utf8 = content_desc.force_encoding("UTF-8")
+    p content_desc_utf8.encoding rescue nil
     { 'ä' => 'ae',
       'ö' => 'oe',
       'ü' => 'ue',
@@ -71,7 +75,8 @@ class Transfer
       'Ü' => 'Ue',
       'ß' => 'sz'
     }.each do |umlaut, ersatz|
-      content_desc = content_desc.gsub(Iconv.conv("LATIN1", "UTF8", umlaut), ersatz)
+      content_desc = content_desc_utf8.gsub(umlaut, ersatz)
+      #content_desc = content_desc.gsub(Iconv.conv("LATIN1", "UTF8", umlaut), ersatz)
     end
     @content_desc = content_desc.gsub(/[^\w\d.+-_]/i, "-")    
     
@@ -189,6 +194,7 @@ begin
  
       transf_button = Qt::PushButton.new('Hier klicken um die Fotos und Videos zu verschieben') do
         self.width = 400  # wirkungslos??
+        self.enabled = false
         connect(SIGNAL :clicked) do 
           main_label.text = "Beginne :" + beschr_edit.text
 	  
@@ -200,6 +206,10 @@ begin
           self.enabled = false
           #Qt::Application.instance.quit 
         end
+      end
+      
+      beschr_edit.connect(SIGNAL "textChanged(QString)") do |text|
+        transf_button.enabled = not(text.empty?)
       end
     end
     
