@@ -36,7 +36,7 @@ class TimeEncoder
   end
 
   def first_line
-    date_part = "#{days} #{weekday_code} #{time.strftime'%Y-%m-%d'}"
+    date_part = "#{days}#{weekday_code} #{time.strftime'%Y-%m-%d'}"
     time_part = "#{time_str}GMT (=#{time.hour + zone_diff}:#{"%02d"%time.min}#{tzone})"
     "jou #{date_part} ~ #{time_part}"
   end
