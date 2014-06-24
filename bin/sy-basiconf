@@ -153,17 +153,6 @@ exit 0
 # </ActionProperties>
 #</kpartgui>
 
-diff -r /dat/conf-dot/.kde/share/config/kglobalshortcutsrc /home/sunito/.kde/share/config/kglobalshortcutsrc
-188c188
-< Switch to Desktop 1=Ctrl+F1,Ctrl+F1,Auf Arbeitsfläche 1 umschalten
----
-> Switch to Desktop 1=none,Ctrl+F1,Auf Arbeitsfläche 1 umschalten
-201,202c201,202
-< Switch to Desktop 3=Ctrl+F3,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
-< Switch to Desktop 4=Ctrl+F4,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
----
-> Switch to Desktop 3=none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
-> Switch to Desktop 4=none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
 diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
 140a141,143
 > [Containments][2][Applets][112][Configuration][General]
@@ -201,19 +190,6 @@ diff -r /dat/conf-dot/.kde/share/config/kiorc /home/sunito/.kde/share/config/kio
 ---
 > ConfirmTrash=true
 
-diff -r /dat/conf-dot/.kde/share/config/emailidentities /home/sunito/.kde/share/config/emailidentities
-10c10
-< Drafts=148
----
-> Drafts=544
-13c13
-< Fcc=163
----
-> Fcc=554
-22c22
-< Templates=164
----
-> Templates=617
 
 
 20:50:14 sunito@NetZen:~$ grep -A 20 sven2013 /111/ye-sys/kmail-neu/emailidentities
@@ -267,14 +243,6 @@ diff -r /dat/conf-dot/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kw
 ---
 > MoveResizeMaximizedWindows=true
 
-diff -r /dat/conf-dot/.kde/share/config/systemsettingsrc /home/sunito/.kde/share/config/systemsettingsrc
-25c25
-< History=sflphone-client-gnome,linphone
----
-> History=workrave,sflphone-client-gnome,linphone
-So 10. Feb 18:45:16 CET 2013
-
-/home/sunito/.config/autostart/workrave.desktop
 
 
 diff -r /dat/conf-dot/.kde/share/config/kscreensaverrc /home/sunito/.kde/share/config/kscreensaverrc
