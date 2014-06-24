@@ -7,6 +7,17 @@ syve_section "Telefonie"
 
 apt_install skype
 
+cat <<EOT >$HOME/.config/autostart/workrave-slowstart.desktop
+[Desktop Entry]
+Exec=sleep 51;workrave
+Icon=system-run
+Name=Workrave-Slowstart
+StartupNotify=true
+Terminal=false
+Type=Application
+EOT
+
+
 syve_section "Multimedia-Programme"
 
 apt_install libdvdread4
@@ -27,7 +38,6 @@ syve_section "Weitere Software installieren"
 apt_install wine winetricks
 
 apt_install cups-pdf
-apt_install workrave
 apt_install scribus
 
 if [ ! -f /etc/apt/sources.list.d/csoler-users-retroshare-trusty.list ]
@@ -37,8 +47,8 @@ then
 fi
 apt_install retroshare
 
-syve_section "Autostart"
 
+apt_install workrave
 cat <<EOT >$HOME/.config/autostart/phone-slowstart.desktop
 [Desktop Entry]
 Exec=sleep 11;linphone
@@ -49,17 +59,30 @@ StartupNotify=true
 Terminal=false
 Type=Application
 EOT
-
-cat <<EOT >$HOME/.config/autostart/workrave-slowstart.desktop
-[Desktop Entry]
-Exec=sleep 51;workrave
-Icon=system-run
-Name=Workrave-Slowstart
-StartupNotify=true
-Terminal=false
-Type=Application
-EOT
-
+ruby <<EOC
+PREFIX="/org/workrave"
+def dconf_write rel_path, value
+  puts "Setting " + rel_path
+  print "old: "; system "dconf read #{PREFIX}/#{rel_path}"
+  cmd = "dconf write #{PREFIX}/#{rel_path} #{value}"
+  #puts cmd
+  system cmd
+  print "new: "; system "dconf read #{PREFIX}/#{rel_path}"
+end
+new_settings = {
+  "micro-pause" => [480,  10],
+  "rest-break"  => [3000, 360],
+  "daily-limit" => [18000]
+}
+new_settings.each do |name, values|
+  limit, duration = values
+  dconf_write "timers/" + name + "/limit", limit
+  dconf_write "timers/" + name + "/auto-reset", duration if duration
+  dconf_write "gui/breaks/" + name + "/skippable-break", "false"
+end
+dconf_write "gui/applet/enabled", "false"
+dconf_write "gui/main-window/enabled", "false"
+EOC
 
 syve_section "Weitere browser"
  
