@@ -1,34 +1,9 @@
 #!/bin/bash
 
-function syve_section {
-  echo
-  echo $*
-  echo
-  logger syve_section $*
-}
-
-function apt_install {
-  echo
-  echo Installing $*
-  logger SyveInstalling $*
-  sudo apt-get --yes install $*
-}
+own_folder=$(dirname $(readlink -f $0))
+source $(dirname $own_folder)/lib/sy-common.bash
 
 
-syve_section Multimedia-Programme
-
-apt_install libdvdread4
-sudo /usr/share/doc/libdvdread4/install-css.sh
-
-apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
-apt_install vlc
-apt_install pavucontrol
-apt_install audacity
-
-syve_section "### simplescreenrecorder" deaktiviert, da Netrunner schon gut ausgestattet
-# sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
-# sudo apt-get update >/dev/null
-# apt_install simplescreenrecorder
 
 syve_section Wuala
 
@@ -70,8 +45,7 @@ if [ $USER = "sunito" ] ;then
 elif [ $USER = "NEW" ] ;then
   user_dat_dir=/dat/N.E.W.-Daten
 else
-  # soll in Großbuchstaben!!
-  user_dat_dir=/dat/$USER
+  user_dat_dir=/dat/`ruby -e'print ENV["USER"].capitalize'`
 fi
 
 
@@ -89,11 +63,11 @@ desktop_dir=$documents_dir
 music_dir=$user_dat_dir/455/Musik
 pictures_dir=$user_dat_dir/422/Fotos
 videos_dir=$pictures_dir
-rmdir $HOME/*
+rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
 documents_dir=$user_dat_dir/Geschriebseltes
 videos_dir=$pictures_dir
-rmdir $HOME/*
+rmdir -v $HOME/*
 ln -s $user_dat_dir $HOME
 fi
 
@@ -105,6 +79,12 @@ XDG_MUSIC_DIR=$music_dir
 XDG_PICTURES_DIR=$pictures_dir
 XDG_VIDEOS_DIR=$videos_dir
 EOT
+
+kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file://$documents_dir"
+# kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
+#---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
+#---  27a28
+#---  > HomeUrl=file:///111
 
 
 mkdir -p $HOME/.kde/share/apps/solid/actions
@@ -138,40 +118,10 @@ X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ign
 EOT
 fi # if [ $USER = "NEW" ] ;then
 
-syve_section Telefon
 
-cat <<EOT >$HOME/.config/autostart/slowstart-sflphone.desktop
-[Desktop Entry]
-Exec=sleep 11;sflphone-client-kde
-Icon=system-run
-Name[de]=Slowstart-Sflphone
-Name=Slowstart-Sflphone
-StartupNotify=true
-Terminal=false
-Type=Application
-EOT
 
-apt_install linphone
+syve_section "Lernprogramme"
 
-apt_install skype
-
-syve_section Weitere Software installieren
-
-sudo add-apt-repository ppa:csoler-users/retroshare
-sudo apt-get update >/dev/null
-apt_install retroshare
-
-apt_install scribus
-
-apt_install wine winetricks
-
-apt_install cups-pdf
-
-syve_section Spiele
-
-apt_install supertux
-
-syve_section Lern-Programme installieren
 
 if [ $USER = "NEW" ] ;then
 sudo dpkg -i /dat/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb 

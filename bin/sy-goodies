@@ -1,0 +1,74 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+source $(dirname $own_folder)/lib/sy-common.bash
+
+syve_section "Telefonie"
+
+apt_install skype
+
+syve_section "Multimedia-Programme"
+
+apt_install libdvdread4
+sudo /usr/share/doc/libdvdread4/install-css.sh
+
+apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
+apt_install vlc
+apt_install pavucontrol
+apt_install audacity
+
+syve_section "### simplescreenrecorder" deaktiviert, da Netrunner schon gut ausgestattet
+# sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
+# sudo apt-get update >/dev/null
+# apt_install simplescreenrecorder
+
+syve_section "Weitere Software installieren"
+
+apt_install wine winetricks
+
+apt_install cups-pdf
+apt_install workrave
+apt_install scribus
+
+if [ ! -f /etc/apt/sources.list.d/csoler-users-retroshare-trusty.list ]
+then  
+  sudo add-apt-repository ppa:csoler-users/retroshare
+  sudo apt-get update >/dev/null  
+fi
+apt_install retroshare
+
+syve_section "Autostart"
+
+cat <<EOT >$HOME/.config/autostart/phone-slowstart.desktop
+[Desktop Entry]
+Exec=sleep 11;linphone
+Icon=system-run
+Name[de]=Telefon-Slowstart
+Name=Telefon-Slowstart
+StartupNotify=true
+Terminal=false
+Type=Application
+EOT
+
+cat <<EOT >$HOME/.config/autostart/workrave-slowstart.desktop
+[Desktop Entry]
+Exec=sleep 51;workrave
+Icon=system-run
+Name=Workrave-Slowstart
+StartupNotify=true
+Terminal=false
+Type=Application
+EOT
+
+
+syve_section "Weitere browser"
+ 
+apt_install chromium-browser
+apt_install rekonq
+
+
+syve_section "Spiele"
+
+apt_install supertux
+
+#syve_section "Lern-Programme installieren"

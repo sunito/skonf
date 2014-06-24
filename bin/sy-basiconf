@@ -1,5 +1,9 @@
 #!/bin/bash
 
+own_folder=$(dirname $(readlink -f $0))
+
+source $(dirname $own_folder)/lib/sy-common.bash  || echo "Fehler beim Laden! folder=$own_folder"
+
 function syve_section {
   echo
   echo $*
@@ -14,11 +18,14 @@ function apt_install {
   sudo apt-get --yes install $*
 }
 
-syve_section Erste Schritte
-# Wir brauchen NFS und Ruby:
-apt_install nfs-kernel-server ruby
 
-syve_section Gruppenzugehörigkeit und Rechte
+syve_section "Erste Schritte"
+# Wir brauchen NFS und Ruby:
+apt_install nfs-kernel-server 
+apt_install ruby
+
+
+syve_section "Gruppenzugehörigkeit und Rechte"
 
 # Umask auf 002 setzen
 echo "Aktuelle Default-UMASK:"
@@ -69,7 +76,7 @@ else
 echo "'bin/syver/bin' schon zum $PATH hingefügt"
 fi
 
-syve_section Netzwerk
+syve_section "Netzwerk"
 apt_install nmap ssh curl
 # Exportieren der Dat-Partition:
 apt_install nfs-kernel-server # (falls nicht oben schon erledigt)
@@ -80,7 +87,7 @@ else
   echo "/dat war schon in /etc/exports"
   echo
 fi
-syve_section Wichtige Programme installieren
+syve_section "Wichtige Programme installieren"
 # Entwicklung
 apt_install git vim
 
@@ -89,6 +96,8 @@ apt_install mmv
 
 
 # Kommunikation
+
+apt_install linphone
 
 # 2013-10-24, Sven: Problem bei Saucy, aber sollte inzwischen wieder gehen
 sudo add-apt-repository ppa:savoirfairelinux
@@ -110,15 +119,6 @@ apt_install kde-config-cddb
 # Wichtige graphische Tools
 apt_install k4dirstat
 
-# Java
-# (entspr: http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
-sudo add-apt-repository ppa:webupd8team/java
-# im Original steht hier noch: sudo mkdir -p /usr/lib/mozilla/plugins
-sudo apt-get update >/dev/null
-apt_install oracle-jdk7-installer
-# Test mit
-echo -n "Java-Version: ";java -version
-
 # Virtuelle Umgebungen
 apt_install virtualbox
 
@@ -133,16 +133,9 @@ apt_install cmake   # für Compilieren von qtbindings gebraucht
 sudo gem install qtbindings 
 
 
-# Install more browsers
-apt_install chromium-browser
-apt_install rekonq
-
-# !! gehört eigentlich in die KDE-Konfiguration:
-kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
-kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
-kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
 
 syve_section "grub default"
+
 grep GRUB_TIMEOUT /etc/default/grub
 sudo sed -ri "s/^(GRUB_TIMEOUT\s*)=.+$/\1=2/" /etc/default/grub
 grep GRUB_TIMEOUT /etc/default/grub

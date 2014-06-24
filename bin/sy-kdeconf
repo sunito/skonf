@@ -1,43 +1,24 @@
 #!/bin/bash
 
+own_folder=$(dirname $(readlink -f $0))
 
-
-function syve_section {
-echo
-echo $*
-echo
-logger syve_section $*
-}
-
-function apt_install {
-  echo
-  echo Installing $*
-  logger SyveInstalling $*
-  sudo apt-get --yes install $*
-}
-
-
+source $(dirname $own_folder)/lib/sy-common.bash
 
 syve_section "Dolphin settings"
 
-kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
-#---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
-#---  27a28
-#---  > HomeUrl=file:///111
+
 
 syve_section "Plasma settings"
 
+echo SwitchingMode
+kreadconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 
 kwriteconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 0
+kreadconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 
+
+echo MoveResizeMaximizedWindows ist ab KDE 4.11 nicht mehr gültig
+kreadconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" 
 kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" true 
-#---  diff -r /dat/conf-dot/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
-#---  152c152
-#---  < SwitchingMode=1
-#---  ---
-#---  > SwitchingMode=0
-#---  196c196,197
-#---  < MoveResizeMaximizedWindows=false
-#---  ---
-#---  > MoveResizeMaximizedWindows=true
+kreadconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" 
 
 # 2013-11-17 TODO!!
 # diff -r /yay/322/last-config/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
@@ -74,6 +55,8 @@ syve_section "Tweaking the Clock"
 
 sed -i -r -e 's/^(announceInterval *)=.*$/\1=15/' $HOME/.kde/share/config/plasma-desktop-appletsrc
 sed -i -r -e 's/^(showSeconds *)=.*$/\1=true/' $HOME/.kde/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(displayHolidays *)=.*$/\1=true/' $HOME/.kde/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(holidaysRegions *)=.*$/\1=de_de/' $HOME/.kde/share/config/plasma-desktop-appletsrc
 
 syve_section "Packages"
 
@@ -84,7 +67,7 @@ apt_install digikam
 #apt_install xscreensaver-data xscreensaver-gl-extra xscreensaver-gl xscreensaver-screensaver-bsod libjpeg-progs 
 apt_install kscreensaver
 
-syve_section "Finished."
+syve_section "$(basename $0) finished."
 
 exit 0
 
@@ -228,14 +211,6 @@ offerShutdown=true
 shutdownType=2
 
 
-diff -r /dat/conf-dot/.kde/share/config/systemsettingsrc /home/sunito/.kde/share/config/systemsettingsrc
-25c25
-< History=sflphone-client-gnome,linphone
----
-> History=workrave,sflphone-client-gnome,linphone
-So 10. Feb 18:45:16 CET 2013
-
-/home/sunito/.config/autostart/workrave.desktop
 
 
 diff -r /dat/conf-dot/.kde/share/config/kscreensaverrc /home/sunito/.kde/share/config/kscreensaverrc

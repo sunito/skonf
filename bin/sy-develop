@@ -1,45 +1,37 @@
 #!/bin/bash
 
-function syve_section {
-  echo
-  echo $*
-  echo
-  logger syve_section $*
-}
+own_folder=$(dirname $(readlink -f $0))
+source $(dirname $own_folder)/lib/sy-common.bash
 
-function apt_install {
-  echo
-  echo Installing $*
-  logger SyveInstalling $*
-  sudo apt-get --yes install $*
-}
-
-syve_section git-Defaults
+syve_section "git-Defaults"
 
 git config --global credential.helper cache
 git config --global push.default simple
 
 
-syve_section git-Personalisierung
+syve_section "git-Personalisierung"
 
 git config --global user.email sven838git@suska.org
 git config --global user.name "Sven Suska"
 
-syve_section git-Goodies
+syve_section "git-Goodies"
 
 apt_install gitk
 
-syve_section System-Tools
+syve_section "System-Tools"
 
 apt_install trash-cli
 apt_install bonnie++  # disk benchmark
 apt_install akonadiconsole
 
-syve_section Ruby 1.8.7 via rbenv
+syve_section "Ruby 1.8.7" #via rbenv
 
 apt_install ruby-sqlite3
+
 apt_install ruby1.8
 apt_install rubygems1.8
+
+exit 0
 
 #apt_install rbenv
 if [[ -d ~/.rbenv/versions/1.8.7-debian ]] 
