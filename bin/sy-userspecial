@@ -40,14 +40,17 @@ syve_section Pfade
 
 dat_dir=/dat
 
+CAP_USER=`ruby -e'print ENV["USER"].capitalize'`
+
 if [ $USER = "sunito" ] ;then
   user_dat_dir=/dat/aaa
 elif [ $USER = "NEW" ] ;then
   user_dat_dir=/dat/N.E.W.-Daten
 else
-  user_dat_dir=/dat/`ruby -e'print ENV["USER"].capitalize'`
+  user_dat_dir=/dat/$CAP_USER
 fi
 
+mkdir $user_dat
 
 desktop_dir=$user_dat_dir/Desktop
 documents_dir=$user_dat_dir/Documents
@@ -60,8 +63,8 @@ videos_dir=$user_dat_dir/Videos
 if [ $USER = "sunito" ] ;then
 documents_dir=$user_dat_dir/111
 desktop_dir=$documents_dir
-music_dir=$user_dat_dir/455/Musik
-pictures_dir=$user_dat_dir/422/Fotos
+music_dir=$user_dat_dir/477/MusikAusmNetz
+pictures_dir=$user_dat_dir/533/Fotos
 videos_dir=$pictures_dir
 rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
@@ -86,6 +89,55 @@ kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "
 #---  27a28
 #---  > HomeUrl=file:///111
 
+
+syve_section "Medien-Server"
+
+if [ -z `ls /etc/apt/sources.list.d |grep readymedia` ]
+then
+  sudo add-apt-repository --yes ppa:ali-asad-lotia/readymedia-latest
+  #sudo add-apt-repository --yes ppa:pneu/readymedia-transcode
+  sudo apt-get update  >/dev/null  
+fi
+#apt_install readymedia-transcode
+#minidlna_service=minidlnatc
+#minidlna_exe=minidlnatc
+apt_install minidlna 
+minidlna_service=minidlna
+minidlna_exe=minidlnad
+sudo service $minidlna_service stop
+sudo update-rc.d $minidlna_service disable
+
+mkdir $HOME/.minidlna
+mkdir $HOME/.minidlna/cache
+cat <<EOT >$HOME/.minidlna/minidlna.conf
+# Use A, P, and V to restrict media 'type' in directory
+#media_dir=A,$music_dir
+#media_dir=P,$pictures_dir
+#media_dir=V,$videos_dir
+media_dir=$music_dir
+media_dir=$pictures_dir
+media_dir=$videos_dir
+friendly_name=Computer von $CAP_USER
+inotify=yes                     # 'no' for less resources, restart required for new media
+db_dir=/home/$USER/.minidlna/cache
+log_dir=/home/$USER/.minidlna  
+EOT
+
+
+cat <<EOT >$HOME/.config/autostart/minidlna-slowstart.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=MiniDLNA
+Comment=Server to stream media over network
+Exec=sleep 77 ;$minidlna_exe -f $HOME/.minidlna/minidlna.conf -P $HOME/.minidlna/minidlna.pid
+StartupNotify=false
+Terminal=false
+Hidden=false
+EOT
+
+
+syve_section "Geräte-Aktionen"
 
 mkdir -p $HOME/.kde/share/apps/solid/actions
 
