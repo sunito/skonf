@@ -110,7 +110,7 @@ apt_install linphone
 if [ -z `ls /etc/apt/sources.list.d |grep savoirfairelinux`  ] # genauer Eintrag: savoirfairelinux-ppa-trusty.list
 then  
   # 2013-10-24, Sven: Problem bei Saucy, aber sollte inzwischen wieder gehen
-  sudo add-apt-repository ppa:savoirfairelinux
+  sudo add-apt-repository --yes ppa:savoirfairelinux
   # 2014-03-30, nightly jetzt hoffentlich nicht mehr nötig:
   #sudo add-apt-repository ppa:savoirfairelinux/sflphone-nightly
   sudo apt-get update >/dev/null
