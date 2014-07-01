@@ -46,6 +46,11 @@ apt_install audacity
 
 syve_section "Weitere Software installieren"
 
+echo "Ensure that mtools_skip_check=1 is in .mtoolsrc"
+if [[ ! -f $HOME/.mtoolsr && -z `grep mtools_skip_check=1 $HOME/.mtoolsrc`  ]] ;then
+  echo mtools_skip_check=1 >> $HOME/.mtoolsrc 
+fi
+
 apt_install wine winetricks
 
 apt_install cups-pdf
