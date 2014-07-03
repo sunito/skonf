@@ -53,7 +53,7 @@ apt_install scribus
 
 if [ -z `ls /etc/apt/sources.list.d |grep retroshare` ]
 then  
-  sudo add-apt-repository ppa:csoler-users/retroshare
+  sudo add-apt-repository --yes ppa:csoler-users/retroshare
   sudo apt-get update >/dev/null  
 fi
 apt_install retroshare

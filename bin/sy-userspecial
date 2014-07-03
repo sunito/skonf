@@ -35,6 +35,68 @@ sudo chown $USER.users /var/log/wuala
 
 fi # syve_section Wuala
 
+
+if [ $USER = "assistent" ] ;then
+  syve_section "Mounten von /haupt"
+  if [[ -z `grep "/haupt" $HOME/.profile ` ]] ;then
+    cat <<eot >>$HOME/.profile 
+
+# Sven, `date`
+mount /haupt
+eot
+  else
+    echo "mount /haupt war schon in .profile"
+  fi
+  if [[ -z `grep "/haupt" /etc/fstab ` ]] ;then
+    cat <<eot |sudo tee -a /etc/fstab
+
+# Sven, `date` 
+IP_Adresse:/dat                               /haupt          nfs     intr,users,noauto 0       0
+eot
+    sudo mkdir /haupt
+  fi
+  
+  ruby <<eoc
+    menu_entries = []
+    Dir["$HOME/.wine/drive_c/Programme/WISO/*/wiso2*.exe"].each do |exe_path|
+      basename = File.basename(exe_path, ".exe")
+      jahr = basename.scan(/\d\d\d\d/).first
+      desktop_filename = "$HOME/.local/share/applications/#{basename}.desktop"
+      File.open(desktop_filename, "w") do |f|
+        f.puts <<eot
+[Desktop Entry]
+Exec=wine "#{exe_path}"
+GenericName=Steuerprogramm #{jahr}
+Name=#{basename}
+Icon=#{File.dirname(exe_path)}/wisoakt.ico
+NoDisplay=false
+StartupNotify=true
+Terminal=0
+Type=Application
+eot
+      end
+      menu_entries << <<eot
+ <Menu>
+  <Name>Steuerprogramm #{jahr}</Name>
+  <Layout>
+   <Merge type="files"/>
+   <Filename>#{desktop_filename}</Filename>
+  </Layout>
+  <NotDeleted/>
+  <Include>
+   <Filename>#{desktop_filename}</Filename>
+  </Include>
+ </Menu>
+eot
+    end # Dir["$HOME/.wine/drive_c/Programme/WISO/*/wiso2*.exe"]
+    File.open("$HOME/.config/menus/wiso_steuer_autogen.menu", "w") do |f|   
+      f.puts "<Menu>"
+      f.puts menu_entries.join("\n")
+      f.puts "</Menu>"
+    end    
+eoc
+fi # if [ $USER = "assistent" ]
+
 syve_section Pfade
 
 
@@ -46,6 +108,8 @@ if [ $USER = "sunito" ] ;then
   user_dat_dir=/dat/aaa
 elif [ $USER = "NEW" ] ;then
   user_dat_dir=/dat/N.E.W.-Daten
+elif [ $USER = "assistent" ] ;then
+  user_dat_dir=$HOME
 else
   user_dat_dir=/dat/$CAP_USER
 fi
@@ -72,6 +136,17 @@ documents_dir=$user_dat_dir/Geschriebseltes
 videos_dir=$pictures_dir
 rmdir -v $HOME/*
 ln -s $user_dat_dir $HOME
+elif [ $USER = "assistent" ] ;then
+  documents_dir=$HOME/Business
+  ln -s /111/Business $documents_dir
+  echo "ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch"
+  ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch
+  
+  desktop_dir=$documents_dir
+  if [ -d $HOME/Desktop ] ;then
+    mv $HOME/Desktop $HOME/Desktop_orig
+  fi
+  ln -s $desktop_dir $HOME/Desktop
 fi
 
 cat <<EOT >$HOME/.config/user-dirs.dirs
@@ -89,7 +164,7 @@ kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "
 #---  27a28
 #---  > HomeUrl=file:///111
 
-
+if [ ! $USER = "assistent" ] ;then
 syve_section "Medien-Server"
 
 if [ -z `ls /etc/apt/sources.list.d |grep readymedia` ]
@@ -137,7 +212,6 @@ Terminal=false
 Hidden=false
 EOT
 
-
 syve_section "Geräte-Aktionen"
 
 mkdir -p $HOME/.kde/share/apps/solid/actions
@@ -181,6 +255,7 @@ Terminal=false
 Type=Application
 EOT
 fi
+fi # nicht "assistent"
 
 
 syve_section "Lernprogramme"

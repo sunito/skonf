@@ -147,6 +147,9 @@ echo -n new:
 grep GRUB_TIMEOUT /etc/default/grub
 sudo update-grub2
 
+
+apt_install akonadiconsole
+
 sudo apt-get dist-upgrade 
 
 exit 0
