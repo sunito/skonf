@@ -103,6 +103,7 @@ syve_section Pfade
 dat_dir=/dat
 
 CAP_USER=`ruby -e'print ENV["USER"].capitalize'`
+user_fullname=`grep $USER /etc/passwd |cut -d: -f5 |cut -d, -f1`
 
 if [ $USER = "sunito" ] ;then
   user_dat_dir=/dat/aaa
@@ -211,6 +212,38 @@ StartupNotify=false
 Terminal=false
 Hidden=false
 EOT
+
+
+paste_snippets_file=$HOME/.kde/share/apps/plasma_applet_paste/snippets.xml
+syve_section "Einfüge-Applet"
+if [ -f $paste_snippets_file ] ;then
+  echo "'$paste_snippets_file' existierte schon"
+else
+  if [ $USER = "sunito" ] ;then
+    cat <<eot >$paste_snippets_file
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE text_snippets><snippets>
+  <snippet icon="office-calendar" name="Aktuelles Datum">%{date()}</snippet>
+  <snippet icon="edit-paste" name="E-Mail für Finanzamt ()"></snippet>
+  <snippet icon="edit-paste" name="Steuer-Nr ()"></snippet>
+  <snippet icon="edit-paste" name="USt-Id-Nr ()"></snippet>
+  <snippet icon="object-unlocked" name="Zufälliges Passwort">%{password(8)}</snippet>
+  <snippet icon="edit-paste" name="Eigener Name">$user_fullname</snippet>
+</snippets>
+eot
+  else
+    cat <<eot >$paste_snippets_file
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE text_snippets><snippets>
+  <snippet icon="office-calendar" name="Aktuelles Datum">%{date()}</snippet>
+  <snippet icon="object-unlocked" name="Zufälliges Passwort">%{password(8)}</snippet>
+  <snippet icon="edit-paste" name="Eigener Name">$user_fullname</snippet>
+</snippets>
+eot
+  fi
+fi
+
+
+ruby $(dirname $own_folder)/lib/sy-userspec.rb
+
 
 syve_section "Geräte-Aktionen"
 

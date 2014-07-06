@@ -47,6 +47,11 @@ if [ ] ;then su $USER -c groups ;fi
 # die Gruppen syslog, scanner und dialout werden bei Ubuntu nicht per Default gesetzt, hier setzten wir gleich alle, die wir brauchen (alles in einer Zeile):
 for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip; do sudo addgroup $USER $group; done
 
+dat_partition=`df |grep dat |cut -d" " -f1`
+if [ -z `sudo tune2fs -l /dev/sda6 |grep volume |cut -d":" -f2 |tr -d ' '` ] ;then
+  sudo tune2fs -L DAT $dat_patition
+fi
+
 syve_section Mehr Komfort in der Shell
 
 # .bashrc erweitert (Uhrzeit + History wird sofort und mit Ausführungszeit gespeichert und die Kapazität erhöht)
