@@ -88,9 +88,12 @@ apt_install nfs-kernel-server # (falls nicht oben schon erledigt)
 if [[ -z `grep "/dat" /etc/exports` ]] ;then
   echo '/dat *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
 else
-  echo
   echo "/dat war schon in /etc/exports"
-  echo
+fi
+if [[ -z `grep "/home" /etc/exports` ]] ;then
+  echo '/home *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
+else
+  echo "/home war schon in /etc/exports"
 fi
 syve_section "Wichtige Programme installieren"
 # Entwicklung
@@ -140,8 +143,10 @@ apt_install libqt4-dev
 apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
 apt_install cmake   # für Compilieren von qtbindings gebraucht
 #sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
-sudo gem install qtbindings 
 
+if [ -z `git list |grep qtbindings` ] ;then
+sudo gem install qtbindings 
+fi
 
 syve_section "grub default"
 
