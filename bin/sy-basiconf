@@ -145,7 +145,7 @@ apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (li
 apt_install cmake   # für Compilieren von qtbindings gebraucht
 #sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
 
-if [ -z `gem list |grep qtbindings` ] ;then
+if [ -z "`gem list |grep qtbindings`" ] ;then
 sudo gem install qtbindings 
 fi
 
