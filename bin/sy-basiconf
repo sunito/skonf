@@ -18,6 +18,7 @@ function apt_install {
   sudo apt-get --yes install $*
 }
 
+echo "starting..............."
 
 syve_section "Erste Schritte"
 # Wir brauchen NFS und Ruby:
@@ -90,7 +91,7 @@ if [[ -z `grep "/dat" /etc/exports` ]] ;then
 else
   echo "/dat war schon in /etc/exports"
 fi
-if [[ -z `grep "/home" /etc/exports` ]] ;then
+if [[ -z `grep -E "^/home" /etc/exports` ]] ;then
   echo '/home *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
 else
   echo "/home war schon in /etc/exports"
@@ -144,7 +145,7 @@ apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (li
 apt_install cmake   # für Compilieren von qtbindings gebraucht
 #sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
 
-if [ -z `git list |grep qtbindings` ] ;then
+if [ -z `gem list |grep qtbindings` ] ;then
 sudo gem install qtbindings 
 fi
 
