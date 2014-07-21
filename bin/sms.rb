@@ -1,9 +1,27 @@
 #!/usr/bin/env ruby
 
+require 'slop'
+
+class String
+  define_method '/' do |rest|
+    File.join( self, rest)
+  end
+end
+
+
+opts = Slop.parse! do 
+  banner "Usage: #{$0} [options] <mobile-number> <text-of-sms> "
+
+  #on 'name=', 'Your name'
+  #on 'p', 'password', 'An optional password', argument: :optional'
+  on 'd', 'dryrun', 'Nichts senden, nur so tun, als ob'
+  on 'v', 'verbose', 'Enable verbose mode'
+end
+
 number, text, rest = ARGV
 
 if text.nil? or rest then
-  puts "Usage "#{File.basename($0)} <mobile-number> <text-of-sms>"
+  puts "Usage #{File.basename($0)} <mobile-number> <text-of-sms>"
   exit 1
 end
 
@@ -15,12 +33,6 @@ end
 
 number.gsub(/[^+0-9]/, "")
 number = "+49" + number[1..-1] if number =~ /^0[^0]/
-
-class String
-  def / rest
-    File.join( self, rest)
-  end
-end
 
 uname_files = Dir[ ENV["HOME"] / ".ssh"/"passwords"/"nonoh" / "he*"] 
 raise "username entry not found" if uname_files.empty?
@@ -36,4 +48,8 @@ puts "Text size = #{text.size} characters"
 #cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4939877052998&to=#{number}&text=#{text}'"
 cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4915792311751&to=#{number}&text=#{text}'"
 puts cmd
-system cmd
+if opts.dryrun?
+  puts "Trockenlauf."
+else
+  system cmd 
+end
