@@ -124,7 +124,7 @@ then
   #sudo add-apt-repository ppa:savoirfairelinux/sflphone-nightly
   sudo apt-get update >/dev/null
 fi
-apt_install sflphone-client-gnome sflphone-client-kde
+apt_install sflphone-gnome sflphone-kde
 
 #veraltet:
 #sudo apt-get --yes install twinkle pidgin
@@ -150,6 +150,15 @@ sudo gem install qtbindings
 fi
 
 syve_section "grub default"
+
+if [[ -z `dmesg | grep -i "Hardware name: Acer"` ]] ;then
+  echo "This is not an Acer-Computer"
+else
+  echo "Acer-Computer, workaround for vrightness control"
+  if [[ -z `grep acpi_backlight=vendor /etc/default/grub` ]] ;then
+    sudo sed -i -r -e 's/^(GRUB_CMDLINE_LINUX_DEFAULT *)=("?)([^"]*)("?)$/\1=\2\3 acpi_osi=Linux acpi_backlight=vendor\4/' /etc/default/grub
+  fi
+fi
 
 echo -n old: 
 grep GRUB_TIMEOUT /etc/default/grub
