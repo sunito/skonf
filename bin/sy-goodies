@@ -99,6 +99,8 @@ dconf_write "gui/applet/enabled", "false"
 dconf_write "gui/main-window/enabled", "false"
 EOC
 
+apt_install kteatime
+
 syve_section "Weitere Browser"
  
 apt_install chromium-browser
