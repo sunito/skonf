@@ -52,6 +52,7 @@ p new_file
 p first_line
 
 last_content = File.read(latest_entry_file)
+last_content.force_encoding  "UTF-8"
 perm_part = last_content.slice(/\[(swiki|mantra|credo|ziele?|disziplin|begrenz|todo|diary)\].+$/m)
 
 File.open(new_file, "a") do |f|
