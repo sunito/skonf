@@ -102,6 +102,8 @@ apt_install git vim
 
 # Konsole
 apt_install mmv
+# already installed:
+#apt_install procps
 # Sound auf Konsole
 apt_install beep sox jovie
 
