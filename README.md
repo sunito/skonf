@@ -5,9 +5,10 @@ SystemverwaltungsScriptSammelsurium für die Installation von Kubuntu-Derivaten
 
     sudo apt-get --yes install firefox
     
+    sudo zypper install git
     sudo apt-get --yes install git
     git config --global push.default simple
-    git config --local  user.email $USER@$HOSTNAME.suska.org
+    git config --global user.email $USER@$HOSTNAME.suska.org
 
     mkdir $HOME/bin
     cd $HOME/bin
