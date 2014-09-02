@@ -4,6 +4,13 @@ own_folder=$(dirname $(readlink -f $0))
 
 source $(dirname $own_folder)/lib/sy-common.bash
 
+kde_dir=$HOME/.kde4
+if [[ -f $kde_dir/share/config//kwinrc ]] ;then
+  echo §kde_dir
+else
+  kde_dir=$HOME/.kde
+fi
+
 syve_section "Dolphin settings"
 
 
@@ -11,18 +18,18 @@ syve_section "Dolphin settings"
 syve_section "Plasma settings"
 
 echo SwitchingMode
-kreadconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 
-kwriteconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 0
-kreadconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 
+kreadconfig --file $kde_dir/share/config/kwinrc --group TabBox  --key "SwitchingMode" 
+kwriteconfig --file $kde_dir/share/config/kwinrc --group TabBox  --key "SwitchingMode" 0
+kreadconfig --file $kde_dir/share/config/kwinrc --group TabBox  --key "SwitchingMode" 
 
 echo MoveResizeMaximizedWindows ist ab KDE 4.11 nicht mehr gültig
-kreadconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" 
-kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" true 
-kreadconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" 
+kreadconfig --file $kde_dir/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" 
+kwriteconfig --file $kde_dir/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" true 
+kreadconfig --file $kde_dir/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" 
 
 
-sed -i -r -e 's/^(groupingStrategy *)=.*$/\1=0/' $HOME/.kde/share/config/plasma-desktop-appletsrc
-sed -i -r -e 's/^(sortingStrategy *)=.*$/\1=1/' $HOME/.kde/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(groupingStrategy *)=.*$/\1=0/' $kde_dir/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(sortingStrategy *)=.*$/\1=1/' $kde_dir/share/config/plasma-desktop-appletsrc
 
 # 2013-11-17 TODO!!
 # diff -r /yay/322/last-config/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
@@ -33,16 +40,16 @@ sed -i -r -e 's/^(sortingStrategy *)=.*$/\1=1/' $HOME/.kde/share/config/plasma-d
 
 syve_section "Lid without action"
 
-kwriteconfig --file $HOME/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
-kwriteconfig --file $HOME/.kde/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
-kwriteconfig --file $HOME/.kde/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
+kwriteconfig --file $kde_dir/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
+kwriteconfig --file $kde_dir/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
+kwriteconfig --file $kde_dir/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
 
 syve_section "Free the Ctrl-Fn keys"
 
-kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 1" "none,Ctrl+F1,Auf Arbeitsfläche 1 umschalten"
-kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 2" "none,Ctrl+F2,Auf Arbeitsfläche 2 umschalten"
-kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 3" "none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten"
-kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 4" "none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten"
+kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 1" "none,Ctrl+F1,Auf Arbeitsfläche 1 umschalten"
+kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 2" "none,Ctrl+F2,Auf Arbeitsfläche 2 umschalten"
+kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 3" "none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten"
+kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 4" "none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten"
 #---  diff -r /dat/conf-dot/.kde/share/config/kglobalshortcutsrc /home/sunito/.kde/share/config/kglobalshortcutsrc
 #---  188c188
 #---  < 3=Ctrl+F1,Ctrl+F1,Auf Arbeitsfläche 1 umschalten
@@ -57,10 +64,10 @@ kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --k
 
 syve_section "Tweaking the Clock"
 
-sed -i -r -e 's/^(announceInterval *)=.*$/\1=15/' $HOME/.kde/share/config/plasma-desktop-appletsrc
-sed -i -r -e 's/^(showSeconds *)=.*$/\1=true/' $HOME/.kde/share/config/plasma-desktop-appletsrc
-sed -i -r -e 's/^(displayHolidays *)=.*$/\1=true/' $HOME/.kde/share/config/plasma-desktop-appletsrc
-sed -i -r -e 's/^(holidaysRegions *)=.*$/\1=de_de/' $HOME/.kde/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(announceInterval *)=.*$/\1=15/' $kde_dir/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(showSeconds *)=.*$/\1=true/' $kde_dir/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(displayHolidays *)=.*$/\1=true/' $kde_dir/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(holidaysRegions *)=.*$/\1=de_de/' $kde_dir/share/config/plasma-desktop-appletsrc
 
 syve_section "Packages"
 
