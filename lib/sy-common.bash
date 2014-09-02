@@ -10,7 +10,7 @@ function syve_section {
 has_apt=$(which apt-get)
 
 function apt_install {
-  echo
+  sudo echo
   echo Installing $*
   logger SyveInstalling $*
   if [ $has_apt ] ;then

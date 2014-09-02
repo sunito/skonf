@@ -18,6 +18,7 @@ Terminal=false
 Type=Application
 EOT
 
+apt_install thunderbird
 
 syve_section "Multimedia-Programme"
 
