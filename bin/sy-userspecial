@@ -4,37 +4,7 @@ own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
 
-
-syve_section Wuala
-
-if [ `which wuala`x = "x" ] ; then
-  if [ `uname -i` = "x86_64" ] ; then
-    wget https://cdn.wuala.com/repo/deb/wuala_current_amd64.deb
-    sudo dpkg -i wuala_current_amd64.deb
-  else
-    wget https://cdn.wuala.com/repo/deb/wuala_current_i386.deb
-    sudo dpkg -i wuala_current_i386.deb
-  fi
-fi
-
-if [ $USER = "NEW" ] ;then
-
-cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
-[Desktop Entry]
-Exec=sleep 19;wuala >/var/log/wuala/wuala-$USER.log
-Icon=system-run
-Name[de]=Wuala-Starten
-Name=Wuala-Starten
-StartupNotify=true
-Terminal=false
-Type=Application
-EOT
-
-sudo mkdir /var/log/wuala
-sudo chown $USER.users /var/log/wuala
-
-fi # syve_section Wuala
-
+syve_section "assistent"
 
 if [ $USER = "assistent" ] ;then
   syve_section "Mounten von /haupt"
@@ -99,26 +69,40 @@ fi # if [ $USER = "assistent" ]
 
 syve_section Pfade
 
-
-dat_dir=/dat
+if [[ -z `grep /dat /etc/fstab` ]] ;then
+  dat_dir=/home
+  sudo mkdir /dat
+else
+  dat_dir=/dat
+fi
 
 CAP_USER=`ruby -e'print ENV["USER"].capitalize'`
 user_fullname=`grep $USER /etc/passwd |cut -d: -f5 |cut -d, -f1`
 
 if [ $USER = "sunito" ] ;then
-  user_dat_dir=/dat/aaa
+  user_dat_dir=$dat_dir/aaa
 elif [ $USER = "NEW" ] ;then
-  user_dat_dir=/dat/N.E.W.-Daten
+  user_dat_dir=$dat_dir/N.E.W.-Daten
 elif [ $USER = "assistent" ] ;then
   user_dat_dir=$HOME
 else
-  user_dat_dir=/dat/$CAP_USER
+  if [ $dat_dir == /home ] ;then
+    user_dat_dir=$HOME
+  else
+    user_dat_dir=$dat_dir/$CAP_USER
+  fi
 fi
 
-mkdir $user_dat
+#if [ $USER = "gerhard" ] ;then
+#  if [ $dat_dir == /home ] ;then
+#    user_dat_dir=$user_dat_dir/Daten
+#  fi  
+#fi
+
+mkdir $user_dat_dir
 
 desktop_dir=$user_dat_dir/Desktop
-documents_dir=$user_dat_dir/Documents
+documents_dir=$user_dat_dir/Dokumente
 download_dir=$user_dat_dir/Downloads
 music_dir=$user_dat_dir/Musik
 pictures_dir=$user_dat_dir/Bilder
@@ -148,6 +132,11 @@ elif [ $USER = "assistent" ] ;then
     mv $HOME/Desktop $HOME/Desktop_orig
   fi
   ln -s $desktop_dir $HOME/Desktop
+elif [ $USER = "gerhard" ] ;then
+  documents_dir=$user_dat_dir/Daten
+  music_dir=$documents_dir
+  pictures_dir=$documents_dir
+  videos_dir=$pictures_dir
 fi
 
 cat <<EOT >$HOME/.config/user-dirs.dirs
@@ -253,7 +242,7 @@ mkdir -p $HOME/.kde/share/apps/solid/actions
 if [ $USER = "NEW" ] ;then
 cat <<EOT >$HOME/.kde/share/apps/solid/actions/Comp-NachHandykarte.desktop
 [Desktop Action open]
-Exec=if fehler=`rsync -a --delete /dat/N.E.W.-Daten/HandyKarte/ /media/*/ 2>&1`; then kdialog --msgbox "Kopieren und Löschen auf Handykarte erfolgreich"; else kdialog --msgbox "Fehler beim Synchronisieren Computer --> Karte \\n\\nFehlermeldung:   \\n$fehler"; fi
+Exec=if fehler=`rsync -a --delete $dat_dir/N.E.W.-Daten/HandyKarte/ /media/*/ 2>&1`; then kdialog --msgbox "Kopieren und Löschen auf Handykarte erfolgreich"; else kdialog --msgbox "Fehler beim Synchronisieren Computer --> Karte \\n\\nFehlermeldung:   \\n$fehler"; fi
 Icon=kverbos
 Name=VonComp-NachHandykarte
 
@@ -266,7 +255,7 @@ EOT
 
 cat <<EOT >$HOME/.kde/share/apps/solid/actions/VonHandykarte-AufComputer.desktop
 [Desktop Action open]
-Exec=if fehler=`rsync -au /media/*/ /dat/N.E.W.-Daten/HandyKarte/ 2>&1`; then kdialog --msgbox "Alle Daten der Karte sind jetzt auf dem Computer. \\n(Auf Computer nichts gelöscht)"; else kdialog --msgbox "Fehler beim Synchronisieren Karte --> Computer  \\n\\nFehlermeldung:   \\n$fehler"; fi
+Exec=if fehler=`rsync -au /media/*/ $dat_dir/N.E.W.-Daten/HandyKarte/ 2>&1`; then kdialog --msgbox "Alle Daten der Karte sind jetzt auf dem Computer. \\n(Auf Computer nichts gelöscht)"; else kdialog --msgbox "Fehler beim Synchronisieren Karte --> Computer  \\n\\nFehlermeldung:   \\n$fehler"; fi
 Icon=preferences-plugin-script
 Name=VonHandykarte-AufComputer
 
@@ -290,12 +279,43 @@ EOT
 fi
 fi # nicht "assistent"
 
+syve_section Wuala
+
+if [ `which wuala`x = "x" ] ; then
+  if [ `uname -i` = "x86_64" ] ; then
+    wget https://cdn.wuala.com/repo/deb/wuala_current_amd64.deb
+    sudo dpkg -i wuala_current_amd64.deb
+  else
+    wget https://cdn.wuala.com/repo/deb/wuala_current_i386.deb
+    sudo dpkg -i wuala_current_i386.deb
+  fi
+fi
+
+if [ $USER = "NEW" ] ;then
+
+cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
+[Desktop Entry]
+Exec=sleep 19;wuala >/var/log/wuala/wuala-$USER.log
+Icon=system-run
+Name[de]=Wuala-Starten
+Name=Wuala-Starten
+StartupNotify=true
+Terminal=false
+Type=Application
+EOT
+
+sudo mkdir /var/log/wuala
+sudo chown $USER.users /var/log/wuala
+
+fi # syve_section Wuala
+
+
 
 syve_section "Lernprogramme"
 
 
 if [ $USER = "NEW" ] ;then
-sudo dpkg -i /dat/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb 
+sudo dpkg -i $dat_dir/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb 
 
 apt_install edubuntu-desktop
 fi # if [ $USER = "NEW" ] ;then
