@@ -4,13 +4,6 @@ own_folder=$(dirname $(readlink -f $0))
 
 source $(dirname $own_folder)/lib/sy-common.bash
 
-kde_dir=$HOME/.kde4
-if [[ -f $kde_dir/share/config//kwinrc ]] ;then
-  echo §kde_dir
-else
-  kde_dir=$HOME/.kde
-fi
-
 syve_section "Dolphin settings"
 
 

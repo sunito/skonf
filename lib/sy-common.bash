@@ -19,3 +19,10 @@ function apt_install {
     sudo -n zypper install $*
   fi  
 }
+
+kde_dir=$HOME/.kde4
+if [[ -f $kde_dir/share/config//kwinrc ]] ;then
+  echo §kde_dir
+else
+  kde_dir=$HOME/.kde
+fi

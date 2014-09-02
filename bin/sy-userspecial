@@ -1,6 +1,8 @@
 #!/bin/bash
 
 own_folder=$(dirname $(readlink -f $0))
+
+
 source $(dirname $own_folder)/lib/sy-common.bash
 
 
@@ -148,8 +150,8 @@ XDG_PICTURES_DIR=$pictures_dir
 XDG_VIDEOS_DIR=$videos_dir
 EOT
 
-kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file://$documents_dir"
-# kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
+kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file://$documents_dir"
+# kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
 #---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
 #---  27a28
 #---  > HomeUrl=file:///111
@@ -203,7 +205,7 @@ Hidden=false
 EOT
 
 
-paste_snippets_file=$HOME/.kde/share/apps/plasma_applet_paste/snippets.xml
+paste_snippets_file=$kde_dir/share/apps/plasma_applet_paste/snippets.xml
 syve_section "Einfüge-Applet"
 if [ -f $paste_snippets_file ] ;then
   echo "'$paste_snippets_file' existierte schon"
@@ -236,11 +238,11 @@ ruby $(dirname $own_folder)/lib/sy-userspec.rb
 
 syve_section "Geräte-Aktionen"
 
-mkdir -p $HOME/.kde/share/apps/solid/actions
+mkdir -p $kde_dir/share/apps/solid/actions
 
 
 if [ $USER = "NEW" ] ;then
-cat <<EOT >$HOME/.kde/share/apps/solid/actions/Comp-NachHandykarte.desktop
+cat <<EOT >$kde_dir/share/apps/solid/actions/Comp-NachHandykarte.desktop
 [Desktop Action open]
 Exec=if fehler=`rsync -a --delete $dat_dir/N.E.W.-Daten/HandyKarte/ /media/*/ 2>&1`; then kdialog --msgbox "Kopieren und Löschen auf Handykarte erfolgreich"; else kdialog --msgbox "Fehler beim Synchronisieren Computer --> Karte \\n\\nFehlermeldung:   \\n$fehler"; fi
 Icon=kverbos
@@ -253,7 +255,7 @@ X-KDE-Action-Custom=true
 X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == false]
 EOT
 
-cat <<EOT >$HOME/.kde/share/apps/solid/actions/VonHandykarte-AufComputer.desktop
+cat <<EOT >$kde_dir/share/apps/solid/actions/VonHandykarte-AufComputer.desktop
 [Desktop Action open]
 Exec=if fehler=`rsync -au /media/*/ $dat_dir/N.E.W.-Daten/HandyKarte/ 2>&1`; then kdialog --msgbox "Alle Daten der Karte sind jetzt auf dem Computer. \\n(Auf Computer nichts gelöscht)"; else kdialog --msgbox "Fehler beim Synchronisieren Karte --> Computer  \\n\\nFehlermeldung:   \\n$fehler"; fi
 Icon=preferences-plugin-script
