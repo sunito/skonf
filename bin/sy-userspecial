@@ -297,7 +297,7 @@ if [ $USER = "NEW" ] ;then
 
 cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
 [Desktop Entry]
-Exec=sleep 19;wuala >/var/log/wuala/wuala-$USER.log
+Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
 Icon=system-run
 Name[de]=Wuala-Starten
 Name=Wuala-Starten

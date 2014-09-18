@@ -9,7 +9,7 @@ apt_install skype
 
 cat <<EOT >$HOME/.config/autostart/phone-slowstart.desktop
 [Desktop Entry]
-Exec=sleep 11;linphone
+Exec=sleep 11;linphone --iconified
 Icon=system-run
 Name[de]=Telefon-Slowstart
 Name=Telefon-Slowstart
