@@ -71,9 +71,36 @@ apt_install digikam
 #apt_install xscreensaver-data xscreensaver-gl-extra xscreensaver-gl xscreensaver-screensaver-bsod libjpeg-progs 
 apt_install kscreensaver
 
+# To be moved Further up, placed near exit temporarily
+# According to the diff further down (behind exit):
+kwriteconfig --file $kde_dir/share/config/ksmserverrc --group General  --key shutdownType 2
+kwriteconfig --file $kde_dir/share/config/ksmserverrc --group General  --key offerShutdown true
+kwriteconfig --file $kde_dir/share/config/ksmserverrc --group General  --key confirmLogout true
+
+
 syve_section "$(basename $0) finished."
 
 exit 0
+
+diff -r /dat/conf-dot/.kde/share/config/ksmserverrc /home/sunito/.kde/share/config/ksmserverrc
+2a3
+> 
+3a5,6
+> confirmLogout=true
+> excludeApps=
+4a8,9
+> offerShutdown=true
+> shutdownType=2
+
+[$Version]
+update_info=ksmserver.upd:kde3
+
+[General]
+confirmLogout=true
+excludeApps=
+loginMode=default
+offerShutdown=true
+shutdownType=2
 
 
 # Lautstärke 
@@ -194,25 +221,6 @@ X-FaceEnabled=false
 uoid=1282982449
 
 
-diff -r /dat/conf-dot/.kde/share/config/ksmserverrc /home/sunito/.kde/share/config/ksmserverrc
-2a3
-> 
-3a5,6
-> confirmLogout=true
-> excludeApps=
-4a8,9
-> offerShutdown=true
-> shutdownType=2
-
-[$Version]
-update_info=ksmserver.upd:kde3
-
-[General]
-confirmLogout=true
-excludeApps=
-loginMode=default
-offerShutdown=true
-shutdownType=2
 
 
 

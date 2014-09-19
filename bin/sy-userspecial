@@ -319,7 +319,8 @@ syve_section "Lernprogramme"
 if [ $USER = "NEW" ] ;then
 sudo dpkg -i $dat_dir/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb 
 
-apt_install edubuntu-desktop
+# This would screw Netrunner, TODO: install valuable parts of it!!
+#apt_install edubuntu-desktop
 fi # if [ $USER = "NEW" ] ;then
 
 apt_install ktouch
