@@ -55,6 +55,14 @@ kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key
 #---  > Switch to Desktop 3=none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
 #---  > Switch to Desktop 4=none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
 
+syve_section "Touchpad"
+
+kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key HorizTwoFingerScroll true
+kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key InvertHorizScroll true
+kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key InvertVertScroll true
+kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key ThreeFingerTapButton MiddleButton
+
+
 syve_section "Tweaking the Clock"
 
 sed -i -r -e 's/^(announceInterval *)=.*$/\1=15/' $kde_dir/share/config/plasma-desktop-appletsrc
