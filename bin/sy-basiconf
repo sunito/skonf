@@ -1,5 +1,8 @@
 #!/bin/bash
 
+own_folder=$(dirname $(readlink -f $0))
+
+
 function syve_section {
   echo
   echo $*
@@ -7,18 +10,31 @@ function syve_section {
   logger syve_section $*
 }
 
+has_apt=$(which apt-get)
+
 function apt_install {
   echo
   echo Installing $*
   logger SyveInstalling $*
-  sudo apt-get --yes install $*
+  if [ $has_apt ] ;then
+    sudo apt-get --yes install $*
+  else
+    sudo -n zypper install $*
+  fi  
 }
 
-syve_section Erste Schritte
-# Wir brauchen NFS und Ruby:
-apt_install nfs-kernel-server ruby
+source $(dirname $own_folder)/lib/sy-common.bash  || echo "Fehler beim Laden! folder=$own_folder"
 
-syve_section Gruppenzugehörigkeit und Rechte
+
+echo "starting..............."
+
+syve_section "Erste Schritte"
+# Wir brauchen NFS und Ruby:
+apt_install nfs-kernel-server 
+apt_install ruby
+
+
+syve_section "Gruppenzugehörigkeit und Rechte"
 
 # Umask auf 002 setzen
 echo "Aktuelle Default-UMASK:"
@@ -39,6 +55,11 @@ if [ ] ;then su $USER -c groups ;fi
 
 # die Gruppen syslog, scanner und dialout werden bei Ubuntu nicht per Default gesetzt, hier setzten wir gleich alle, die wir brauchen (alles in einer Zeile):
 for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip; do sudo addgroup $USER $group; done
+
+dat_partition=`df |grep dat |cut -d" " -f1`
+if [ -z `sudo tune2fs -l /dev/sda6 |grep volume |cut -d":" -f2 |tr -d ' '` ] ;then
+  sudo tune2fs -L DAT $dat_patition
+fi
 
 syve_section Mehr Komfort in der Shell
 
@@ -69,58 +90,61 @@ else
 echo "'bin/syver/bin' schon zum $PATH hingefügt"
 fi
 
-syve_section Netzwerk
+syve_section "Netzwerk"
 apt_install nmap ssh curl
 # Exportieren der Dat-Partition:
 apt_install nfs-kernel-server # (falls nicht oben schon erledigt)
 if [[ -z `grep "/dat" /etc/exports` ]] ;then
   echo '/dat *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
 else
-  echo
   echo "/dat war schon in /etc/exports"
-  echo
 fi
-syve_section Wichtige Programme installieren
+if [[ -z `grep -E "^/home" /etc/exports` ]] ;then
+  echo '/home *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
+else
+  echo "/home war schon in /etc/exports"
+fi
+syve_section "Wichtige Programme installieren"
 # Entwicklung
 apt_install git vim
 
 # Konsole
 apt_install mmv
-
-
-# Kommunikation
-
-# 2013-10-24, Sven: Problem bei Saucy, aber sollte inzwischen wieder gehen
-sudo add-apt-repository ppa:savoirfairelinux
-# 2014-03-30, nightly jetzt hoffentlich nicht mehr nötig:
-#sudo add-apt-repository ppa:savoirfairelinux/sflphone-nightly
-
-sudo apt-get update >/dev/null
-apt_install sflphone-client-gnome sflphone-client-kde
-#veraltet:
-#sudo apt-get --yes install twinkle pidgin
-apt_install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
-
+# already installed:
+#apt_install procps
 # Sound auf Konsole
 apt_install beep sox jovie
-
-# Damit der CDDN.Dialog in K3B funktioniert
-apt_install kde-config-cddb
 
 # Wichtige graphische Tools
 apt_install k4dirstat
 
-# Java
-# (entspr: http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
-sudo add-apt-repository ppa:webupd8team/java
-# im Original steht hier noch: sudo mkdir -p /usr/lib/mozilla/plugins
-sudo apt-get update >/dev/null
-apt_install oracle-jdk7-installer
-# Test mit
-echo -n "Java-Version: ";java -version
-
 # Virtuelle Umgebungen
 apt_install virtualbox
+
+
+syve_section "Kommunikation"
+
+apt_install linphone
+
+if [ -z `ls /etc/apt/sources.list.d |grep savoirfairelinux`  ] # genauer Eintrag: savoirfairelinux-ppa-trusty.list
+then  
+  # 2013-10-24, Sven: Problem bei Saucy, aber sollte inzwischen wieder gehen
+  sudo add-apt-repository --yes ppa:savoirfairelinux
+  # 2014-03-30, nightly jetzt hoffentlich nicht mehr nötig:
+  #sudo add-apt-repository ppa:savoirfairelinux/sflphone-nightly
+  sudo apt-get update >/dev/null
+fi
+apt_install sflphone-gnome sflphone-kde
+
+#veraltet:
+#sudo apt-get --yes install twinkle pidgin
+apt_install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
+
+# Damit der CDDN.Dialog in K3B funktioniert
+apt_install kde-config-cddb
+
+
+syve_section "Ruby für Qt"
 
 # Svens Apps, dafür Ruby mit KDE-Bindings installieren:
 apt_install ruby-dev
@@ -130,23 +154,31 @@ apt_install libqt4-dev
 apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
 apt_install cmake   # für Compilieren von qtbindings gebraucht
 #sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
+
+if [ -z "`gem list |grep qtbindings`" ] ;then
 sudo gem install qtbindings 
-
-
-# Install more browsers
-apt_install chromium-browser
-apt_install rekonq
-
-# !! gehört eigentlich in die KDE-Konfiguration:
-kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
-kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
-kwriteconfig --file /home/sunito/.kde/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
+fi
 
 syve_section "grub default"
+
+if [[ -z `dmesg | grep -i "Hardware name: Acer"` ]] ;then
+  echo "This is not an Acer-Computer"
+else
+  echo "Acer-Computer, workaround for vrightness control"
+  if [[ -z `grep acpi_backlight=vendor /etc/default/grub` ]] ;then
+    sudo sed -i -r -e 's/^(GRUB_CMDLINE_LINUX_DEFAULT *)=("?)([^"]*)("?)$/\1=\2\3 acpi_osi=Linux acpi_backlight=vendor\4/' /etc/default/grub
+  fi
+fi
+
+echo -n old: 
 grep GRUB_TIMEOUT /etc/default/grub
 sudo sed -ri "s/^(GRUB_TIMEOUT\s*)=.+$/\1=2/" /etc/default/grub
+echo -n new: 
 grep GRUB_TIMEOUT /etc/default/grub
 sudo update-grub2
+
+
+apt_install akonadiconsole
 
 sudo apt-get dist-upgrade 
 
@@ -160,17 +192,6 @@ exit 0
 # </ActionProperties>
 #</kpartgui>
 
-diff -r /dat/conf-dot/.kde/share/config/kglobalshortcutsrc /home/sunito/.kde/share/config/kglobalshortcutsrc
-188c188
-< Switch to Desktop 1=Ctrl+F1,Ctrl+F1,Auf Arbeitsfläche 1 umschalten
----
-> Switch to Desktop 1=none,Ctrl+F1,Auf Arbeitsfläche 1 umschalten
-201,202c201,202
-< Switch to Desktop 3=Ctrl+F3,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
-< Switch to Desktop 4=Ctrl+F4,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
----
-> Switch to Desktop 3=none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten
-> Switch to Desktop 4=none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten
 diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
 140a141,143
 > [Containments][2][Applets][112][Configuration][General]
@@ -208,19 +229,6 @@ diff -r /dat/conf-dot/.kde/share/config/kiorc /home/sunito/.kde/share/config/kio
 ---
 > ConfirmTrash=true
 
-diff -r /dat/conf-dot/.kde/share/config/emailidentities /home/sunito/.kde/share/config/emailidentities
-10c10
-< Drafts=148
----
-> Drafts=544
-13c13
-< Fcc=163
----
-> Fcc=554
-22c22
-< Templates=164
----
-> Templates=617
 
 
 20:50:14 sunito@NetZen:~$ grep -A 20 sven2013 /111/ye-sys/kmail-neu/emailidentities
@@ -274,14 +282,6 @@ diff -r /dat/conf-dot/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kw
 ---
 > MoveResizeMaximizedWindows=true
 
-diff -r /dat/conf-dot/.kde/share/config/systemsettingsrc /home/sunito/.kde/share/config/systemsettingsrc
-25c25
-< History=sflphone-client-gnome,linphone
----
-> History=workrave,sflphone-client-gnome,linphone
-So 10. Feb 18:45:16 CET 2013
-
-/home/sunito/.config/autostart/workrave.desktop
 
 
 diff -r /dat/conf-dot/.kde/share/config/kscreensaverrc /home/sunito/.kde/share/config/kscreensaverrc

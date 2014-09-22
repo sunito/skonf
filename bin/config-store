@@ -31,12 +31,14 @@ if PROGNAME =~ /store/
   conf_store ".config"
   conf_store ".kde/share/config"
   conf_store ".linphonerc" if File.exist?("~/.linphonerc")
+  #conf_store ".workrave"
   
 elsif  PROGNAME =~ /diff/
   conf_diff ".config"
   conf_diff ".kde/share/config"
   #diff -r .kde/share/ /dat/conf-dot/.kde/share/
   conf_diff ".linphonerc" if File.exist?("~/.linphonerc")
+  #conf_diff ".workrave"
   
 else
   puts "falscher Programmname: #{PROGNAME}\n\n"

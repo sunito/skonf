@@ -1,43 +1,28 @@
 #!/bin/bash
 
+own_folder=$(dirname $(readlink -f $0))
 
-
-function syve_section {
-echo
-echo $*
-echo
-logger syve_section $*
-}
-
-function apt_install {
-  echo
-  echo Installing $*
-  logger SyveInstalling $*
-  sudo apt-get --yes install $*
-}
-
-
+source $(dirname $own_folder)/lib/sy-common.bash
 
 syve_section "Dolphin settings"
 
-kwriteconfig --file $HOME/.kde/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
-#---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
-#---  27a28
-#---  > HomeUrl=file:///111
+
 
 syve_section "Plasma settings"
 
-kwriteconfig --file $HOME/.kde/share/config/kwinrc --group TabBox  --key "SwitchingMode" 0
-kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" true 
-#---  diff -r /dat/conf-dot/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
-#---  152c152
-#---  < SwitchingMode=1
-#---  ---
-#---  > SwitchingMode=0
-#---  196c196,197
-#---  < MoveResizeMaximizedWindows=false
-#---  ---
-#---  > MoveResizeMaximizedWindows=true
+echo SwitchingMode
+kreadconfig --file $kde_dir/share/config/kwinrc --group TabBox  --key "SwitchingMode" 
+kwriteconfig --file $kde_dir/share/config/kwinrc --group TabBox  --key "SwitchingMode" 0
+kreadconfig --file $kde_dir/share/config/kwinrc --group TabBox  --key "SwitchingMode" 
+
+echo MoveResizeMaximizedWindows ist ab KDE 4.11 nicht mehr gültig
+kreadconfig --file $kde_dir/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" 
+kwriteconfig --file $kde_dir/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" true 
+kreadconfig --file $kde_dir/share/config/kwinrc --group Windows --key "MoveResizeMaximizedWindows" 
+
+
+sed -i -r -e 's/^(groupingStrategy *)=.*$/\1=0/' $kde_dir/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(sortingStrategy *)=.*$/\1=1/' $kde_dir/share/config/plasma-desktop-appletsrc
 
 # 2013-11-17 TODO!!
 # diff -r /yay/322/last-config/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
@@ -48,16 +33,16 @@ kwriteconfig --file $HOME/.kde/share/config/kwinrc --group Windows --key "MoveRe
 
 syve_section "Lid without action"
 
-kwriteconfig --file $HOME/.kde/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
-kwriteconfig --file $HOME/.kde/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
-kwriteconfig --file $HOME/.kde/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
+kwriteconfig --file $kde_dir/share/config/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
+kwriteconfig --file $kde_dir/share/config/powermanagementprofilesrc --group Battery --group HandleButtonEvents --key lidAction 0
+kwriteconfig --file $kde_dir/share/config/powermanagementprofilesrc --group LowBattery --group HandleButtonEvents --key lidAction 0
 
 syve_section "Free the Ctrl-Fn keys"
 
-kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 1" "none,Ctrl+F1,Auf Arbeitsfläche 1 umschalten"
-kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 2" "none,Ctrl+F2,Auf Arbeitsfläche 2 umschalten"
-kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 3" "none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten"
-kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 4" "none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten"
+kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 1" "none,Ctrl+F1,Auf Arbeitsfläche 1 umschalten"
+kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 2" "none,Ctrl+F2,Auf Arbeitsfläche 2 umschalten"
+kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 3" "none,Ctrl+F3,Auf Arbeitsfläche 3 umschalten"
+kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key "Switch to Desktop 4" "none,Ctrl+F4,Auf Arbeitsfläche 4 umschalten"
 #---  diff -r /dat/conf-dot/.kde/share/config/kglobalshortcutsrc /home/sunito/.kde/share/config/kglobalshortcutsrc
 #---  188c188
 #---  < 3=Ctrl+F1,Ctrl+F1,Auf Arbeitsfläche 1 umschalten
@@ -72,8 +57,10 @@ kwriteconfig --file $HOME/.kde/share/config/kglobalshortcutsrc --group kwin  --k
 
 syve_section "Tweaking the Clock"
 
-sed -i -r -e 's/^(announceInterval *)=.*$/\1=15/' $HOME/.kde/share/config/plasma-desktop-appletsrc
-sed -i -r -e 's/^(showSeconds *)=.*$/\1=true/' $HOME/.kde/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(announceInterval *)=.*$/\1=15/' $kde_dir/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(showSeconds *)=.*$/\1=true/' $kde_dir/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(displayHolidays *)=.*$/\1=true/' $kde_dir/share/config/plasma-desktop-appletsrc
+sed -i -r -e 's/^(holidaysRegions *)=.*$/\1=de_de/' $kde_dir/share/config/plasma-desktop-appletsrc
 
 syve_section "Packages"
 
@@ -84,9 +71,36 @@ apt_install digikam
 #apt_install xscreensaver-data xscreensaver-gl-extra xscreensaver-gl xscreensaver-screensaver-bsod libjpeg-progs 
 apt_install kscreensaver
 
-syve_section "Finished."
+# To be moved Further up, placed near exit temporarily
+# According to the diff further down (behind exit):
+kwriteconfig --file $kde_dir/share/config/ksmserverrc --group General  --key shutdownType 2
+kwriteconfig --file $kde_dir/share/config/ksmserverrc --group General  --key offerShutdown true
+kwriteconfig --file $kde_dir/share/config/ksmserverrc --group General  --key confirmLogout true
+
+
+syve_section "$(basename $0) finished."
 
 exit 0
+
+diff -r /dat/conf-dot/.kde/share/config/ksmserverrc /home/sunito/.kde/share/config/ksmserverrc
+2a3
+> 
+3a5,6
+> confirmLogout=true
+> excludeApps=
+4a8,9
+> offerShutdown=true
+> shutdownType=2
+
+[$Version]
+update_info=ksmserver.upd:kde3
+
+[General]
+confirmLogout=true
+excludeApps=
+loginMode=default
+offerShutdown=true
+shutdownType=2
 
 
 # Lautstärke 
@@ -207,35 +221,8 @@ X-FaceEnabled=false
 uoid=1282982449
 
 
-diff -r /dat/conf-dot/.kde/share/config/ksmserverrc /home/sunito/.kde/share/config/ksmserverrc
-2a3
-> 
-3a5,6
-> confirmLogout=true
-> excludeApps=
-4a8,9
-> offerShutdown=true
-> shutdownType=2
-
-[$Version]
-update_info=ksmserver.upd:kde3
-
-[General]
-confirmLogout=true
-excludeApps=
-loginMode=default
-offerShutdown=true
-shutdownType=2
 
 
-diff -r /dat/conf-dot/.kde/share/config/systemsettingsrc /home/sunito/.kde/share/config/systemsettingsrc
-25c25
-< History=sflphone-client-gnome,linphone
----
-> History=workrave,sflphone-client-gnome,linphone
-So 10. Feb 18:45:16 CET 2013
-
-/home/sunito/.config/autostart/workrave.desktop
 
 
 diff -r /dat/conf-dot/.kde/share/config/kscreensaverrc /home/sunito/.kde/share/config/kscreensaverrc

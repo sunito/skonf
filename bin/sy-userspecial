@@ -1,0 +1,328 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+
+
+source $(dirname $own_folder)/lib/sy-common.bash
+
+
+syve_section "assistent"
+
+if [ $USER = "assistent" ] ;then
+  syve_section "Mounten von /haupt"
+  if [[ -z `grep "/haupt" $HOME/.profile ` ]] ;then
+    cat <<eot >>$HOME/.profile 
+
+# Sven, `date`
+mount /haupt
+eot
+  else
+    echo "mount /haupt war schon in .profile"
+  fi
+  if [[ -z `grep "/haupt" /etc/fstab ` ]] ;then
+    cat <<eot |sudo tee -a /etc/fstab
+
+# Sven, `date` 
+IP_Adresse:/dat                               /haupt          nfs     intr,users,noauto 0       0
+eot
+    sudo mkdir /haupt
+  fi
+  
+  ruby <<eoc
+    menu_entries = []
+    Dir["$HOME/.wine/drive_c/Programme/WISO/*/wiso2*.exe"].each do |exe_path|
+      basename = File.basename(exe_path, ".exe")
+      jahr = basename.scan(/\d\d\d\d/).first
+      desktop_filename = "$HOME/.local/share/applications/#{basename}.desktop"
+      File.open(desktop_filename, "w") do |f|
+        f.puts <<eot
+[Desktop Entry]
+Exec=wine "#{exe_path}"
+GenericName=Steuerprogramm #{jahr}
+Name=#{basename}
+Icon=#{File.dirname(exe_path)}/wisoakt.ico
+NoDisplay=false
+StartupNotify=true
+Terminal=0
+Type=Application
+eot
+      end
+      menu_entries << <<eot
+ <Menu>
+  <Name>Steuerprogramm #{jahr}</Name>
+  <Layout>
+   <Merge type="files"/>
+   <Filename>#{desktop_filename}</Filename>
+  </Layout>
+  <NotDeleted/>
+  <Include>
+   <Filename>#{desktop_filename}</Filename>
+  </Include>
+ </Menu>
+eot
+    end # Dir["$HOME/.wine/drive_c/Programme/WISO/*/wiso2*.exe"]
+    File.open("$HOME/.config/menus/wiso_steuer_autogen.menu", "w") do |f|   
+      f.puts "<Menu>"
+      f.puts menu_entries.join("\n")
+      f.puts "</Menu>"
+    end    
+eoc
+fi # if [ $USER = "assistent" ]
+
+syve_section Pfade
+
+if [[ -z `grep /dat /etc/fstab` ]] ;then
+  dat_dir=/home
+  sudo mkdir /dat
+else
+  dat_dir=/dat
+fi
+
+CAP_USER=`ruby -e'print ENV["USER"].capitalize'`
+user_fullname=`grep $USER /etc/passwd |cut -d: -f5 |cut -d, -f1`
+
+if [ $USER = "sunito" ] ;then
+  user_dat_dir=$dat_dir/aaa
+elif [ $USER = "NEW" ] ;then
+  user_dat_dir=$dat_dir/N.E.W.-Daten
+elif [ $USER = "assistent" ] ;then
+  user_dat_dir=$HOME
+else
+  if [ $dat_dir == /home ] ;then
+    user_dat_dir=$HOME
+  else
+    user_dat_dir=$dat_dir/$CAP_USER
+  fi
+fi
+
+#if [ $USER = "gerhard" ] ;then
+#  if [ $dat_dir == /home ] ;then
+#    user_dat_dir=$user_dat_dir/Daten
+#  fi  
+#fi
+
+mkdir $user_dat_dir
+
+desktop_dir=$user_dat_dir/Desktop
+documents_dir=$user_dat_dir/Dokumente
+download_dir=$user_dat_dir/Downloads
+music_dir=$user_dat_dir/Musik
+pictures_dir=$user_dat_dir/Bilder
+videos_dir=$user_dat_dir/Videos
+
+
+if [ $USER = "sunito" ] ;then
+documents_dir=$user_dat_dir/111
+desktop_dir=$documents_dir
+music_dir=$user_dat_dir/477/MusikAusmNetz
+pictures_dir=$user_dat_dir/533/Fotos
+videos_dir=$pictures_dir
+rmdir -v $HOME/*
+elif [ $USER = "NEW" ] ;then
+documents_dir=$user_dat_dir/Geschriebseltes
+videos_dir=$pictures_dir
+rmdir -v $HOME/*
+ln -s $user_dat_dir $HOME
+elif [ $USER = "assistent" ] ;then
+  documents_dir=$HOME/Business
+  ln -s /111/Business $documents_dir
+  echo "ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch"
+  ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch
+  
+  desktop_dir=$documents_dir
+  if [ -d $HOME/Desktop ] ;then
+    mv $HOME/Desktop $HOME/Desktop_orig
+  fi
+  ln -s $desktop_dir $HOME/Desktop
+elif [ $USER = "gerhard" ] ;then
+  documents_dir=$user_dat_dir/Daten
+  music_dir=$documents_dir
+  pictures_dir=$documents_dir
+  videos_dir=$pictures_dir
+fi
+
+cat <<EOT >$HOME/.config/user-dirs.dirs
+XDG_DESKTOP_DIR=$desktop_dir
+XDG_DOCUMENTS_DIR=$documents_dir
+XDG_DOWNLOAD_DIR=$download_dir
+XDG_MUSIC_DIR=$music_dir
+XDG_PICTURES_DIR=$pictures_dir
+XDG_VIDEOS_DIR=$videos_dir
+EOT
+
+kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file://$documents_dir"
+# kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
+#---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
+#---  27a28
+#---  > HomeUrl=file:///111
+
+if [ ! $USER = "assistent" ] ;then
+syve_section "Medien-Server"
+
+if [ -z `ls /etc/apt/sources.list.d |grep readymedia` ]
+then
+  sudo add-apt-repository --yes ppa:ali-asad-lotia/readymedia-latest
+  #sudo add-apt-repository --yes ppa:pneu/readymedia-transcode
+  sudo apt-get update  >/dev/null  
+fi
+#minidlna_service=minidlnatc
+#minidlna_exe=minidlnatc
+minidlna_service=minidlna
+minidlna_exe=minidlnad
+if [ -z "`dpkg -l minidlna 2>/dev/null`" ] ;then
+  #apt_install readymedia-transcode
+  apt_install minidlna 
+  sudo service $minidlna_service stop
+  sudo update-rc.d $minidlna_service disable
+fi
+mkdir $HOME/.minidlna
+mkdir $HOME/.minidlna/cache
+cat <<EOT >$HOME/.minidlna/minidlna.conf
+# Use A, P, and V to restrict media 'type' in directory
+#media_dir=A,$music_dir
+#media_dir=P,$pictures_dir
+#media_dir=V,$videos_dir
+media_dir=$music_dir
+media_dir=$pictures_dir
+media_dir=$videos_dir
+friendly_name=Computer von $CAP_USER
+inotify=yes                     # 'no' for less resources, restart required for new media
+db_dir=/home/$USER/.minidlna/cache
+log_dir=/home/$USER/.minidlna  
+EOT
+
+
+cat <<EOT >$HOME/.config/autostart/minidlna-slowstart.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=MiniDLNA
+Comment=Server to stream media over network
+Exec=sleep 77 ;$minidlna_exe -f $HOME/.minidlna/minidlna.conf -P $HOME/.minidlna/minidlna.pid
+StartupNotify=false
+Terminal=false
+Hidden=false
+EOT
+
+
+paste_snippets_file=$kde_dir/share/apps/plasma_applet_paste/snippets.xml
+syve_section "Einfüge-Applet"
+if [ -f $paste_snippets_file ] ;then
+  echo "'$paste_snippets_file' existierte schon"
+else
+  if [ $USER = "sunito" ] ;then
+    cat <<eot >$paste_snippets_file
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE text_snippets><snippets>
+  <snippet icon="office-calendar" name="Aktuelles Datum">%{date()}</snippet>
+  <snippet icon="edit-paste" name="E-Mail für Finanzamt ()"></snippet>
+  <snippet icon="edit-paste" name="Steuer-Nr ()"></snippet>
+  <snippet icon="edit-paste" name="USt-Id-Nr ()"></snippet>
+  <snippet icon="object-unlocked" name="Zufälliges Passwort">%{password(8)}</snippet>
+  <snippet icon="edit-paste" name="Eigener Name">$user_fullname</snippet>
+</snippets>
+eot
+  else
+    cat <<eot >$paste_snippets_file
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE text_snippets><snippets>
+  <snippet icon="office-calendar" name="Aktuelles Datum">%{date()}</snippet>
+  <snippet icon="object-unlocked" name="Zufälliges Passwort">%{password(8)}</snippet>
+  <snippet icon="edit-paste" name="Eigener Name">$user_fullname</snippet>
+</snippets>
+eot
+  fi
+fi
+
+
+ruby $(dirname $own_folder)/lib/sy-userspec.rb
+
+
+syve_section "Geräte-Aktionen"
+
+mkdir -p $kde_dir/share/apps/solid/actions
+
+
+if [ $USER = "NEW" ] ;then
+cat <<EOT >$kde_dir/share/apps/solid/actions/Comp-NachHandykarte.desktop
+[Desktop Action open]
+Exec=if fehler=`rsync -a --delete $dat_dir/N.E.W.-Daten/HandyKarte/ /media/*/ 2>&1`; then kdialog --msgbox "Kopieren und Löschen auf Handykarte erfolgreich"; else kdialog --msgbox "Fehler beim Synchronisieren Computer --> Karte \\n\\nFehlermeldung:   \\n$fehler"; fi
+Icon=kverbos
+Name=VonComp-NachHandykarte
+
+[Desktop Entry]
+Actions=open;
+Type=Service
+X-KDE-Action-Custom=true
+X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == false]
+EOT
+
+cat <<EOT >$kde_dir/share/apps/solid/actions/VonHandykarte-AufComputer.desktop
+[Desktop Action open]
+Exec=if fehler=`rsync -au /media/*/ $dat_dir/N.E.W.-Daten/HandyKarte/ 2>&1`; then kdialog --msgbox "Alle Daten der Karte sind jetzt auf dem Computer. \\n(Auf Computer nichts gelöscht)"; else kdialog --msgbox "Fehler beim Synchronisieren Karte --> Computer  \\n\\nFehlermeldung:   \\n$fehler"; fi
+Icon=preferences-plugin-script
+Name=VonHandykarte-AufComputer
+
+[Desktop Entry]
+Actions=open;
+Type=Service
+X-KDE-Action-Custom=true
+X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == 'false']
+EOT
+fi # if [ $USER = "NEW" ] ;then
+
+if [ $USER = "sunito" ] ;then
+cat >$HOME/.config/autostart/transmission-slowstart.desktop <<EOT
+[Desktop Entry]
+Exec=sleep 304 ;transmission-qt
+Name=QTransmission-Starten
+StartupNotify=true
+Terminal=false
+Type=Application
+EOT
+fi
+fi # nicht "assistent"
+
+syve_section Wuala
+
+if [ `which wuala`x = "x" ] ; then
+  if [ `uname -i` = "x86_64" ] ; then
+    wget https://cdn.wuala.com/repo/deb/wuala_current_amd64.deb
+    sudo dpkg -i wuala_current_amd64.deb
+  else
+    wget https://cdn.wuala.com/repo/deb/wuala_current_i386.deb
+    sudo dpkg -i wuala_current_i386.deb
+  fi
+fi
+
+if [ $USER = "NEW" ] ;then
+
+cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
+[Desktop Entry]
+Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
+Icon=system-run
+Name[de]=Wuala-Starten
+Name=Wuala-Starten
+StartupNotify=true
+Terminal=false
+Type=Application
+EOT
+
+sudo mkdir /var/log/wuala
+sudo chown $USER.users /var/log/wuala
+
+fi # syve_section Wuala
+
+
+
+syve_section "Lernprogramme"
+
+
+if [ $USER = "NEW" ] ;then
+sudo dpkg -i $dat_dir/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb 
+
+# This would screw Netrunner, TODO: install valuable parts of it!!
+#apt_install edubuntu-desktop
+fi # if [ $USER = "NEW" ] ;then
+
+apt_install ktouch
+
+

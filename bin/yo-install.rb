@@ -96,7 +96,11 @@ def move_and_symlink_or_ensure_correctness(store_name, orig_name)
     end
   else
     if File.exist?(orig_name) and not File.symlink?(orig_name)
-      raise RelevantDataInTwoPlacesError, "!!!!!\n!!!!! Please manually merge #{orig_name} into #{store_name} !!!!!!\n!!!!!"
+      if File.directory?(orig_name) and Dir.entries(orig_name).size == 2 # nur "." und ".."
+	Dir.rmdir(orig_name)
+      else	
+        raise RelevantDataInTwoPlacesError, "!!!!!\n!!!!! Please manually merge #{orig_name} into #{store_name} !!!!!!\n!!!!!"
+      end
     end
   end
   create_link( store_name, orig_name)
@@ -206,6 +210,7 @@ if File.symlink?(ya122_link)
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/twinkle/",     "#{HOME}/.twinkle"
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
+  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/linphonerc",   "#{HOME}/.linphonerc"
 else
   puts "no symlink creation for 122, because #{ya122_link} does not exist."  
 end

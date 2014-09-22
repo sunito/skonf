@@ -1,0 +1,16 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+
+source $(dirname $own_folder)/lib/sy-common.bash
+
+syve_section "Oracle-Java"
+
+# (entspr: http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
+sudo add-apt-repository --yes ppa:webupd8team/java
+# im Original steht hier noch: sudo mkdir -p /usr/lib/mozilla/plugins
+sudo apt-get update >/dev/null
+apt_install oracle-jdk7-installer
+# Test mit
+echo -n "Java-Version: ";java -version
+
