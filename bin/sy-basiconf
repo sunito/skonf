@@ -91,6 +91,8 @@ echo "'bin/syver/bin' schon zum $PATH hingefügt"
 fi
 
 syve_section "Netzwerk"
+
+
 apt_install nmap ssh curl
 # Exportieren der Dat-Partition:
 apt_install nfs-kernel-server # (falls nicht oben schon erledigt)
@@ -104,7 +106,13 @@ if [[ -z `grep -E "^/home" /etc/exports` ]] ;then
 else
   echo "/home war schon in /etc/exports"
 fi
+
+apt_install bridge-utils
+
+
+
 syve_section "Wichtige Programme installieren"
+
 # Entwicklung
 apt_install git vim
 
