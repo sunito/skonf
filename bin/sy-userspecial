@@ -321,7 +321,16 @@ sudo dpkg -i $dat_dir/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb
 
 # This would screw Netrunner, TODO: install valuable parts of it!!
 #apt_install edubuntu-desktop
+# Now some useful parts of edubuntu:
+apt_install kgeography
+apt_install kalgebra
+apt_install klettres kstars ktuberling kturtle kwordquiz
+apt_install kbruch khangman kmplot kalzium kanagram      
+apt_install cantor chemtool einstein
+
+
 fi # if [ $USER = "NEW" ] ;then
+
 
 apt_install ktouch
 
