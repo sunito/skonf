@@ -85,6 +85,8 @@ if [ $USER = "sunito" ] ;then
   user_dat_dir=$dat_dir/aaa
 elif [ $USER = "NEW" ] ;then
   user_dat_dir=$dat_dir/N.E.W.-Daten
+elif [ $USER = "martin" ] ;then
+  user_dat_dir=$dat_dir/MartinsDaten
 elif [ $USER = "assistent" ] ;then
   user_dat_dir=$HOME
 else
