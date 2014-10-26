@@ -89,6 +89,10 @@ elif [ $USER = "martin" ] ;then
   user_dat_dir=$dat_dir/MartinsDaten
 elif [ $USER = "assistent" ] ;then
   user_dat_dir=$HOME
+elif [ $USER = "brunhild" ] ;then
+  user_dat_dir=$dat_dir/B
+  rm $HOME/B
+  ln -s $user_dat_dir $HOME/B
 else
   if [ $dat_dir == /home ] ;then
     user_dat_dir=$HOME
@@ -141,6 +145,13 @@ elif [ $USER = "gerhard" ] ;then
   music_dir=$documents_dir
   pictures_dir=$documents_dir
   videos_dir=$pictures_dir
+elif [ $USER = "brunhild" ] ;then
+  rm "$user_dat_dir/Eigene Musik"
+  rm -r "$user_dat_dir/Eigene Musik"
+  ln -s $music_dir     "$user_dat_dir/Eigene Musik"
+  rm "$user_dat_dir/Eigene Bilder"
+  rm -r "$user_dat_dir/Eigene Bilder"
+  ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
 fi
 
 cat <<EOT >$HOME/.config/user-dirs.dirs
@@ -157,6 +168,22 @@ kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "Ho
 #---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
 #---  27a28
 #---  > HomeUrl=file:///111
+
+if [ ! -z $WINEPREFIX ] ;then
+  base="$WINEPREFIX/drive_c/users/$USER"
+  rm   "$base/Documents"
+  ln -s $documents_dir "$base/Documents"
+  rm "$base/Meine Dokumente"
+  ln -s $documents_dir "$base/Meine Dokumente"
+  rm   "$base/Desktop"
+  ln -s $desktop_dir   "$base/Desktop"
+  rm   "$base/Eigene Musik"
+  ln -s $music_dir     "$base/Eigene Musik"
+  rm   "$base/Eigene Bilder"
+  ln -s $pictures_dir  "$base/Eigene Bilder"
+  rm   "$base/Eigene Videos"
+  ln -s $videos_dir    "$base/Eigene Videos"
+fi
 
 if [ ! $USER = "assistent" ] ;then
 syve_section "Medien-Server"
