@@ -72,10 +72,9 @@ sed -i -r -e 's/^(holidaysRegions *)=.*$/\1=de_de/' $kde_dir/share/config/plasma
 
 syve_section "Packages"
 
+apt_install kdeplasma-addons
 apt_install kubuntu-restricted-extras
-
 apt_install digikam
-
 #apt_install xscreensaver-data xscreensaver-gl-extra xscreensaver-gl xscreensaver-screensaver-bsod libjpeg-progs 
 apt_install kscreensaver
 
