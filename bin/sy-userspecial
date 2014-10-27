@@ -163,7 +163,12 @@ XDG_PICTURES_DIR=$pictures_dir
 XDG_VIDEOS_DIR=$videos_dir
 EOT
 
-kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file://$documents_dir"
+dolphin_dir=$user_dat_dir
+if [ $USER = "sunito" ] ;then
+  dolphin_dir=$documents_dir
+fi
+
+kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file://$dolphin_dir"
 # kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
 #---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
 #---  27a28
