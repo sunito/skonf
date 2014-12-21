@@ -126,7 +126,8 @@ videos_dir=$pictures_dir
 rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
 documents_dir=$user_dat_dir/Geschriebseltes
-videos_dir=$pictures_dir
+videos_dir=$user_dat_dir/1videos
+pictures_dir=$user_dat_dir/"fotoooooos:)"
 rmdir -v $HOME/*
 ln -s $user_dat_dir $HOME
 elif [ $USER = "assistent" ] ;then
