@@ -277,7 +277,8 @@ mkdir -p $kde_dir/share/apps/solid/actions
 
 
 if [ $USER = "NEW" ] ;then
-cat <<EOT >$kde_dir/share/apps/solid/actions/Comp-NachHandykarte.desktop
+# quoted "EOT" to prevent command substitution!!!
+cat <<"EOT" >$kde_dir/share/apps/solid/actions/Comp-NachHandykarte.desktop
 [Desktop Action open]
 Exec=if fehler=`rsync -a --delete $dat_dir/N.E.W.-Daten/HandyKarte/ /media/*/ 2>&1`; then kdialog --msgbox "Kopieren und Löschen auf Handykarte erfolgreich"; else kdialog --msgbox "Fehler beim Synchronisieren Computer --> Karte \\n\\nFehlermeldung:   \\n$fehler"; fi
 Icon=kverbos
@@ -290,7 +291,8 @@ X-KDE-Action-Custom=true
 X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == false]
 EOT
 
-cat <<EOT >$kde_dir/share/apps/solid/actions/VonHandykarte-AufComputer.desktop
+# quoted "EOT" to prevent command substitution!!!
+cat <<"EOT" >$kde_dir/share/apps/solid/actions/VonHandykarte-AufComputer.desktop
 [Desktop Action open]
 Exec=if fehler=`rsync -au /media/*/ $dat_dir/N.E.W.-Daten/HandyKarte/ 2>&1`; then kdialog --msgbox "Alle Daten der Karte sind jetzt auf dem Computer. \\n(Auf Computer nichts gelöscht)"; else kdialog --msgbox "Fehler beim Synchronisieren Karte --> Computer  \\n\\nFehlermeldung:   \\n$fehler"; fi
 Icon=preferences-plugin-script
