@@ -16,7 +16,7 @@ end
 
 begin 
   require 'nokogiri'
-rescue 
+rescue LoadError
   puts_and_execute "sudo gem install nokogiri"
   require 'nokogiri'
 end
