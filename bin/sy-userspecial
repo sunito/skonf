@@ -239,7 +239,7 @@ Terminal=false
 Hidden=false
 EOT
 
-
+mkdir -p $kde_dir/share/apps/plasma_applet_paste
 paste_snippets_file=$kde_dir/share/apps/plasma_applet_paste/snippets.xml
 syve_section "Einfüge-Applet"
 if [ -f $paste_snippets_file ] ;then
