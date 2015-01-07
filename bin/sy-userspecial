@@ -126,7 +126,8 @@ videos_dir=$pictures_dir
 rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
 documents_dir=$user_dat_dir/Geschriebseltes
-videos_dir=$pictures_dir
+videos_dir=$user_dat_dir/1videos
+pictures_dir=$user_dat_dir/"fotoooooos:)"
 rmdir -v $HOME/*
 ln -s $user_dat_dir $HOME
 elif [ $USER = "assistent" ] ;then
@@ -238,7 +239,7 @@ Terminal=false
 Hidden=false
 EOT
 
-
+mkdir -p $kde_dir/share/apps/plasma_applet_paste
 paste_snippets_file=$kde_dir/share/apps/plasma_applet_paste/snippets.xml
 syve_section "Einfüge-Applet"
 if [ -f $paste_snippets_file ] ;then
@@ -276,9 +277,11 @@ mkdir -p $kde_dir/share/apps/solid/actions
 
 
 if [ $USER = "NEW" ] ;then
+user_media_dir=/media/$USER
+# quoting "EOT" does not work, because we need $dat_dir inside, so escaped the backticks
 cat <<EOT >$kde_dir/share/apps/solid/actions/Comp-NachHandykarte.desktop
 [Desktop Action open]
-Exec=if fehler=`rsync -a --delete $dat_dir/N.E.W.-Daten/HandyKarte/ /media/*/ 2>&1`; then kdialog --msgbox "Kopieren und Löschen auf Handykarte erfolgreich"; else kdialog --msgbox "Fehler beim Synchronisieren Computer --> Karte \\n\\nFehlermeldung:   \\n$fehler"; fi
+Exec=if fehler=\`rsync -a --delete $dat_dir/N.E.W.-Daten/HandyKarte/ $user_media_dir/*/ 2>&1\`; then kdialog --msgbox "Kopieren und Löschen auf Handykarte erfolgreich"; else kdialog --msgbox "Fehler beim Synchronisieren Computer --> Karte \\n\\nFehlermeldung:   \\n$fehler"; fi
 Icon=kverbos
 Name=VonComp-NachHandykarte
 
@@ -289,9 +292,10 @@ X-KDE-Action-Custom=true
 X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == false]
 EOT
 
+# quoting "EOT" does not work, because we need $dat_dir inside, so escaped the backticks
 cat <<EOT >$kde_dir/share/apps/solid/actions/VonHandykarte-AufComputer.desktop
 [Desktop Action open]
-Exec=if fehler=`rsync -au /media/*/ $dat_dir/N.E.W.-Daten/HandyKarte/ 2>&1`; then kdialog --msgbox "Alle Daten der Karte sind jetzt auf dem Computer. \\n(Auf Computer nichts gelöscht)"; else kdialog --msgbox "Fehler beim Synchronisieren Karte --> Computer  \\n\\nFehlermeldung:   \\n$fehler"; fi
+Exec=if fehler=\`rsync -au $user_media_dir/*/ $dat_dir/N.E.W.-Daten/HandyKarte/ 2>&1\`; then kdialog --msgbox "Alle Daten der Karte sind jetzt auf dem Computer. \\n(Auf Computer nichts gelöscht)"; else kdialog --msgbox "Fehler beim Synchronisieren Karte --> Computer  \\n\\nFehlermeldung:   \\n$fehler"; fi
 Icon=preferences-plugin-script
 Name=VonHandykarte-AufComputer
 
