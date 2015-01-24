@@ -120,6 +120,9 @@ apt_install bridge-utils
 
 syve_section "Wichtige Programme installieren"
 
+# Für die Rechtschreibprüfung in Libreoffice:
+apt-install hunspell-de-d
+
 # Entwicklung
 apt_install git vim
 
