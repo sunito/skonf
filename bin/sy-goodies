@@ -7,6 +7,7 @@ syve_section "Telefonie"
 
 apt_install skype
 
+mkdir $HOME/.config/autostart/
 cat <<EOT >$HOME/.config/autostart/phone-slowstart.desktop
 [Desktop Entry]
 Exec=sleep 11;linphone --iconified

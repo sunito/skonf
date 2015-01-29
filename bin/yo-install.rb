@@ -221,13 +221,13 @@ if File.symlink?(ya322_link)
   # Die folgende Verlinkung würde den Akonadi-Server lahmlegen
   # move_and_symlink_or_ensure_correctness "#{ya322_link}/322/loc-sh-akonadi/",     "#{HOME}/.local/share/akonadi"
 
-  move_and_symlink_or_ensure_correctness "#{ya322_link}/322/kde-config/",         "#{HOME}/.kde/share/config"
+  move_and_symlink_or_ensure_correctness "#{ya322_link}/322/kde-config/",         "#{$kde_dir}/share/config"
   
-  create_dir_unless_exists       "#{HOME}/.kde/share/config-local"  
-  Dir["#{HOME}/.kde/share/config/plasm*"].each do |komplett_name|
+  create_dir_unless_exists       "#{$kde_dir}/share/config-local"  
+  Dir["#{$kde_dir}/share/config/plasm*"].each do |komplett_name|
     puts "plasma: " + komplett_name
     basename = File.basename(komplett_name)
-    move_and_symlink_or_ensure_correctness "#{HOME}/.kde/share/config-local/#{basename}",     komplett_name
+    move_and_symlink_or_ensure_correctness "#{$kde_dir}/share/config-local/#{basename}",     komplett_name
   end	
 else
   puts "no 322-symlink creation, #{ya322_link} does not exist."  

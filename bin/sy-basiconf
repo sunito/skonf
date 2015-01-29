@@ -26,7 +26,7 @@ function apt_install {
   if [ $has_apt ] ;then
     sudo apt-get --yes install $*
   else
-    sudo -n zypper install $*
+    sudo zypper -n install $*
   fi  
 }
 
@@ -68,7 +68,7 @@ if [ -z `sudo tune2fs -l /dev/sda6 |grep volume |cut -d":" -f2 |tr -d ' '` ] ;th
   sudo tune2fs -L DAT $dat_patition
 fi
 
-syve_section Mehr Komfort in der Shell
+syve_section "Mehr Komfort in der Shell"
 
 # .bashrc erweitert (Uhrzeit + History wird sofort und mit Ausführungszeit gespeichert und die Kapazität erhöht)
 if [[ -z `grep "truncate -s-" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
@@ -95,6 +95,10 @@ PATH=$PATH:$HOME/bin/syver/binolder
 EOT
 else
   echo "'bin/syver/bin' schon zum $PATH hingefügt"
+fi
+
+if ! [[ -f ~/.alias ]] ;then
+  ln -s ~/.bash_aliases ~/.alias
 fi
 
 syve_section "Netzwerk"

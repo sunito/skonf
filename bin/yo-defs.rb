@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative "../lib/system.rb"
+
 HOME    = ENV['HOME'] unless defined? HOME
 BEST_YAY_SWITCH_DIR = "/yay/switch" unless defined? BEST_YAY_SWITCH_DIR
 POSSIBLE_YAY_SWITCH_DIRS = [BEST_YAY_SWITCH_DIR, "/yay", "/etc/yay", HOME]

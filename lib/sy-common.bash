@@ -16,7 +16,7 @@ function apt_install {
   if [ $has_apt ] ;then
     sudo apt-get --yes install $*
   else
-    sudo -n zypper install $*
+    sudo zypper -n install $*
   fi  
 }
 

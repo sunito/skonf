@@ -38,6 +38,7 @@ pairs = %w[
 
   
 ].inject([[]]) do |result, new_val|
+  new_val = new_val.sub('~/.kde', $kde_dir)
   if result.last.size < 2 
     result.last << new_val
   else
