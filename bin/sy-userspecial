@@ -226,7 +226,7 @@ db_dir=/home/$USER/.minidlna/cache
 log_dir=/home/$USER/.minidlna  
 EOT
 
-
+mkdir $HOME/.config/autostart/
 cat <<EOT >$HOME/.config/autostart/minidlna-slowstart.desktop
 [Desktop Entry]
 Encoding=UTF-8
@@ -319,19 +319,20 @@ EOT
 fi
 fi # nicht "assistent"
 
-syve_section Wuala
-
-if [ `which wuala`x = "x" ] ; then
-  if [ `uname -i` = "x86_64" ] ; then
-    wget https://cdn.wuala.com/repo/deb/wuala_current_amd64.deb
-    sudo dpkg -i wuala_current_amd64.deb
-  else
-    wget https://cdn.wuala.com/repo/deb/wuala_current_i386.deb
-    sudo dpkg -i wuala_current_i386.deb
-  fi
-fi
 
 if [ $USER = "NEW" ] ;then
+
+  syve_section Wuala
+
+  if [ `which wuala`x = "x" ] ; then
+    if [ `uname -i` = "x86_64" ] ; then
+      wget https://cdn.wuala.com/repo/deb/wuala_current_amd64.deb
+      sudo dpkg -i wuala_current_amd64.deb
+    else
+      wget https://cdn.wuala.com/repo/deb/wuala_current_i386.deb
+      sudo dpkg -i wuala_current_i386.deb
+    fi
+  fi
 
 cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
 [Desktop Entry]
@@ -344,8 +345,8 @@ Terminal=false
 Type=Application
 EOT
 
-sudo mkdir /var/log/wuala
-sudo chown $USER.users /var/log/wuala
+  sudo mkdir /var/log/wuala
+  sudo chown $USER.users /var/log/wuala
 
 fi # syve_section Wuala
 
