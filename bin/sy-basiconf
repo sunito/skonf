@@ -102,6 +102,8 @@ if ! [[ -f ~/.alias ]] ;then
   ln -s ~/.bash_aliases ~/.alias
 fi
 
+apt-install screen
+
 syve_section "Netzwerk"
 
 
