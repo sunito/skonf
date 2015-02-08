@@ -8,7 +8,7 @@ SystemverwaltungsScriptSammelsurium für die Installation von Kubuntu-Derivaten
     sudo zypper install git
     sudo apt-get --yes install git
     git config --global push.default simple
-    git config --global user.email $USER@$HOSTNAME.suska.org
+    git config --global user.email $USER-$HOSTNAME@suska.org
     git config --global user.name "$USER $HOSTNAME"
 
     mkdir $HOME/bin
