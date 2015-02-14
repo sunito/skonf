@@ -299,17 +299,6 @@ loginMode=default
 offerShutdown=true
 shutdownType=2
 
-diff -r /dat/conf-dot/.kde/share/config/kwinrc /home/sunito/.kde/share/config/kwinrc
-152c152
-< SwitchingMode=1
----
-> SwitchingMode=0
-196c196,197
-< MoveResizeMaximizedWindows=false
----
-> MoveResizeMaximizedWindows=true
-
-
 
 diff -r /dat/conf-dot/.kde/share/config/kscreensaverrc /home/sunito/.kde/share/config/kscreensaverrc
 2,3c2,3
@@ -338,20 +327,6 @@ diff -r /dat/conf-dot/.config/synaptiks/management.json /home/sunito/.config/syn
 <   "monitor_keyboard": false, 
 ---
 >   "monitor_keyboard": true, 
-
-diff -r /dat/conf-dot/.config/synaptiks/touchpad-config.json /home/sunito/.config/synaptiks/touchpad-config.json
-12c12
-<   "f2_tap_action": 0, 
----
->   "f2_tap_action": 3, 
-22c22
-<   "f1_tap_action": 0, 
----
->   "f1_tap_action": 1, 
-25c25
-<   "f3_tap_action": 0, 
----
->   "f3_tap_action": 2, 
 
 
 diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
