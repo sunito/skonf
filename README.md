@@ -14,5 +14,9 @@ SystemverwaltungsScriptSammelsurium für die Installation von Kubuntu-Derivaten
     mkdir $HOME/bin
     cd $HOME/bin
 
+    git clone git@github.com:sunito/syver.git
+    bash syver/bin/sy-basiconf
+
     git clone https://github.com/sunito/syver.git
     bash syver/bin/sy-basiconf
+    
