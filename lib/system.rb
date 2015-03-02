@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env ruby
+#encoding: UTF-8
 
 
 has_apt=system %Q(which apt-get)
