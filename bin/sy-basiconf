@@ -224,23 +224,7 @@ diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.k
 > [Containments][2][Applets][112][Configuration][General]
 > show_suspend=true
 > 
-diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
-122c122
-< geometry=0,594.791666666667,115,71.875
----
-> geometry=0,613.791666666667,115,71.875
-200c200
-< geometry=0,776.666666666667,115,57
----
-> geometry=0,795.666666666667,115,38
-218c218
-< plainClockFont=Roboto,12,-1,5,50,0,0,0,0,0
----
-> plainClockFont=Roboto,57,-1,5,50,0,0,0,0,0
-220c220
-< showSeconds=false
----
-> showSeconds=true
+
 diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/config/powerdevilrc
 3a4,6
 > [General]
@@ -249,12 +233,6 @@ diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/con
 diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
 27a28
 > HomeUrl=file:///111
-
-diff -r /dat/conf-dot/.kde/share/config/kiorc /home/sunito/.kde/share/config/kiorc
-3c3
-< ConfirmTrash=false
----
-> ConfirmTrash=true
 
 
 
