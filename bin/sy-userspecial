@@ -116,6 +116,7 @@ music_dir=$user_dat_dir/Musik
 pictures_dir=$user_dat_dir/Bilder
 videos_dir=$user_dat_dir/Videos
 
+u_dirs=( "$desktop_dir" "$documents_dir" "$download_dir" "$music_dir" "$pictures_dir" "$videos_dir" )
 
 if [ $USER = "sunito" ] ;then
 documents_dir=$user_dat_dir/111
@@ -147,6 +148,10 @@ elif [ $USER = "gerhard" ] ;then
   pictures_dir=$documents_dir
   videos_dir=$pictures_dir
 elif [ $USER = "brunhild" ] ;then
+  rmdir -v $HOME/*
+  for ud in ${u_dirs[*]} ;do
+    ln -s "$ud" "$HOME"
+  done
   rm "$user_dat_dir/Eigene Musik"
   rm -r "$user_dat_dir/Eigene Musik"
   ln -s $music_dir     "$user_dat_dir/Eigene Musik"
