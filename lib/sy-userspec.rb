@@ -17,7 +17,9 @@ end
 begin 
   require 'nokogiri'
 rescue LoadError
-  puts_and_execute "source #{File.expand_path('../sy-common.bash',__FILE__)} ;apt_install zlib-devel patch"
+  # "sourceW" und "apt_install" funktionieren so leider nicht:
+  # puts_and_execute "source #{File.expand_path('../sy-common.bash',__FILE__)} ;apt_install zlib-devel patch"
+  puts_and_execute "sudo apt-get install zlib-devel patch"
   #puts_and_execute "sudo zypper -n install zlib-devel"
   puts_and_execute "sudo gem install nokogiri"
   require 'nokogiri'
