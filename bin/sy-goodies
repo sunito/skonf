@@ -102,8 +102,8 @@ def dconf_write rel_path, value
   print "new: "; system "dconf read #{PREFIX}/#{rel_path}"
 end
 new_settings = {
-  "micro-pause" => [480,  10],
-  "rest-break"  => [3000, 360],
+  "micro-pause" => [1200,  10],
+  "rest-break"  => [7200, 300],
   "daily-limit" => [18000]
 }
 new_settings.each do |name, values|
