@@ -93,6 +93,8 @@ elif [ $USER = "brunhild" ] ;then
   user_dat_dir=$dat_dir/B
   rm $HOME/B
   ln -s $user_dat_dir $HOME/B
+elif [ $USER = "hans" ] ;then
+  user_dat_dir=$dat_dir/Eigene
 else
   if [ $dat_dir == /home ] ;then
     user_dat_dir=$HOME
@@ -106,7 +108,7 @@ fi
 #    user_dat_dir=$user_dat_dir/Daten
 #  fi  
 #fi
-
+echo "making $user_dat_dir"
 mkdir $user_dat_dir
 
 desktop_dir=$user_dat_dir/Desktop
@@ -119,18 +121,18 @@ videos_dir=$user_dat_dir/Videos
 u_dirs=( "$desktop_dir" "$documents_dir" "$download_dir" "$music_dir" "$pictures_dir" "$videos_dir" )
 
 if [ $USER = "sunito" ] ;then
-documents_dir=$user_dat_dir/111
-desktop_dir=$documents_dir
-music_dir=$user_dat_dir/477/MusikAusmNetz
-pictures_dir=$user_dat_dir/533/Fotos
-videos_dir=$pictures_dir
-rmdir -v $HOME/*
+  documents_dir=$user_dat_dir/111
+  desktop_dir=$documents_dir
+  music_dir=$user_dat_dir/477/MusikAusmNetz
+  pictures_dir=$user_dat_dir/533/Fotos
+  videos_dir=$pictures_dir
+  rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
-documents_dir=$user_dat_dir/Geschriebseltes
-videos_dir=$user_dat_dir/1videos
-pictures_dir=$user_dat_dir/"fotoooooos:)"
-rmdir -v $HOME/*
-ln -s $user_dat_dir $HOME
+  documents_dir=$user_dat_dir/Geschriebseltes
+  videos_dir=$user_dat_dir/1videos
+  pictures_dir=$user_dat_dir/"fotoooooos:)"
+  rmdir -v $HOME/*
+  ln -s $user_dat_dir $HOME
 elif [ $USER = "assistent" ] ;then
   documents_dir=$HOME/Business
   ln -s /111/Business $documents_dir
@@ -158,6 +160,13 @@ elif [ $USER = "brunhild" ] ;then
   rm "$user_dat_dir/Eigene Bilder"
   rm -r "$user_dat_dir/Eigene Bilder"
   ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
+elif [ $USER = "hans" ] ;then
+  rmdir -v $HOME/*
+  documents_dir=$user_dat_dir/hans
+  download_dir=$user_dat_dir/hans/Downloads--Allgemein
+  pictures_dir=$user_dat_dir/Fotos
+  videos_dir=$pictures_dir
+  desktop_dir=$HOME/Desktop
 fi
 
 cat <<EOT >$HOME/.config/user-dirs.dirs
@@ -212,9 +221,11 @@ minidlna_exe=minidlnad
 if [ -z "`dpkg -l minidlna 2>/dev/null`" ] ;then
   #apt_install readymedia-transcode
   apt_install minidlna 
-  sudo service $minidlna_service stop
-  sudo update-rc.d $minidlna_service disable
 fi
+
+sudo service $minidlna_service stop
+sudo update-rc.d $minidlna_service disable
+
 mkdir $HOME/.minidlna
 mkdir $HOME/.minidlna/cache
 cat <<EOT >$HOME/.minidlna/minidlna.conf
