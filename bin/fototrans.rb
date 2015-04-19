@@ -5,7 +5,7 @@ require 'thread' # workaround for NameError: "const_missing': uninitialized cons
 require 'Qt4'
 require 'fileutils'
 
-require 'iconv'
+VERSION = "1.0.2"
 
 =begin
 begin
@@ -151,7 +151,7 @@ end
 begin
   haupt_fenster = Qt::Widget.new do
 
-    self.window_title = 'Fototransfer v1.0.1'
+    self.window_title = "Fototransfer v#{VERSION}"
     resize(400, 100)
 
     quit_button = Qt::PushButton.new('Beenden') do
