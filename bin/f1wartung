@@ -1,9 +1,9 @@
 #!/bin/bash
 
-logger "FFFFFFFFFFFFFFFFFFFFFFFFFFFFF start"
+logger "FFFFFFFFFFFFFF start"
 
-s=s
-cmd=$s${s}h
+c=s
+cmd=$c${c}h
 echo $cmd
 
 user=`cat $HOME/.$cmd/fernwartung/user`
@@ -18,8 +18,8 @@ echo $ownport
 logger "FFFFFFFFFFFFFF c$cmd o$ownport p$port u$user"
 
 execute="$cmd -R $ownport:127.0.0.1:$port $user@suska.org"
-logger "FFFFFFFFFFFFFFFFFFFFFFFFFFFFF vor execute"
-logger "FFFFFF "$execute
+logger "FFFFFFFFFFFFFF vor execute"
+logger "FFFFFF $execute"
 echo $execute
 $execute
 logger "FFFFFFFFFFFFFFFFFFFFFFFFFFFFF fertig"
