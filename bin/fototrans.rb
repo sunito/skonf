@@ -106,7 +106,7 @@ class Transfer
       # best_time = Time.now
       # best_time = File.mtime(all_fotos.last)
       mod_times = all_fotos.map{|f|File.mtime(f)}.sort
-      best_time = mod_times.last
+      best_time = mod_times[mod_times.size/2] # Median
       
       dat_format = "%Y-%m-%d"
       "Fotos von #{mod_times.first.strftime(dat_format)} bis #{mod_times.last.strftime(dat_format)}"
