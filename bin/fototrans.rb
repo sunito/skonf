@@ -48,6 +48,7 @@ class Transfer
   def target_base_dir
     dirsfile_path = "#{ENV['HOME']}/.config/user-dirs.dirs"  
     xdg_pictures_dir = if File.exist?(dirsfile_path)
+      # ToDo: use `xdg-user-dir PICTURES` 
       File.read(dirsfile_path).scan(/(XDG_PICTURES_DIR) *= *(.*) *$/).first[1]
     else 
       ""
