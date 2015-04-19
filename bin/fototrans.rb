@@ -46,11 +46,18 @@ class Transfer
   end
   
   def target_base_dir
+    dirsfile_path = "#{ENV['HOME']}/.config/user-dirs.dirs"  
+    xdg_pictures_dir = if File.exist?(dirsfile_path)
+      File.read(dirsfile_path).scan(/(XDG_PICTURES_DIR) *= *(.*) *$/).first[1]
+    else 
+      ""
+    end
+    puts "xdg_pictures_dir: #{xdg_pictures_dir}"
     [
       "/dat/Sabine/Bilder/", # Sabine
       "/aa/533/Fotos/",  # Sven
-      "/daten/Eigene/Fotos",  # Mapa
-      "/aa/422/Fotos/",  # Sven veraltet
+      "/dat/Eigene/Fotos",  # Mapa
+      xdg_pictures_dir,
       "#{ENV['HOME']}/Bilder/",
       "#{ENV['HOME']}/Fotos/"
     ].find do |dir|
