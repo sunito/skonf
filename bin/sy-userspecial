@@ -228,6 +228,10 @@ sudo update-rc.d $minidlna_service disable
 
 mkdir $HOME/.minidlna
 mkdir $HOME/.minidlna/cache
+friendly_name="Computer von $CAP_USER"
+if [ $USER = "hans" ] ;then
+  friendly_name="vom Computer in der Spielstube"
+fi
 cat <<EOT >$HOME/.minidlna/minidlna.conf
 # Use A, P, and V to restrict media 'type' in directory
 #media_dir=A,$music_dir
@@ -236,7 +240,7 @@ cat <<EOT >$HOME/.minidlna/minidlna.conf
 media_dir=$music_dir
 media_dir=$pictures_dir
 media_dir=$videos_dir
-friendly_name=Computer von $CAP_USER
+friendly_name=$friendly_name
 inotify=yes                     # 'no' for less resources, restart required for new media
 db_dir=/home/$USER/.minidlna/cache
 log_dir=/home/$USER/.minidlna  
