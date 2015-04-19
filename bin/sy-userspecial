@@ -170,12 +170,12 @@ elif [ $USER = "hans" ] ;then
 fi
 
 cat <<EOT >$HOME/.config/user-dirs.dirs
-XDG_DESKTOP_DIR=$desktop_dir
-XDG_DOCUMENTS_DIR=$documents_dir
-XDG_DOWNLOAD_DIR=$download_dir
-XDG_MUSIC_DIR=$music_dir
-XDG_PICTURES_DIR=$pictures_dir
-XDG_VIDEOS_DIR=$videos_dir
+XDG_DESKTOP_DIR="$desktop_dir"
+XDG_DOCUMENTS_DIR="$documents_dir"
+XDG_DOWNLOAD_DIR="$download_dir"
+XDG_MUSIC_DIR="$music_dir"
+XDG_PICTURES_DIR="$pictures_dir"
+XDG_VIDEOS_DIR="$videos_dir"
 EOT
 
 dolphin_dir=$user_dat_dir
