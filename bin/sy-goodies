@@ -116,6 +116,27 @@ dconf_write "gui/applet/enabled", "false"
 dconf_write "gui/main-window/enabled", "false"
 EOC
 
+# ToDo: correctly add to existing window rules (--> increase "count")
+cat <<eot >>$HOME/.config/kwinrulesrc
+[1]
+Description=workrave verstecken
+clientmachine=biesdorfer
+clientmachinematch=0
+minimize=true
+minimizerule=3
+skiptaskbar=true
+skiptaskbarrule=2
+title=Workrave
+titlematch=1
+types=1
+wmclass=workrave workrave
+wmclasscomplete=true
+wmclassmatch=1
+
+[General]
+count=1
+eot
+
 apt_install kteatime
 
 syve_section "Weitere Browser"
