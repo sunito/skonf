@@ -163,7 +163,7 @@ elif [ $USER = "brunhild" ] ;then
 elif [ $USER = "hans" ] ;then
   rmdir -v $HOME/*
   documents_dir=$user_dat_dir/hans
-  download_dir=$user_dat_dir/hans/Downloads--Allgemein
+  download_dir=$user_dat_dir/Downloads--Allgemein
   pictures_dir=$user_dat_dir/Fotos
   videos_dir=$pictures_dir
   desktop_dir=$HOME/Desktop
