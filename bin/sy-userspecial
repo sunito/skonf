@@ -246,7 +246,8 @@ media_dir=$videos_dir
 EOT
 fi
 cat <<EOT >>$HOME/.minidlna/minidlna.conf
-listening_ip=192.168.0.1/24              #Todo: Generate Dynamically!!!
+# unexplicable "parsing error":
+#listening_ip="192.168.0.1/24"              #Todo: Generate Dynamically!!!
 friendly_name=$friendly_name
 inotify=yes                     # 'no' for less resources, restart required for new media
 db_dir=/home/$USER/.minidlna/cache
