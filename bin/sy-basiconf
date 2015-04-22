@@ -170,22 +170,6 @@ apt_install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren
 apt_install kde-config-cddb
 
 
-syve_section "Ruby für Qt"
-
-# Svens Apps, dafür Ruby mit KDE-Bindings installieren:
-apt_install ruby-dev
-apt_install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
-apt_install g++
-apt_install libqt4-dev
-apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
-apt_install cmake   # für Compilieren von qtbindings gebraucht
-#sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
-
-if [ -z "`gem list |grep qtbindings`" ] ;then
-sudo gem install qtbindings 
-fi
-sudo gem install slop
-
 syve_section "grub default"
 
 if [[ -z `dmesg | grep -i "Hardware name: Acer"` ]] ;then
@@ -204,6 +188,40 @@ echo -n new:
 grep GRUB_TIMEOUT /etc/default/grub
 sudo update-grub2
 
+
+fernw_sym_path=$HOME/.local/share/applications/fernwartung.desktop
+if ! [[ -f $fernw_sym_path ]] ;then
+cat <<eot >$fernw_sym_path
+[Desktop Entry]
+Comment=
+Exec=konsole -e bash ~/bin/syver/bin/f1wartung
+Icon=strigi
+Name=fernwartung
+NoDisplay=false
+Path[$e]=
+StartupNotify=true
+Terminal=0
+Type=Application
+X-KDE-SubstituteUID=false
+eot
+fi
+
+
+syve_section "Ruby für Qt"
+
+# Svens Apps, dafür Ruby mit KDE-Bindings installieren:
+apt_install ruby-dev
+apt_install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
+apt_install g++
+apt_install libqt4-dev
+apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
+apt_install cmake   # für Compilieren von qtbindings gebraucht
+#sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
+
+if [ -z "`gem list |grep qtbindings`" ] ;then
+sudo gem install qtbindings 
+fi
+sudo gem install slop
 
 apt_install akonadiconsole
 
