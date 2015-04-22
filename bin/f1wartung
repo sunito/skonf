@@ -1,25 +1,31 @@
 #!/bin/bash
 
 logger "FFFFFFFFFFFFFF start"
+echo "Starte Ferwartungs-Konsole" 
 
+echo -n "    <"
 c=s
 cmd=$c${c}h
-echo $cmd
+echo -n $cmd
 
 user=`cat $HOME/.$cmd/fernwartung/user`
-echo $user
+echo -n $user
 
-port=`grep "Port " /etc/ssh/sshd_config |cut -d" " -f2`
-echo $port
+port=`grep "Port " /etc/$cmd/${cmd}d_config |cut -d" " -f2`
+echo -n $port
 
 ownport=$((10140 + `id -u`))
-echo $ownport
+echo -n $ownport
+echo ">  "
 
 logger "FFFFFFFFFFFFFF c$cmd o$ownport p$port u$user"
 
 execute="$cmd -R $ownport:127.0.0.1:$port $user@suska.org"
+
 logger "FFFFFFFFFFFFFF vor execute"
 logger "FFFFFF $execute"
+echo
+echo "Verbinde mit Server"
 echo $execute
 $execute
 logger "FFFFFFFFFFFFFFFFFFFFFFFFFFFFF fertig"
