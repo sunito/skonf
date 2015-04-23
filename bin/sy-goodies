@@ -71,6 +71,8 @@ apt_install kdiff3
 apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pages"
 apt_install cups-pdf
 
+apt_install transmission-qt # suse                                                                                                                                                                                                                     
+
 apt_install scribus
 
 if [ -z `ls /etc/apt/sources.list.d |grep retroshare` ]
