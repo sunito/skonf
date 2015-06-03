@@ -1,14 +1,36 @@
 #!/bin/bash
 
 logger "FFFFFFFFFFFFFF start"
-echo "Starte Ferwartungs-Konsole" 
 
-echo -n "    <"
 c=s
 cmd=$c${c}h
-echo -n $cmd
+user_file=$HOME/.$cmd/fernwartung/user
 
-user=`cat $HOME/.$cmd/fernwartung/user`
+if [[ $1 == "--init" ]] ;then
+  echo "Installiere" 
+  mkdir -p $(dirname "$user_file")
+  echo -n "user name: "
+  read user
+  [ x$user == x ] && echo "Abbruch, da keine Eingabe" && exit 3 
+  echo $user >"$user_file"
+  
+  echo "Lade Schlüssel hoch"
+  ${cmd}-copy-id $user@suska.org
+  exit 1
+fi
+
+if ! [[ -f "$user_file" ]] ;then
+  echo "Die Fernwartung ist noch nicht installiert." 
+  echo
+  echo "Bitte Enter drücken"
+  read dummy
+  sleep 1
+  exit 4
+fi
+
+echo -n "    <"
+echo -n $cmd
+user=`cat $user_file`
 echo -n $user
 
 port=`grep "Port " /etc/$cmd/${cmd}d_config |cut -d" " -f2`
@@ -18,7 +40,13 @@ ownport=$((10140 + `id -u`))
 echo -n $ownport
 echo ">  "
 
+
+
+
+
+
 logger "FFFFFFFFFFFFFF c$cmd o$ownport p$port u$user"
+echo "Starte Ferwartungs-Konsole" 
 
 execute="$cmd -R $ownport:127.0.0.1:$port $user@suska.org"
 
