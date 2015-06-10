@@ -104,6 +104,16 @@ fi
 
 apt_install screen
 
+if false ;then
+ ./.local/share/konsole/Shell.profile
+[General]
+Name=Shell
+Parent=FALLBACK/
+
+[Scrolling]
+HistoryMode=2
+fi
+
 syve_section "Netzwerk"
 
 
