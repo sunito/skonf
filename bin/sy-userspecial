@@ -123,6 +123,7 @@ u_dirs=( "$desktop_dir" "$documents_dir" "$download_dir" "$music_dir" "$pictures
 if [ $USER = "sunito" ] ;then
   documents_dir=$user_dat_dir/111
   desktop_dir=$documents_dir
+  download_dir=$user_dat_dir/177/Downloads
   music_dir=$user_dat_dir/477/MusikAusmNetz
   pictures_dir=$user_dat_dir/533/Fotos
   videos_dir=$pictures_dir
@@ -130,7 +131,7 @@ if [ $USER = "sunito" ] ;then
 elif [ $USER = "NEW" ] ;then
   documents_dir=$user_dat_dir/Geschriebseltes
   videos_dir=$user_dat_dir/1videos
-  pictures_dir=$user_dat_dir/"fotoooooos:)"
+  pictures_dir=$user_dat_dir/"fotoos"
   rmdir -v $HOME/*
   ln -s $user_dat_dir $HOME
 elif [ $USER = "assistent" ] ;then
