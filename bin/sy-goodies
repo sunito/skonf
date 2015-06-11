@@ -106,7 +106,7 @@ end
 new_settings = {
   "micro-pause" => [3600,  10],
   "rest-break"  => [9600, 300],
-  "daily-limit" => [18000]
+  "daily-limit" => [21600]
 }
 new_settings.each do |name, values|
   limit, duration = values
