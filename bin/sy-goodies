@@ -65,6 +65,9 @@ fi
 
 syve_section "Weitere Software installieren"
 
+# seems already installed:
+# apt_install libreoffice-pdfimport 
+
 echo "Ensure that mtools_skip_check=1 is in .mtoolsrc"
 if [[ ! -f $HOME/.mtoolsr && -z `grep mtools_skip_check=1 $HOME/.mtoolsrc`  ]] ;then
   echo mtools_skip_check=1 >> $HOME/.mtoolsrc 
