@@ -7,10 +7,16 @@ syve_section "Telefonie"
 
 apt_install skype
 
+if [ $USER == brunhild ] ;then
+  phonestart_deactivated=true
+else
+  phonestart_deactivated=false
+fi
 mkdir $HOME/.config/autostart/
 cat <<EOT >$HOME/.config/autostart/phone-slowstart.desktop
 [Desktop Entry]
 Exec=sleep 11;linphone --iconified
+Hidden=$phonestart_deactivated
 Icon=system-run
 Name[de]=Telefon-Slowstart
 Name=Telefon-Slowstart
