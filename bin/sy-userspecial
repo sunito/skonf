@@ -130,10 +130,13 @@ if [ $USER = "sunito" ] ;then
   rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
   documents_dir=$user_dat_dir/Geschriebseltes
+  download_dir=$HOME/Downloads
   videos_dir=$user_dat_dir/1videos
   pictures_dir=$user_dat_dir/"fotoos"
   rmdir -v $HOME/*
   ln -s $user_dat_dir $HOME
+  mkdir $download_dir
+  ln -s $download_dir $user_dat_dir
 elif [ $USER = "assistent" ] ;then
   documents_dir=$HOME/Business
   ln -s /111/Business $documents_dir
@@ -385,17 +388,16 @@ syve_section "Lernprogramme"
 
 
 if [ $USER = "NEW" ] ;then
-sudo dpkg -i $dat_dir/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb 
+  sudo dpkg -i $download_dir/WorldOfGooDemo.1.41.deb 
 
 # This would screw Netrunner, TODO: install valuable parts of it!!
 #apt_install edubuntu-desktop
 # Now some useful parts of edubuntu:
-apt_install kgeography
-apt_install kalgebra
-apt_install klettres kstars ktuberling kturtle kwordquiz
-apt_install kbruch khangman kmplot kalzium kanagram      
-apt_install cantor chemtool einstein
-
+  apt_install kgeography
+  apt_install kalgebra
+  apt_install klettres kstars ktuberling kturtle kwordquiz
+  apt_install kbruch khangman kmplot kalzium kanagram      
+  apt_install cantor chemtool einstein
 
 fi # if [ $USER = "NEW" ] ;then
 
