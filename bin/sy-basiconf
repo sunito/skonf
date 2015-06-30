@@ -104,6 +104,8 @@ fi
 
 apt_install screen
 
+# unlimited history 
+kwriteconfig --file $HOME/.local/share/konsole/Shell.profile --group Scrolling --key HistoryMode 2
 if false ;then
  ./.local/share/konsole/Shell.profile
 [General]
