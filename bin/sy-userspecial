@@ -134,9 +134,15 @@ elif [ $USER = "NEW" ] ;then
   download_dir=$user_arch_dir/Downloads
   videos_dir=$user_dat_dir/1videos
   pictures_dir=$user_dat_dir/"fotoos"
+  
   rmdir -v $HOME/*
   ln -s $user_dat_dir $HOME
+  
   mkdir $download_dir
+
+  rm $HOME/"$(basename "$download_dir")"
+  ln -s $download_dir $HOME
+  
   rm $user_dat_dir/"$(basename "$download_dir")"
   ln -s $download_dir $user_dat_dir
 elif [ $USER = "assistent" ] ;then
