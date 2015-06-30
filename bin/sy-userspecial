@@ -129,13 +129,15 @@ if [ $USER = "sunito" ] ;then
   videos_dir=$pictures_dir
   rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
+  user_arch_dir=$dat_dir/n.e.w.-zzArchiv
   documents_dir=$user_dat_dir/Geschriebseltes
-  download_dir=$HOME/Downloads
+  download_dir=$user_arch_dir/Downloads
   videos_dir=$user_dat_dir/1videos
   pictures_dir=$user_dat_dir/"fotoos"
   rmdir -v $HOME/*
   ln -s $user_dat_dir $HOME
   mkdir $download_dir
+  rm $user_dat_dir/"$(basename "$download_dir")"
   ln -s $download_dir $user_dat_dir
 elif [ $USER = "assistent" ] ;then
   documents_dir=$HOME/Business
@@ -365,10 +367,18 @@ if [ $USER = "NEW" ] ;then
       sudo dpkg -i wuala_current_i386.deb
     fi
   fi
-
+  c=s
+  act=log
+  action=${act}in
+  cmd=$c${c}h
+  part2_file=$HOME/.$cmd/part2/wuala
+  unam=`ls $part2_file`
+  part2=`cat $part2_file/$unam`
+  echo u$unam p$part2
 cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
 [Desktop Entry]
-Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
+Exec=sleep 19;(wualacmd >/var/log/wuala/wuala-NEW.log 2>&1 &) ;sleep 11 ;wuala $action $unam "$part2" enableAutoLogin 
+#Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
 Icon=system-run
 Name[de]=Wuala-Starten
 Name=Wuala-Starten
