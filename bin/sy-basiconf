@@ -114,19 +114,12 @@ apt_install screen
 
 # unlimited history 
 konsole_profile_dir=$HOME/.local/share/konsole
-if ! [[ -d konsole ]] ;then
+if ! [[ -d $konsole_profile_dir ]] ;then
   konsole_profile_dir=$HOME/.kde/share/apps/konsole
 fi
+kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Name Shell
+#kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Parent FALLBACK/
 kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group Scrolling --key HistoryMode 2
-if false ;then
- ./.local/share/konsole/Shell.profile
-[General]
-Name=Shell
-Parent=FALLBACK/
-
-[Scrolling]
-HistoryMode=2
-fi
 
 syve_section "Netzwerk"
 
