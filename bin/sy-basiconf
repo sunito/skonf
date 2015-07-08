@@ -102,6 +102,13 @@ if ! [[ -f ~/.alias ]] ;then
   ln -s ~/.bash_aliases ~/.alias
 fi
 
+
+if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+
+# Sven: Nicht versehentlich Konsolen schließen:
+export IGNOREEOF=3
+EOT
+
 apt_install screen
 
 # unlimited history 
