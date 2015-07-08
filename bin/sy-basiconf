@@ -108,6 +108,7 @@ if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 # Sven: Nicht versehentlich Konsolen schließen:
 export IGNOREEOF=3
 EOT
+fi
 
 apt_install screen
 
@@ -264,7 +265,7 @@ diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.k
 140a141,143
 > [Containments][2][Applets][112][Configuration][General]
 > show_suspend=true
-> 
+
 
 diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/config/powerdevilrc
 3a4,6
