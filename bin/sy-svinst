@@ -17,3 +17,14 @@ sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild
 sudo chfn -f "Brunhild Wokan" brunhild
 sudo addgroup brunhild sudo
 
+sudo adduser --uid 1010 --ingroup users --add_extra_groups gerhard
+sudo chfn -f "Gerhard Lichtner" gerhard
+sudo addgroup gerhard sudo
+
+sudo adduser --uid 1011 --ingroup users --add_extra_groups sylvia
+sudo chfn -f "Sylvia" sylvia
+sudo addgroup sylvia sudo
+
+sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland
+sudo chfn -f "Hof Urstromland" hof-urstromland
+
