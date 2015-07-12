@@ -211,7 +211,7 @@ if ! [[ -f $fernw_sym_path ]] ;then
 cat <<eot >$fernw_sym_path
 [Desktop Entry]
 Comment=
-Exec=konsole -e bash ~/bin/syver/bin/f1wartung
+Exec=konsole -p LocalTabTitleFormat=Fernwartung -e bash ~/bin/syver/bin/f1wartung
 Icon=strigi
 Name=fernwartung
 NoDisplay=false
