@@ -89,6 +89,8 @@ elif [ $USER = "martin" ] ;then
   user_dat_dir=$dat_dir/MartinsDaten
 elif [ $USER = "assistent" ] ;then
   user_dat_dir=$HOME
+elif [ $USER = "gerhard" ] ;then
+  user_dat_dir=$HOME/Gerhard
 elif [ $USER = "brunhild" ] ;then
   user_dat_dir=$dat_dir/B
   rm $HOME/B
@@ -157,10 +159,11 @@ elif [ $USER = "assistent" ] ;then
   fi
   ln -s $desktop_dir $HOME/Desktop
 elif [ $USER = "gerhard" ] ;then
-  documents_dir=$user_dat_dir/Daten
-  music_dir=$documents_dir
-  pictures_dir=$documents_dir
-  videos_dir=$pictures_dir
+  desktop_dir=$user_dat_dir
+  documents_dir=$user_dat_dir
+  music_dir="$user_dat_dir/05 Musik"
+  #pictures_dir=$documents_dir/???
+  videos_dir="$user_dat_dir/06 Videos"
 elif [ $USER = "brunhild" ] ;then
   rmdir -v $HOME/*
   for ud in ${u_dirs[*]} ;do
