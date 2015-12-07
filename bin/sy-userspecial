@@ -177,7 +177,7 @@ elif [ $USER = "brunhild" ] ;then
   ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
 elif [ $USER = "hans" ] ;then
   rmdir -v $HOME/*
-  documents_dir=$user_dat_dir/hans
+  documents_dir=$user_dat_dir/Hans
   download_dir=$user_dat_dir/Downloads--Allgemein
   pictures_dir=$user_dat_dir/Fotos
   videos_dir=$pictures_dir
