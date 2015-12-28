@@ -102,7 +102,24 @@ if ! [[ -f ~/.alias ]] ;then
   ln -s ~/.bash_aliases ~/.alias
 fi
 
+
+if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+
+# Sven: Nicht versehentlich Konsolen schließen:
+export IGNOREEOF=3
+EOT
+fi
+
 apt_install screen
+
+# unlimited history 
+konsole_profile_dir=$HOME/.local/share/konsole
+if ! [[ -d $konsole_profile_dir ]] ;then
+  konsole_profile_dir=$HOME/.kde/share/apps/konsole
+fi
+kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Name Shell
+#kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Parent FALLBACK/
+kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group Scrolling --key HistoryMode 2
 
 syve_section "Netzwerk"
 
@@ -194,7 +211,7 @@ if ! [[ -f $fernw_sym_path ]] ;then
 cat <<eot >$fernw_sym_path
 [Desktop Entry]
 Comment=
-Exec=konsole -e bash ~/bin/syver/bin/f1wartung
+Exec=konsole -p LocalTabTitleFormat=Fernwartung -e bash ~/bin/syver/bin/f1wartung
 Icon=strigi
 Name=fernwartung
 NoDisplay=false
@@ -241,7 +258,7 @@ diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.k
 140a141,143
 > [Containments][2][Applets][112][Configuration][General]
 > show_suspend=true
-> 
+
 
 diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/config/powerdevilrc
 3a4,6

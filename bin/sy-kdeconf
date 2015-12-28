@@ -64,6 +64,20 @@ kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key
 kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key InvertVertScroll true
 kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key ThreeFingerTapButton MiddleButton
 
+mkdir $HOME/.config/autostart/
+# workaround this bug: https://bugs.kde.org/show_bug.cgi?id=331361
+cat <<EOT >$HOME/.config/autostart/synaptiks_2014-not-match-saved-settings.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=synaptiks_2014-workaround
+Exec=sleep 9 ;synclient TapButton1=1 TapButton2=3 TapButton3=2
+StartupNotify=false
+Terminal=false
+Hidden=false
+EOT
+
+
 
 syve_section "Tweaking the Clock"
 

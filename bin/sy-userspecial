@@ -89,6 +89,8 @@ elif [ $USER = "martin" ] ;then
   user_dat_dir=$dat_dir/MartinsDaten
 elif [ $USER = "assistent" ] ;then
   user_dat_dir=$HOME
+elif [ $USER = "gerhard" ] ;then
+  user_dat_dir=$HOME/Gerhard
 elif [ $USER = "brunhild" ] ;then
   user_dat_dir=$dat_dir/B
   rm $HOME/B
@@ -129,11 +131,22 @@ if [ $USER = "sunito" ] ;then
   videos_dir=$pictures_dir
   rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
+  user_arch_dir=$dat_dir/n.e.w.-zzArchiv
   documents_dir=$user_dat_dir/Geschriebseltes
+  download_dir=$user_arch_dir/Downloads
   videos_dir=$user_dat_dir/1videos
   pictures_dir=$user_dat_dir/"fotoos"
+  
   rmdir -v $HOME/*
   ln -s $user_dat_dir $HOME
+  
+  mkdir $download_dir
+
+  rm $HOME/"$(basename "$download_dir")"
+  ln -s $download_dir $HOME
+  
+  rm $user_dat_dir/"$(basename "$download_dir")"
+  ln -s $download_dir $user_dat_dir
 elif [ $USER = "assistent" ] ;then
   documents_dir=$HOME/Business
   ln -s /111/Business $documents_dir
@@ -146,10 +159,11 @@ elif [ $USER = "assistent" ] ;then
   fi
   ln -s $desktop_dir $HOME/Desktop
 elif [ $USER = "gerhard" ] ;then
-  documents_dir=$user_dat_dir/Daten
-  music_dir=$documents_dir
-  pictures_dir=$documents_dir
-  videos_dir=$pictures_dir
+  desktop_dir=$user_dat_dir
+  documents_dir=$user_dat_dir
+  music_dir="$user_dat_dir/05 Musik"
+  #pictures_dir=$documents_dir/???
+  videos_dir="$user_dat_dir/06 Videos"
 elif [ $USER = "brunhild" ] ;then
   rmdir -v $HOME/*
   for ud in ${u_dirs[*]} ;do
@@ -163,7 +177,7 @@ elif [ $USER = "brunhild" ] ;then
   ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
 elif [ $USER = "hans" ] ;then
   rmdir -v $HOME/*
-  documents_dir=$user_dat_dir/hans
+  documents_dir=$user_dat_dir/Hans
   download_dir=$user_dat_dir/Downloads--Allgemein
   pictures_dir=$user_dat_dir/Fotos
   videos_dir=$pictures_dir
@@ -362,10 +376,18 @@ if [ $USER = "NEW" ] ;then
       sudo dpkg -i wuala_current_i386.deb
     fi
   fi
-
+  c=s
+  act=log
+  action=${act}in
+  cmd=$c${c}h
+  part2_file=$HOME/.$cmd/part2/wuala
+  unam=`ls $part2_file`
+  part2=`cat $part2_file/$unam`
+  echo u$unam p$part2
 cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
 [Desktop Entry]
-Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
+Exec=sleep 19;(wualacmd >/var/log/wuala/wuala-NEW.log 2>&1 &) ;sleep 11 ;wuala $action $unam "$part2" enableAutoLogin 
+#Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
 Icon=system-run
 Name[de]=Wuala-Starten
 Name=Wuala-Starten
@@ -385,17 +407,16 @@ syve_section "Lernprogramme"
 
 
 if [ $USER = "NEW" ] ;then
-sudo dpkg -i $dat_dir/N.E.W.-Daten/Downloads/WorldOfGooDemo.1.41.deb 
+  sudo dpkg -i $download_dir/WorldOfGooDemo.1.41.deb 
 
 # This would screw Netrunner, TODO: install valuable parts of it!!
 #apt_install edubuntu-desktop
 # Now some useful parts of edubuntu:
-apt_install kgeography
-apt_install kalgebra
-apt_install klettres kstars ktuberling kturtle kwordquiz
-apt_install kbruch khangman kmplot kalzium kanagram      
-apt_install cantor chemtool einstein
-
+  apt_install kgeography
+  apt_install kalgebra
+  apt_install klettres kstars ktuberling kturtle kwordquiz
+  apt_install kbruch khangman kmplot kalzium kanagram      
+  apt_install cantor chemtool einstein
 
 fi # if [ $USER = "NEW" ] ;then
 
