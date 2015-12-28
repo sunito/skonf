@@ -117,6 +117,7 @@ end
 dconf_write "gui/applet/enabled", "false"
 dconf_write "gui/main-window/enabled", "false"
 EOC
+sudo sed -i "s/eine Mikropause?/Atem + Frieden? /" /usr/share/locale/de/LC_MESSAGES/workrave.mo
 
 # ToDo: correctly add to existing window rules (--> increase "count")
 cat <<eot >>$HOME/.config/kwinrulesrc
