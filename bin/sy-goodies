@@ -63,6 +63,24 @@ fi
 # sudo apt-get update >/dev/null
 # apt_install simplescreenrecorder
 
+syve_section "Unterstützung für Windows-Programme installieren"
+
+apt_install wine winetricks
+
+# Wir wollwn die neueste Version von PoL:
+if [ -z `ls /etc/apt/sources.list.d |grep playonlinux` ]
+then  
+  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E0F72778C4676186
+  sudo wget http://deb.playonlinux.com/playonlinux_trusty.list -O /etc/apt/sources.list.d/playonlinux.list
+  sudo apt-get update >/dev/null
+fi
+apt_install xterm playonlinux
+
+apt_install ttf-mscorefonts-installer
+
+apt_install winbind # needed for Office2010
+# wine 1.5.2, gecko 2.40, mono-4.5.6, msxml6
+
 syve_section "Weitere Software installieren"
 
 # seems already installed:
@@ -73,12 +91,12 @@ if [[ ! -f $HOME/.mtoolsr && -z `grep mtools_skip_check=1 $HOME/.mtoolsrc`  ]] ;
   echo mtools_skip_check=1 >> $HOME/.mtoolsrc 
 fi
 
-apt_install wine winetricks
-
 apt_install kdiff3
 
 apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pages"
 apt_install cups-pdf
+
+apt_install simple-scan
 
 apt_install transmission-qt # suse                                                                                                                                                                                                                     
 
