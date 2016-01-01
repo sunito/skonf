@@ -121,6 +121,41 @@ kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key
 #kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Parent FALLBACK/
 kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group Scrolling --key HistoryMode 2
 
+
+syve_section "Logitech-Trackball-Unterstützung"
+
+sudo mkdir /opt/syve
+sudo mkdir /opt/syve/bin
+cat <<eot |sudo tee /opt/syve/bin/trackball-scroll.bash
+# Generiert `date` von syve
+# http://blog.karssen.org/2010/09/11/linux-the-logitech-trackman-marble-and-emulating-a-scroll-wheel/
+# http://www.robmeerman.co.uk/unix/xinput#enabling_emulation_ubuntu_1004
+
+# 1. Mausrad-Rollfunktion durch Drücken des kleinen Buttons über der linken Maustaste beim Rollen: 
+xinput set-int-prop "Logitech USB Trackball" "Evdev Wheel Emulation Button" 8 8 
+xinput set-int-prop "Logitech USB Trackball" "Evdev Wheel Emulation" 8 1 
+xinput set-prop "Logitech USB Trackball" "Evdev Wheel Emulation Axes" 6 7 4 5
+
+# 2. Mittelklick:
+xinput set-int-prop "Logitech USB Trackball" "Evdev Middle Button Emulation" 8 1
+eot
+sudo chmod a+x /opt/syve/bin/trackball-scroll.bash
+
+# Und das immer noch für jeden User extra (weil ich nicht extra testen wollte, ob es in rc.local zu früh wäre):
+
+cat >~/.config/autostart/trackball-scroll.bash.desktop <<eot
+[Desktop Entry]
+Exec=sleep 37 ;/opt/syve/bin/trackball-scroll.bash
+GenericName=
+Icon=bball
+Name=Scrollen und Mittelklick beim Trackball
+Path=
+StartupNotify=true
+Terminal=false
+Type=Application
+X-KDE-SubstituteUID=false
+eot
+
 syve_section "Netzwerk"
 
 
