@@ -117,9 +117,20 @@ konsole_profile_dir=$HOME/.local/share/konsole
 if ! [[ -d $konsole_profile_dir ]] ;then
   konsole_profile_dir=$HOME/.kde/share/apps/konsole
 fi
-kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Name Shell
+#if ! [[ -d $konsole_profile_dir ]] ;then
+#  mkdir "$konsole_profile_dir"
+#fi
+last_profile=$(ls -tr "$konsole_profile_dir" |tail -1)
+if [[ -z "$last_profile" ]] ;then
+  last_profile=Shell.profile
+fi
+konsole_profile_file="$konsole_profile_dir/$last_profile"
+kwriteconfig --file "$konsole_profile_file" --group General   --key Name $(basename $last_profile .profile)
 #kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Parent FALLBACK/
-kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group Scrolling --key HistoryMode 2
+kwriteconfig --file "$konsole_profile_file" --group Scrolling --key HistoryMode 2
+
+old_parent=$(kreadconfig --file "$konsole_profile_file" --group General   --key Parent --default FALLBACK/)
+kwriteconfig --file "$konsole_profile_file" --group General   --key Parent "$old_parent"
 
 
 syve_section "Logitech-Trackball-Unterstützung"
