@@ -285,7 +285,7 @@ apt_install cmake   # für Compilieren von qtbindings gebraucht
 if [ -z "`gem list |grep qtbindings`" ] ;then
 sudo gem install qtbindings 
 fi
-sudo gem install slop
+sudo gem install slop -v 3.5
 
 apt_install akonadiconsole
 
