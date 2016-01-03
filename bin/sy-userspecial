@@ -318,6 +318,32 @@ syve_section "Geräte-Aktionen"
 
 mkdir -p $kde_dir/share/apps/solid/actions
 
+if [ $USER = "brunhild" ] ;then
+ruby <<EOC
+  PREFIX="/org/workrave"
+  def dconf_write rel_path, value
+    puts "Setting " + rel_path
+    print "old: "; system "dconf read #{PREFIX}/#{rel_path}"
+    cmd = "dconf write #{PREFIX}/#{rel_path} #{value}"
+    #puts cmd
+    system cmd
+    print "new: "; system "dconf read #{PREFIX}/#{rel_path}"
+  end
+  new_settings = {
+    "micro-pause" => [7200,  10],
+    "rest-break"  => [10800, 300],
+    "daily-limit" => [21600]
+  }
+  new_settings.each do |name, values|
+    limit, duration = values
+    dconf_write "timers/" + name + "/limit", limit
+    dconf_write "timers/" + name + "/auto-reset", duration if duration
+    dconf_write "gui/breaks/" + name + "/skippable-break", "false"
+  end
+  dconf_write "gui/applet/enabled", "false"
+  dconf_write "gui/main-window/enabled", "false"
+EOC
+fi
 
 if [ $USER = "NEW" ] ;then
 user_media_dir=/media/$USER
