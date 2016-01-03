@@ -65,6 +65,13 @@ fi
 
 syve_section "Unterstützung für Windows-Programme installieren"
 
+# Virtuelle Umgebungen
+if [[ -z `dpkg -l virtua*| grep "ii  virt"` ]] ;then
+  apt_install virtualbox
+fi
+apt_install xdotool   # für das vm-launch-Script
+
+# Wine-Emulator
 apt_install wine winetricks
 
 # Wir wollwn die neueste Version von PoL:

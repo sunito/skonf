@@ -207,11 +207,6 @@ apt_install beep sox jovie
 # Wichtige graphische Tools
 apt_install k4dirstat
 
-# Virtuelle Umgebungen
-if [[ -z `dpkg -l virtua*| grep "ii  virt"` ]] ;then
-  apt_install virtualbox
-fi
-
 syve_section "Kommunikation"
 
 apt_install linphone
