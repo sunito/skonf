@@ -32,8 +32,10 @@ syve_section "Multimedia-Programme"
 apt_install libdvdread4
 sudo /usr/share/doc/libdvdread4/install-css.sh
 
-apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
+#205-Dez, Sven: veraltet: apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
+
 apt_install vlc
+apt_install xfburn # k3b hat Macken
 apt_install pavucontrol
 apt_install audacity
 
@@ -70,6 +72,30 @@ if [[ -z `dpkg -l virtua*| grep "ii  virt"` ]] ;then
   apt_install virtualbox
 fi
 apt_install xdotool   # für das vm-launch-Script
+
+if [[ $USER = "brunhild" ]] ;then
+cat <<eot >.local/share/applications/emWave.desktop
+[Desktop Entry]
+Comment[de_DE]=by HeartMath
+Comment=by HeartMath
+Exec=~/bin/vmanage/bin/vm-launch-emwave "C:\\\\Programme\\\\HeartMath\\\\emWave\\\\emwavepc.exe"
+GenericName[de_DE]=emWave Pro
+GenericName=emWave Pro
+Icon=/dat/w4a1/emwv.png
+MimeType=
+Name=emWave
+NoDisplay=false
+Path=
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+eot
+fi
 
 # Wine-Emulator
 apt_install wine winetricks
@@ -116,8 +142,9 @@ then
 fi
 apt_install retroshare
 
-
-apt_install workrave
+if [[ ! $USER = "brunhild" ]] ;then
+  apt_install workrave
+fi
 cat <<EOT >$HOME/.config/autostart/workrave-slowstart.desktop
 [Desktop Entry]
 Exec=sleep 51;workrave
