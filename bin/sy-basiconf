@@ -115,7 +115,7 @@ apt_install screen
 # unlimited history 
 konsole_profile_dir=$HOME/.local/share/konsole
 if ! [[ -d $konsole_profile_dir ]] ;then
-  konsole_profile_dir=$HOME/.kde/share/apps/konsole
+  konsole_profile_dir=$kde_dir/share/apps/konsole
 fi
 #if ! [[ -d $konsole_profile_dir ]] ;then
 #  mkdir "$konsole_profile_dir"
@@ -133,6 +133,10 @@ kwriteconfig --file "$konsole_profile_file" --group Scrolling --key HistoryMode 
 old_parent=$(kreadconfig --file "$konsole_profile_file" --group General   --key Parent --default FALLBACK/)
 kwriteconfig --file "$konsole_profile_file" --group General   --key Parent "$old_parent"
 
+
+syve_section "Einfachklick"
+
+kwriteconfig --file $kde_dir/share/config/kdeglobals --group KDE --key SingleClick true
 
 syve_section "Logitech-Trackball-Unterstützung"
 
