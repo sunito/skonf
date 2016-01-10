@@ -121,11 +121,12 @@ fi
 #  mkdir "$konsole_profile_dir"
 #fi
 # Es könnten mehrere Profile da sein, wir nehmen einfach das neueste:
-last_profile=$(ls -tr "$konsole_profile_dir" |tail -1)
+last_profile=$(ls -tr "$konsole_profile_dir"/*.profile |tail -1)
+echo "last konsole profile: $last_profile" 
 if [[ -z "$last_profile" ]] ;then
   last_profile=Shell.profile
 fi
-konsole_profile_file="$konsole_profile_dir/$last_profile"
+konsole_profile_file="$konsole_profile_dir/$(basename $last_profile)"
 kwriteconfig --file "$konsole_profile_file" --group General   --key Name $(basename $last_profile .profile)
 #kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Parent FALLBACK/
 kwriteconfig --file "$konsole_profile_file" --group Scrolling --key HistoryMode 2
