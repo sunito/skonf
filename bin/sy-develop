@@ -23,7 +23,8 @@ syve_section "System-Tools"
 apt_install trash-cli
 apt_install bonnie++  # disk benchmark
 apt_install akonadiconsole
-
+apt_install unetbootin extlinux
+  
 syve_section "Ruby" #via rbenv
 
 apt_install libsqlite3-dev
