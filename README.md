@@ -12,10 +12,8 @@ SystemverwaltungsScriptSammelsurium für die Installation von Kubuntu-Derivaten
     ssh-keygen ;cat $HOME/.ssh/id_rsa.pub
 
     mkdir $HOME/bin ;cd $HOME/bin
-    git clone git@github.com:sunito/syver.git
-    bash syver/bin/sy-basiconf
+    git clone git@github.com:sunito/syver.git ;bash syver/bin/sy-basiconf
 
     mkdir $HOME/bin ;cd $HOME/bin
-    git clone https://github.com/sunito/syver.git
-    bash syver/bin/sy-basiconf
+    git clone https://github.com/sunito/syver.git ;bash syver/bin/sy-basiconf
     
