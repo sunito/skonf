@@ -159,6 +159,7 @@ StartupNotify=true
 Terminal=false
 Type=Application
 EOT
+apt_install dconf-cli
 ruby <<EOC
 PREFIX="/org/workrave"
 def dconf_write rel_path, value
