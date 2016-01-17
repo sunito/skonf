@@ -65,8 +65,9 @@ if [ ] ;then su $USER -c groups ;fi
 for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip vboxusers ;do sudo usermod -a -G $group $USER ;done
 
 dat_partition=`df |grep dat |cut -d" " -f1`
-if [ -z `sudo tune2fs -l /dev/sda6 |grep volume |cut -d":" -f2 |tr -d ' '` ] ;then
-  sudo tune2fs -L DAT $dat_patition
+echo dat: $dat_partition
+if [ -z `sudo tune2fs -l $dat_partition |grep volume |cut -d":" -f2 |tr -d ' '` ] ;then
+  sudo tune2fs -L DAT $dat_partition
 fi
 
 syve_section "Mehr Komfort in der Shell"
@@ -269,6 +270,29 @@ Type=Application
 X-KDE-SubstituteUID=false
 eot
 fi
+
+
+syve_section "Workaround für fehlenden klipper-Start in Linux Mint 17.3"
+
+klipperstart_file=/opt/syve/bin/klipper_start.bash
+cat <<eot |sudo tee $klipperstart_file
+# Generiert `date` von syve
+klipper
+eot
+sudo chmod a+x $klipperstart_file
+
+cat >~/.config/autostart/klipper_start.desktop <<eot
+[Desktop Entry]
+Exec=$klipperstart_file
+Icon=
+Name=Klipper starten
+Path=
+StartupNotify=true
+Terminal=false
+Type=Application
+X-KDE-SubstituteUID=false
+eot
+
 
 
 syve_section "Ruby für Qt"
