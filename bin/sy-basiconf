@@ -123,9 +123,14 @@ fi
 #fi
 # Es könnten mehrere Profile da sein, wir nehmen einfach das neueste:
 last_profile=$(ls -tr "$konsole_profile_dir"/*.profile |tail -1)
-echo "last konsole profile: $last_profile" 
+echo "last konsole profile: $last_profile"
+distri_id=$(lsb_release -i |cut -d: -f2 |xargs)
 if [[ -z "$last_profile" ]] ;then
-  last_profile=Shell.profile
+  if [[ $distri_id == LinuxMint ]] ;then  # small hack
+    last_profile=${distri_id}.profile
+  else
+    last_profile=Shell.profile
+  fi
 fi
 konsole_profile_file="$konsole_profile_dir/$(basename $last_profile)"
 kwriteconfig --file "$konsole_profile_file" --group General   --key Name $(basename $last_profile .profile)
