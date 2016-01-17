@@ -389,44 +389,6 @@ fi
 fi # nicht "assistent"
 
 
-if [ $USER = "NEW" ] ;then
-
-  syve_section Wuala
-
-  if [ `which wuala`x = "x" ] ; then
-    if [ `uname -i` = "x86_64" ] ; then
-      wget https://cdn.wuala.com/repo/deb/wuala_current_amd64.deb
-      sudo dpkg -i wuala_current_amd64.deb
-    else
-      wget https://cdn.wuala.com/repo/deb/wuala_current_i386.deb
-      sudo dpkg -i wuala_current_i386.deb
-    fi
-  fi
-  c=s
-  act=log
-  action=${act}in
-  cmd=$c${c}h
-  part2_file=$HOME/.$cmd/part2/wuala
-  unam=`ls $part2_file`
-  part2=`cat $part2_file/$unam`
-  echo u$unam p$part2
-cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
-[Desktop Entry]
-Exec=sleep 19;(wualacmd >/var/log/wuala/wuala-NEW.log 2>&1 &) ;sleep 11 ;wuala $action $unam "$part2" enableAutoLogin 
-#Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
-Icon=system-run
-Name[de]=Wuala-Starten
-Name=Wuala-Starten
-StartupNotify=true
-Terminal=false
-Type=Application
-EOT
-
-  sudo mkdir /var/log/wuala
-  sudo chown $USER.users /var/log/wuala
-
-fi # syve_section Wuala
-
 
 
 syve_section "Lernprogramme"

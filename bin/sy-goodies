@@ -43,7 +43,6 @@ apt_install simplescreenrecorder
 
 # todo:  tmp dir auf andere Stellen übertragen
 if false ;then
-#if [ `which wuala`x = "x" ] ; then
   if [ `uname -i` = "x86_64" ] ; then
     wget ftp://ftp.ubuntu.com/ubuntu/pool/universe/k/k9copy/k9copy_2.3.8-1_amd64.deb -P /tmp
     sudo dpkg -i /tmp/k9copy_2.3.8-1_amd64.deb
