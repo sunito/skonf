@@ -28,3 +28,5 @@ sudo addgroup sylvia sudo
 sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland
 sudo chfn -f "Hof Urstromland" hof-urstromland
 
+sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Osa Paul Odigie" osa ;sudo addgroup osa sudo
+
