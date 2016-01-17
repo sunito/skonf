@@ -271,6 +271,29 @@ eot
 fi
 
 
+syve_section "Workaround für fehlenden klipper-Start in Linux Mint 17.3"
+
+klipperstart_file=/opt/syve/bin/klipper_start.bash
+cat <<eot |sudo tee $klipperstart_file
+# Generiert `date` von syve
+klipper
+eot
+sudo chmod a+x $klipperstart_file
+
+cat >~/.config/autostart/klipper_start.desktop <<eot
+[Desktop Entry]
+Exec=$klipperstart_file
+Icon=
+Name=Klipper starten
+Path=
+StartupNotify=true
+Terminal=false
+Type=Application
+X-KDE-SubstituteUID=false
+eot
+
+
+
 syve_section "Ruby für Qt"
 
 # Svens Apps, dafür Ruby mit KDE-Bindings installieren:
