@@ -77,6 +77,8 @@ if [[ -z `grep /dat /etc/fstab` ]] ;then
 else
   dat_dir=/dat
 fi
+sudo chown $USER.users /dat
+sudo chown $USER.users $dat_dir
 
 CAP_USER=`ruby -e'print ENV["USER"].capitalize'`
 user_fullname=`grep $USER /etc/passwd |cut -d: -f5 |cut -d, -f1`
