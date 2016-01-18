@@ -7,7 +7,7 @@ syve_section "Telefonie"
 
 apt_install skype
 
-if [ $USER == brunhild ] ;then
+if [ $USER != sunito ] ;then
   phonestart_deactivated=true
 else
   phonestart_deactivated=false
