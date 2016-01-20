@@ -68,13 +68,14 @@ syve_section "Unterstützung für Windows-Programme installieren"
 
 # Virtuelle Umgebungen
 
-if [[ -z `dpkg -l virtualbox| grep "ii  virt"` ]] ;then
+#if [[ -z `dpkg -l virtualbox| grep "ii  virt"` ]] ;then
+if [ -z `ls /etc/apt/sources.list.d |grep virtualbox` ] ;then  
   wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc | sudo apt-key add -
   echo "### Achtung! trusty fest verdrahtet!!! ###"
-  sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian trusty non-free contrib" >> /etc/apt/sources.list.d/virtualbox.org.list'
+  sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian trusty non-free contrib" > /etc/apt/sources.list.d/virtualbox.org.list'
   sudo apt-get update >/dev/null 
-  apt_install virtualbox-4.3
 fi
+apt_install virtualbox-4.3
 apt_install xdotool   # für das vm-launch-Script
 
 if [[ $USER = "brunhild" ]] ;then
