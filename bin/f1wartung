@@ -1,6 +1,10 @@
 #!/bin/bash
 
 logger "FFFFFFFFFFFFFF start"
+echo 
+echo " Für die Fervwartung dieses Computers bitte Sven anrufen: +49-39881-49194 "
+echo " Oder mailen: fernwart123@suska.org "
+echo
 
 c=s
 cmd=$c${c}h
@@ -28,10 +32,10 @@ if ! [[ -f "$user_file" ]] ;then
   exit 4
 fi
 
-echo -n "    <"
-echo -n $cmd
+echo -n "    <info:"
+echo -n $cmd"-"
 user=`cat $user_file`
-echo -n $user
+echo -n $user"-"
 
 port=`grep "Port " /etc/$cmd/${cmd}d_config |cut -d" " -f2`
 echo -n $port
@@ -57,7 +61,8 @@ echo ">  "
 
 
 logger "FFFFFFFFFFFFFF c$cmd o$ownport p$port u$user"
-echo "Starte Ferwartungs-Konsole" 
+#echo 
+#echo "Starte Ferwartungs-Konsole" 
 
 execute="$cmd -R $ownport:127.0.0.1:$port $user@suska.org"
 
