@@ -144,6 +144,8 @@ then
   sudo add-apt-repository --yes ppa:csoler-users/retroshare
   sudo apt-get update >/dev/null  
 fi
+# 2016-Jan, Sv: in Linux Mint Rosa scheint was mit dem Key-import nicht zu klappen, also workaround:
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D8D05E222E10C9E3
 apt_install retroshare
 
 if [[ ! $USER = "brunhild" ]] ;then
