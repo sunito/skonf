@@ -25,12 +25,14 @@ apt_install bonnie++  # disk benchmark
 apt_install akonadiconsole
 apt_install unetbootin extlinux
   
-syve_section "Ruby" #via rbenv
+syve_section "Sqlite" 
 
-apt_install libsqlite3-dev
-apt_install ruby-sqlite3
+apt_install sqlite3
+apt_install libsqlite3-dev ruby-sqlite3
 
 exit 0
+
+syve_section "Ruby via rbenv"
 
 #apt_install rbenv
 if [[ -d ~/.rbenv/versions/1.8.7-debian ]] 
