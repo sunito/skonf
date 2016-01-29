@@ -2,9 +2,9 @@
     
 # "/var/run/media/sunito/Samsara/zzSymBU/2015-08-?4*"
 # "/media/sunito/Samsara/zzSymBU/2015-08-?4*"
-$pattern=ARGV[0]
+$patterns=ARGV
 
-unless $pattern
+if $patterns.empty?
 #  puts "Usage: #{__FILE__} <pattern-to-be-deleted>"
   puts "Usage: "
   puts "  #{File.basename($0)} <pattern-to-be-deleted>"
@@ -25,27 +25,33 @@ puts Time.now
 
 #2015-05-27-18/
 
-Dir[$pattern].each do |dir_to_clear|
+$patterns.each do |pattern|
+Dir[pattern].each do |dir_to_clear|
   puts
   zeit_anf = Time.now
   print zeit_anf
   puts " --> " + dir_to_clear
   pre_used = used_space.to_i
-  puts "vorher: " + used_space
+  puts "vorher:  " + used_space
   system "rm -rf #{dir_to_clear}"
   system "df #{$drive}"
   zeit_end = Time.now
   zeit_diff = zeit_end - zeit_anf
   puts "#{(zeit_diff/60).to_i}:#{"%02d"%(zeit_diff.to_i%60)}"
-  system "rufen"
+  #system "rufen"
+  #system "shopt -s expand_aliases ;source .bash_aliases ;rufen"
+  system "play /111/Produktion/maja1-8.wav 2>/dev/null"
   ref_time = Time.now
-  [0, 6, 24, 20, 30].each do |sleep_time|
+  [0, 6, 5, 5, 5, 5, 50].each do |sleep_time|
     sleep sleep_time+0.1
     post_used = used_space.to_i
     print "diff#{"%02d"%(Time.now-ref_time).to_i}: "
     print "#{pre_used-post_used}   \t"
     puts `df #{$drive}`.lines.to_a.last
   end
+  puts "nachher: " + used_space
+  puts " <-- " + dir_to_clear
+end
 end
 
 system "df"
