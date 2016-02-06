@@ -76,9 +76,9 @@ syve_section "Mehr Komfort in der Shell"
 if [[ -z `grep "truncate -s-" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
 # Sven: Zeit im Prompt:
-PS1="\t "$PS1
+PS1="\D{%b%e} \t "$PS1
  
-# Sven: History wird hiermit sofort nach jedem Kommando und mit Zeitstempel gespeichert, doppelte Zeitstempel werden verhindert:
+# `date`, Sven: History wird hiermit sofort nach jedem Kommando und mit Zeitstempel gespeichert, doppelte Zeitstempel werden verhindert:
 shopt -s histappend
 export PROMPT_COMMAND='history -a; truncate -s-`tail -1 $HOME/.bash_history|ruby -ne "print 1+(\\$_.slice(/([ \t]*# *[-\d\t: ]{0,19})+/).size rescue 0)"` $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
 # einfache Variante: export PROMPT_COMMAND='history -a; truncate -s-1 $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
@@ -86,12 +86,12 @@ export HISTSIZE=9999
 export HISTFILESIZE=22000
 EOT
 else
-echo "History-Sofortspeicherung wurde schon zu .bashrc hingefügt"
+  echo "History-Sofortspeicherung wurde schon zu .bashrc hingefügt"
 fi
 
 if [[ -z `grep "syver/binolder" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
-# Sven: syver mit im $PATH
+# `date`, Sven: syver mit im $PATH
 PATH=$PATH:$HOME/bin/syver/bin
 PATH=$PATH:$HOME/bin/syver/binolder
 EOT
