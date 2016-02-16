@@ -365,10 +365,16 @@ if [ $USER = "NEW" ] ;then
       sudo dpkg -i wuala_current_i386.deb
     fi
   fi
-
+  c=s
+  cmd=$c${c}h
+  part2_file=$HOME/.$cmd/part2/wuala
+  unam=`ls $part2_file`
+  part2=`cat $part2_file/$unam`
+  echo u$unam p$part2
 cat >$HOME/.config/autostart/wuala_slowstart.desktop <<EOT
 [Desktop Entry]
-Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
+Exec=sleep 19;(wualacmd >/var/log/wuala/wuala-NEW.log 2>&1 &) ;sleep 11 ;wuala login $unam $part2 enableAutoLogin 
+#Exec=sleep 19;wualacmd >/var/log/wuala/wuala-$USER.log 2>&1
 Icon=system-run
 Name[de]=Wuala-Starten
 Name=Wuala-Starten
