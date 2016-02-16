@@ -7,7 +7,7 @@ syve_section "Telefonie"
 
 apt_install skype
 
-if [ $USER == brunhild ] ;then
+if [ $USER != sunito ] ;then
   phonestart_deactivated=true
 else
   phonestart_deactivated=false
@@ -32,8 +32,10 @@ syve_section "Multimedia-Programme"
 apt_install libdvdread4
 sudo /usr/share/doc/libdvdread4/install-css.sh
 
-apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
+#205-Dez, Sven: veraltet: apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
+
 apt_install vlc
+apt_install xfburn # k3b hat Macken
 apt_install pavucontrol
 apt_install audacity
 
@@ -41,7 +43,6 @@ apt_install simplescreenrecorder
 
 # todo:  tmp dir auf andere Stellen übertragen
 if false ;then
-#if [ `which wuala`x = "x" ] ; then
   if [ `uname -i` = "x86_64" ] ; then
     wget ftp://ftp.ubuntu.com/ubuntu/pool/universe/k/k9copy/k9copy_2.3.8-1_amd64.deb -P /tmp
     sudo dpkg -i /tmp/k9copy_2.3.8-1_amd64.deb
@@ -63,6 +64,61 @@ fi
 # sudo apt-get update >/dev/null
 # apt_install simplescreenrecorder
 
+syve_section "Unterstützung für Windows-Programme installieren"
+
+# Virtuelle Umgebungen
+
+#if [[ -z `dpkg -l virtualbox| grep "ii  virt"` ]] ;then
+if [ -z `ls /etc/apt/sources.list.d |grep virtualbox` ] ;then  
+  wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc | sudo apt-key add -
+  echo "### Achtung! trusty fest verdrahtet!!! ###"
+  sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian trusty non-free contrib" > /etc/apt/sources.list.d/virtualbox.org.list'
+  sudo apt-get update >/dev/null 
+fi
+apt_install virtualbox-4.3
+apt_install xdotool   # für das vm-launch-Script
+
+if [[ $USER = "brunhild" ]] ;then
+cat <<eot >.local/share/applications/emWave.desktop
+[Desktop Entry]
+Comment[de_DE]=by HeartMath
+Comment=by HeartMath
+Exec=~/bin/vmanage/bin/vm-launch-emwave "C:\\\\Programme\\\\HeartMath\\\\emWave\\\\emwavepc.exe"
+GenericName[de_DE]=emWave Pro
+GenericName=emWave Pro
+Icon=/dat/w4a1/emwv.png
+MimeType=
+Name=emWave
+NoDisplay=false
+Path=
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+eot
+fi
+
+# Wine-Emulator
+apt_install wine winetricks
+
+# Wir wollwn die neueste Version von PoL:
+if [ -z `ls /etc/apt/sources.list.d |grep playonlinux` ]
+then  
+  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E0F72778C4676186
+  sudo wget http://deb.playonlinux.com/playonlinux_trusty.list -O /etc/apt/sources.list.d/playonlinux.list
+  sudo apt-get update >/dev/null
+fi
+apt_install xterm playonlinux
+
+apt_install ttf-mscorefonts-installer
+
+apt_install winbind # needed for Office2010
+# wine 1.5.2, gecko 2.40, mono-4.5.6, msxml6
+
 syve_section "Weitere Software installieren"
 
 # seems already installed:
@@ -73,12 +129,12 @@ if [[ ! -f $HOME/.mtoolsr && -z `grep mtools_skip_check=1 $HOME/.mtoolsrc`  ]] ;
   echo mtools_skip_check=1 >> $HOME/.mtoolsrc 
 fi
 
-apt_install wine winetricks
-
 apt_install kdiff3
 
 apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pages"
 apt_install cups-pdf
+
+apt_install simple-scan
 
 apt_install transmission-qt # suse                                                                                                                                                                                                                     
 
@@ -89,10 +145,13 @@ then
   sudo add-apt-repository --yes ppa:csoler-users/retroshare
   sudo apt-get update >/dev/null  
 fi
+# 2016-Jan, Sv: in Linux Mint Rosa scheint was mit dem Key-import nicht zu klappen, also workaround:
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D8D05E222E10C9E3
 apt_install retroshare
 
-
-apt_install workrave
+if [[ ! $USER = "brunhild" ]] ;then
+  apt_install workrave
+fi
 cat <<EOT >$HOME/.config/autostart/workrave-slowstart.desktop
 [Desktop Entry]
 Exec=sleep 51;workrave
@@ -102,6 +161,7 @@ StartupNotify=true
 Terminal=false
 Type=Application
 EOT
+apt_install dconf-cli
 ruby <<EOC
 PREFIX="/org/workrave"
 def dconf_write rel_path, value
@@ -126,6 +186,7 @@ end
 dconf_write "gui/applet/enabled", "false"
 dconf_write "gui/main-window/enabled", "false"
 EOC
+sudo sed -i "s/eine Mikropause?/Atem + Frieden? /" /usr/share/locale/de/LC_MESSAGES/workrave.mo
 
 # ToDo: correctly add to existing window rules (--> increase "count")
 cat <<eot >>$HOME/.config/kwinrulesrc

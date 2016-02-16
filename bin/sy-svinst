@@ -1,19 +1,19 @@
-sudo adduser --uid 1001 --ingroup users --add_extra_groups --force-badname NEW
-sudo chfn -f "Nele Emilie Wunna Wokan" NEW
-sudo addgroup NEW sudo
+sudo adduser --uid 1001 --ingroup users --add_extra_groups --force-badname NEW ;sudo chfn -f "Nele Emilie Wunna Wokan" NEW ;sudo addgroup NEW sudo
 
 sudo adduser --uid 1003 --ingroup users --add_extra_groups martin
 
 
-sudo adduser --uid 1011 --ingroup users --add_extra_groups assistent
-sudo chfn -f "Sabrina Peisker" assistent
-sudo addgroup assistent sudo
+sudo adduser --uid 1011 --ingroup users --add_extra_groups assistent ;sudo chfn -f "Sabrina Peisker" assistent ;sudo addgroup assistent sudo
 
-sudo adduser --uid 1008 --ingroup users --add_extra_groups hans
-sudo chfn -f "Johannes Suska" hans
-sudo addgroup hans sudo
+sudo adduser --uid 1008 --ingroup users --add_extra_groups hans ;sudo chfn -f "Johannes Suska" hans ;sudo addgroup hans sudo
 
-sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild
-sudo chfn -f "Brunhild Wokan" brunhild
-sudo addgroup brunhild sudo
+sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild ;sudo chfn -f "Brunhild Wokan" brunhild ;sudo addgroup brunhild sudo
+
+sudo adduser --uid 1010 --ingroup users --add_extra_groups gerhard ;sudo chfn -f "Gerhard Lichtner" gerhard ;sudo addgroup gerhard sudo
+
+sudo adduser --uid 1011 --ingroup users --add_extra_groups sylvia ;sudo chfn -f "Sylvia" sylvia ;sudo addgroup sylvia sudo
+
+sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland ;sudo chfn -f "Hof Urstromland" hof-urstromland
+
+sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Osa Paul Odigie" osa ;sudo addgroup osa sudo
 

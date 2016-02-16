@@ -65,8 +65,9 @@ if [ ] ;then su $USER -c groups ;fi
 for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip vboxusers ;do sudo usermod -a -G $group $USER ;done
 
 dat_partition=`df |grep dat |cut -d" " -f1`
-if [ -z `sudo tune2fs -l /dev/sda6 |grep volume |cut -d":" -f2 |tr -d ' '` ] ;then
-  sudo tune2fs -L DAT $dat_patition
+echo dat: $dat_partition
+if [ -z `sudo tune2fs -l $dat_partition |grep volume |cut -d":" -f2 |tr -d ' '` ] ;then
+  sudo tune2fs -L DAT $dat_partition
 fi
 
 syve_section "Mehr Komfort in der Shell"
@@ -75,9 +76,9 @@ syve_section "Mehr Komfort in der Shell"
 if [[ -z `grep "truncate -s-" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
 # Sven: Zeit im Prompt:
-PS1="\t "$PS1
+PS1="\D{%b%e} \t "$PS1
  
-# Sven: History wird hiermit sofort nach jedem Kommando und mit Zeitstempel gespeichert, doppelte Zeitstempel werden verhindert:
+# `date`, Sven: History wird hiermit sofort nach jedem Kommando und mit Zeitstempel gespeichert, doppelte Zeitstempel werden verhindert:
 shopt -s histappend
 export PROMPT_COMMAND='history -a; truncate -s-`tail -1 $HOME/.bash_history|ruby -ne "print 1+(\\$_.slice(/([ \t]*# *[-\d\t: ]{0,19})+/).size rescue 0)"` $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
 # einfache Variante: export PROMPT_COMMAND='history -a; truncate -s-1 $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
@@ -85,12 +86,12 @@ export HISTSIZE=9999
 export HISTFILESIZE=22000
 EOT
 else
-echo "History-Sofortspeicherung wurde schon zu .bashrc hingefügt"
+  echo "History-Sofortspeicherung wurde schon zu .bashrc hingefügt"
 fi
 
 if [[ -z `grep "syver/binolder" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
-# Sven: syver mit im $PATH
+# `date`, Sven: syver mit im $PATH
 PATH=$PATH:$HOME/bin/syver/bin
 PATH=$PATH:$HOME/bin/syver/binolder
 EOT
@@ -102,19 +103,81 @@ if ! [[ -f ~/.alias ]] ;then
   ln -s ~/.bash_aliases ~/.alias
 fi
 
+
+if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+
+# Sven: Nicht versehentlich Konsolen schließen:
+export IGNOREEOF=3
+EOT
+fi
+
 apt_install screen
 
 # unlimited history 
-kwriteconfig --file $HOME/.local/share/konsole/Shell.profile --group Scrolling --key HistoryMode 2
-if false ;then
- ./.local/share/konsole/Shell.profile
-[General]
-Name=Shell
-Parent=FALLBACK/
-
-[Scrolling]
-HistoryMode=2
+konsole_profile_dir=$HOME/.local/share/konsole
+if ! [[ -d $konsole_profile_dir ]] ;then
+  konsole_profile_dir=$kde_dir/share/apps/konsole
 fi
+#if ! [[ -d $konsole_profile_dir ]] ;then
+#  mkdir "$konsole_profile_dir"
+#fi
+# Es könnten mehrere Profile da sein, wir nehmen einfach das neueste:
+last_profile=$(ls -tr "$konsole_profile_dir"/*.profile |tail -1)
+echo "last konsole profile: $last_profile"
+distri_id=$(lsb_release -i |cut -d: -f2 |xargs)
+if [[ -z "$last_profile" ]] ;then
+  if [[ $distri_id == LinuxMint ]] ;then  # small hack
+    last_profile=${distri_id}.profile
+  else
+    last_profile=Shell.profile
+  fi
+fi
+konsole_profile_file="$konsole_profile_dir/$(basename $last_profile)"
+kwriteconfig --file "$konsole_profile_file" --group General   --key Name $(basename $last_profile .profile)
+#kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Parent FALLBACK/
+kwriteconfig --file "$konsole_profile_file" --group Scrolling --key HistoryMode 2
+
+old_parent=$(kreadconfig --file "$konsole_profile_file" --group General   --key Parent --default FALLBACK/)
+kwriteconfig --file "$konsole_profile_file" --group General   --key Parent "$old_parent"
+
+
+syve_section "Einfachklick"
+
+kwriteconfig --file $kde_dir/share/config/kdeglobals --group KDE --key SingleClick true
+
+syve_section "Logitech-Trackball-Unterstützung"
+
+sudo mkdir /opt/syve
+sudo mkdir /opt/syve/bin
+cat <<eot |sudo tee /opt/syve/bin/trackball-scroll.bash
+# Generiert `date` von syve
+# http://blog.karssen.org/2010/09/11/linux-the-logitech-trackman-marble-and-emulating-a-scroll-wheel/
+# http://www.robmeerman.co.uk/unix/xinput#enabling_emulation_ubuntu_1004
+
+# 1. Mausrad-Rollfunktion durch Drücken des kleinen Buttons über der linken Maustaste beim Rollen: 
+xinput set-int-prop "Logitech USB Trackball" "Evdev Wheel Emulation Button" 8 8 
+xinput set-int-prop "Logitech USB Trackball" "Evdev Wheel Emulation" 8 1 
+xinput set-prop "Logitech USB Trackball" "Evdev Wheel Emulation Axes" 6 7 4 5
+
+# 2. Mittelklick:
+xinput set-int-prop "Logitech USB Trackball" "Evdev Middle Button Emulation" 8 1
+eot
+sudo chmod a+x /opt/syve/bin/trackball-scroll.bash
+
+# Und das immer noch für jeden User extra (weil ich nicht extra testen wollte, ob es in rc.local zu früh wäre):
+
+cat >~/.config/autostart/trackball-scroll.bash.desktop <<eot
+[Desktop Entry]
+Exec=sleep 37 ;/opt/syve/bin/trackball-scroll.bash
+GenericName=
+Icon=bball
+Name=Scrollen und Mittelklick beim Trackball
+Path=
+StartupNotify=true
+Terminal=false
+Type=Application
+X-KDE-SubstituteUID=false
+eot
 
 syve_section "Netzwerk"
 
@@ -154,11 +217,6 @@ apt_install beep sox jovie
 
 # Wichtige graphische Tools
 apt_install k4dirstat
-
-# Virtuelle Umgebungen
-if [[ -z `dpkg -l virtua*| grep "ii  virt"` ]] ;then
-  apt_install virtualbox
-fi
 
 syve_section "Kommunikation"
 
@@ -206,7 +264,7 @@ if ! [[ -f $fernw_sym_path ]] ;then
 cat <<eot >$fernw_sym_path
 [Desktop Entry]
 Comment=
-Exec=konsole -e bash ~/bin/syver/bin/f1wartung
+Exec=konsole -p LocalTabTitleFormat=Fernwartung -e bash ~/bin/syver/bin/f1wartung
 Icon=strigi
 Name=fernwartung
 NoDisplay=false
@@ -217,6 +275,29 @@ Type=Application
 X-KDE-SubstituteUID=false
 eot
 fi
+
+
+syve_section "Workaround für fehlenden klipper-Start in Linux Mint 17.3"
+
+klipperstart_file=/opt/syve/bin/klipper_start.bash
+cat <<eot |sudo tee $klipperstart_file
+# Generiert `date` von syve
+klipper
+eot
+sudo chmod a+x $klipperstart_file
+
+cat >~/.config/autostart/klipper_start.desktop <<eot
+[Desktop Entry]
+Exec=$klipperstart_file
+Icon=
+Name=Klipper starten
+Path=
+StartupNotify=true
+Terminal=false
+Type=Application
+X-KDE-SubstituteUID=false
+eot
+
 
 
 syve_section "Ruby für Qt"
@@ -233,7 +314,7 @@ apt_install cmake   # für Compilieren von qtbindings gebraucht
 if [ -z "`gem list |grep qtbindings`" ] ;then
 sudo gem install qtbindings 
 fi
-sudo gem install slop
+sudo gem install slop -v 3.5
 
 apt_install akonadiconsole
 
@@ -253,7 +334,7 @@ diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.k
 140a141,143
 > [Containments][2][Applets][112][Configuration][General]
 > show_suspend=true
-> 
+
 
 diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/config/powerdevilrc
 3a4,6

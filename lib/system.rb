@@ -9,5 +9,6 @@ $kde_dir = ENV['HOME'] + "/.kde4"
 if File.exist?( $kde_dir + "/share/config/kwinrc" )  
   puts $kde_dir
 else
-  kde_dir = ENV['HOME'] + "/.kde"
+  puts ".kde"
+  $kde_dir = ENV['HOME'] + "/.kde"
 end
