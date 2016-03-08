@@ -316,7 +316,10 @@ sudo gem install qtbindings
 fi
 sudo gem install slop -v 3.5
 
-apt_install akonadiconsole
+if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
+  # Nur wenn schon akonadi installiert
+  apt_install akonadiconsole
+fi
 
 sudo apt-get dist-upgrade 
 
