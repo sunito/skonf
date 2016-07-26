@@ -196,11 +196,18 @@ XDG_VIDEOS_DIR="$videos_dir"
 EOT
 
 dolphin_dir=$user_dat_dir
-if [ $USER = "sunito" ] ;then
-  dolphin_dir=$documents_dir
-fi
+case $USER in
+  sunito|hans)
+    dolphin_dir=$documents_dir ;;
+  *) 
+    echo dolphin_dir unchanged ;;
+esac
 
-kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file://$dolphin_dir"
+# 2016-Apr, Sven: der zweite Ordner (~/.config) istr der neuere (Plasma 5)
+for dolph_conf_dir in "$kde_dir/share/config" "$HOME/.config" ;do
+#  kwriteconfig --file "$dolph_conf_dir/dolphinrc" --group "General" --key "HomeUrl" "file://$dolphin_dir"
+  kwriteconfig --file "$dolph_conf_dir/dolphinrc" --group "General" --key "HomeUrl" "$dolphin_dir"
+done
 # kwriteconfig --file $kde_dir/share/config/dolphinrc --group "General"  --key "HomeUrl" "file:///111"
 #---  diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
 #---  27a28
