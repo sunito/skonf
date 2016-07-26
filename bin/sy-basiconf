@@ -216,7 +216,9 @@ apt_install mmv
 apt_install beep sox jovie
 
 # Wichtige graphische Tools
-apt_install k4dirstat
+apt_install k4dirstat kdirstat
+
+apt_install kate
 
 syve_section "Kommunikation"
 
@@ -321,6 +323,9 @@ apt_install akonadiconsole
 sudo apt-get dist-upgrade 
 
 exit 0
+
+
+
 
 ###############################################################################
 # Die folgenden Änderungen müssten noch in Script-Stücke umgewandelt werden:

@@ -29,6 +29,22 @@ apt_install thunderbird
 
 syve_section "Multimedia-Programme"
 
+if [ $has_apt ] ;then
+    # todo:  tmp dir auf andere Stellen übertragen
+    if false ;then
+    if [ `uname -i` = "x86_64" ] ; then
+        wget ftp://ftp.ubuntu.com/ubuntu/pool/universe/k/k9copy/k9copy_2.3.8-1_amd64.deb -P /tmp
+        sudo dpkg -i /tmp/k9copy_2.3.8-1_amd64.deb
+    fi
+    fi
+else
+    sudo zypper ar -f -n "Packman-Repo" http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed packman
+    sudo zypper mr -rk -p 20 packman
+    #sudo zypper --no-gpg-checks dup --allow-vendor-change --allow-downgrade --from packman
+    sudo zypper ar -f -n "Tumbleweed-wurzel99" http://opensuse-guide.org/repo/openSUSE_Tumbleweed dvd
+    sudo zypper --gpg-auto-import-keys dup --from packman --from dvd
+fi
+
 apt_install libdvdread4
 sudo /usr/share/doc/libdvdread4/install-css.sh
 
@@ -41,13 +57,6 @@ apt_install audacity
 
 apt_install simplescreenrecorder
 
-# todo:  tmp dir auf andere Stellen übertragen
-if false ;then
-  if [ `uname -i` = "x86_64" ] ; then
-    wget ftp://ftp.ubuntu.com/ubuntu/pool/universe/k/k9copy/k9copy_2.3.8-1_amd64.deb -P /tmp
-    sudo dpkg -i /tmp/k9copy_2.3.8-1_amd64.deb
-  fi
-fi
 
 
 # if [ -z `ls /etc/apt/sources.list.d |grep ps3mediaserver` ]

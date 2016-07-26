@@ -4,6 +4,7 @@ sudo adduser --uid 1003 --ingroup users --add_extra_groups martin
 
 
 sudo adduser --uid 1011 --ingroup users --add_extra_groups assistent ;sudo chfn -f "Sabrina Peisker" assistent ;sudo addgroup assistent sudo
+sudo useradd --uid 1011 assistent ;sudo chfn -f "Sabrina Peisker" assistent
 
 sudo adduser --uid 1008 --ingroup users --add_extra_groups hans ;sudo chfn -f "Johannes Suska" hans ;sudo addgroup hans sudo
 
