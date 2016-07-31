@@ -199,6 +199,15 @@ fi
 apt_install bridge-utils
 
 
+syve_section "NTFS workaround"
+
+# 2016-Jul, Sven: taken from http://askubuntu.com/questions/86086/fsck-cant-find-fsck-ntfs
+if [[ ! -e  /sbin/fsck.ntfs ]] ;then
+  ntfsfix_path=`which ntfsfix`
+  sudo ln -s $ntfsfix_path  /sbin/fsck.ntfs
+else
+  echo "fsck.ntfs existiert bereits"
+fi
 
 syve_section "Wichtige Programme installieren"
 
