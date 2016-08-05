@@ -12,6 +12,14 @@
 # Short-Description: CUPS Printing spooler and server
 ### END INIT INFO
 
+# Install:
+# sudo cp -a suska_backup /etc/init.d/
+# sudo update-rc.d suska_backup defaults
+
+# Ausführen:
+# sudo service suska_backup stop
+
+
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 #DAEMON=/usr/sbin/cupsd
 NAME=suska_backup
@@ -29,12 +37,15 @@ unset TMPDIR
 # Get the timezone set.
 
 LOGGER="logger -t$NAME "
+BACKUP_MOUNTPOINT=/spiegel
+ZIEL_PREFIX="$BACKUP_MOUNTPOINT"/
 
 sync_dir() {
     #if [ -n "$success" ] && [ -x /etc/init.d/xprint ]; then
-    quelle=/$1
+    quelle_eingabe=$1
+    quelle=/$quelle_eingabe 
     echo $quelle
-    ziel=/zbackup/grasprung${quelle//\//-}
+    ziel=$ZIEL_PREFIX${quelle_eingabe//\//-}
     $LOGGER "backup sync of $quelle to $ziel in progress ..."
     echo
     echo "######## STARTING BACKUP OF $quelle #########"
@@ -57,10 +68,9 @@ case "$1" in
 	;;
   stop)
 	log_begin_msg "Stopping for $DESC: $NAME"
-	mount /zbackup || $LOGGER "/zbackup already mounted??"
-	if mountpoint /zbackup ; then
+	mount $BACKUP_MOUNTPOINT || $LOGGER "$BACKUP_MOUNTPOINT already mounted??"
+	if mountpoint $BACKUP_MOUNTPOINT ; then
 	  success=0
-	  sync_dir "daten/Eigene" || success=2
 	  sync_dir "etc"   || success=4
 	  sync_dir "home"  || success=8
 	else

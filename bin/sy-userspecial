@@ -164,7 +164,7 @@ elif [ $USER = "gerhard" ] ;then
   desktop_dir=$user_dat_dir
   documents_dir=$user_dat_dir
   music_dir="$user_dat_dir/05 Musik"
-  #pictures_dir=$documents_dir/???
+  pictures_dir="$user_dat_dir/06 Fotos"
   videos_dir="$user_dat_dir/06 Videos"
 elif [ $USER = "brunhild" ] ;then
   rmdir -v $HOME/*
