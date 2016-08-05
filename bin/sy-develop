@@ -25,6 +25,15 @@ apt_install bonnie++  # disk benchmark
 apt_install akonadiconsole
 apt_install unetbootin extlinux
   
+syve_section "FreePlane MindMapping"
+
+echo "TODO"
+if false ;then
+11093  mv /aa/177/Downloads/freeplane-1.5.13/ /opt/freeplane/
+11096  sudo update-alternatives --install /usr/local/bin/freeplane freeplane /opt/freeplane/freeplane-1.5.13/freeplane.sh 33
+11101  sudo zypper in qxmledit
+fi
+
 syve_section "Sqlite" 
 
 apt_install sqlite3
