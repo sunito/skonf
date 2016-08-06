@@ -202,6 +202,18 @@ case $USER in
   *) 
     echo dolphin_dir unchanged ;;
 esac
+userdat_link_in_homedir="$HOME/$(basename $user_dat_dir)"
+rm "$userdat_link_in_homedir"
+ln -s "$user_dat_dir" "$userdat_link_in_homedir"
+
+download_link_in_homedir="$HOME/$(basename $download_dir)"
+rm "$download_link_in_homedir"
+ln -s "$download_dir" "$download_link_in_homedir"
+
+desktop_link_in_homedir="$HOME/$(basename $desktop_dir)"
+rm "$desktop_link_in_homedir"
+ln -s "$desktop_dir" "$desktop_link_in_homedir"
+
 
 # 2016-Apr, Sven: der zweite Ordner (~/.config) istr der neuere (Plasma 5)
 for dolph_conf_dir in "$kde_dir/share/config" "$HOME/.config" ;do
@@ -213,8 +225,10 @@ done
 #---  27a28
 #---  > HomeUrl=file:///111
 
-if [ ! -z $WINEPREFIX ] ;then
-  base="$WINEPREFIX/drive_c/users/$USER"
+winepref=${WINEPREFIX=$HOME/.wine}
+
+if [ ! -z $winepref ] ;then
+  base="$winepref/drive_c/users/$USER"
   rm   "$base/Documents"
   ln -s $documents_dir "$base/Documents"
   rm "$base/Meine Dokumente"
