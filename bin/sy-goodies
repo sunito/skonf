@@ -29,6 +29,8 @@ apt_install thunderbird
 
 syve_section "Multimedia-Programme"
 
+apt_install libav-tools
+
 if [ $has_apt ] ;then
     # todo:  tmp dir auf andere Stellen übertragen
     if false ;then
