@@ -1,0 +1,6 @@
+#!/bin/bash
+
+targ=`date +%m%d` 
+zieldatei="/111/Folks/sip-calls/twinklech-G${targ}.csv" 
+cp -a ~/.twinkle/twinkle.ch $zieldatei  
+libreoffice $zieldatei
