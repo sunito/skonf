@@ -225,7 +225,8 @@ apt_install mmv
 apt_install beep sox jovie
 
 # Wichtige graphische Tools
-apt_install k4dirstat kdirstat
+apt_install k4dirstat 
+apt_install kdirstat
 
 apt_install kate
 
