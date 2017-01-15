@@ -1,6 +1,8 @@
 #!/bin/bash
 
+buchst=`date +%y` - 10
+buchst=H
 targ=`date +%m%d` 
-zieldatei="/111/Folks/sip-calls/twinklech-G${targ}.csv" 
+zieldatei="/111/Folks/sip-calls/twinklech-$buchst${targ}.csv" 
 cp -a ~/.twinkle/twinkle.ch $zieldatei  
-libreoffice $zieldatei
+libreoffice $zieldatei &
