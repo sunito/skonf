@@ -287,6 +287,14 @@ X-KDE-SubstituteUID=false
 eot
 fi
 
+syve_section "teamviewer"
+
+echo TODO
+if false ;then
+  wget https://download.teamviewer.com/download/teamviewer_i386.deb
+  sudo dpkg -i teamviewer_i386.deb
+  sudo apt-get install -f
+fi
 
 syve_section "Workaround für fehlenden klipper-Start in Linux Mint 17.3"
 
