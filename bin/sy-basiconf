@@ -225,7 +225,8 @@ apt_install mmv
 apt_install beep sox jovie
 
 # Wichtige graphische Tools
-apt_install k4dirstat kdirstat
+apt_install k4dirstat 
+apt_install kdirstat
 
 apt_install kate
 
@@ -243,8 +244,8 @@ then
 fi
 apt_install sflphone-gnome sflphone-kde
 
-#veraltet:
-#sudo apt-get --yes install twinkle pidgin
+# doch nicht #veraltet:
+apt_install twinkle pidgin
 apt_install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
 
 # Damit der CDDN.Dialog in K3B funktioniert

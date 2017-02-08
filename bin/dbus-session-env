@@ -1,0 +1,2 @@
+#!/bin/bash
+strings /proc/*/environ  2>/dev/null |grep DBUS_SESSION_BUS_ADDRESS |tail -1
