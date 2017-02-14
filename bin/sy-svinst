@@ -4,9 +4,10 @@ sudo adduser --uid 1003 --ingroup users --add_extra_groups martin
 
 
 sudo adduser --uid 1011 --ingroup users --add_extra_groups assistent ;sudo chfn -f "Sabrina Peisker" assistent ;sudo addgroup assistent sudo
-sudo useradd --uid 1011 assistent ;sudo chfn -f "Sabrina Peisker" assistent
+sudo useradd --uid 1011 -m assistent ;sudo chfn -f "Sabrina Peisker" assistent
 
 sudo adduser --uid 1008 --ingroup users --add_extra_groups hans ;sudo chfn -f "Johannes Suska" hans ;sudo addgroup hans sudo
+sudo useradd --uid 1008 --create-home hans ;sudo chfn -f "Johannes Suska" hans
 
 sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild ;sudo chfn -f "Brunhild Wokan" brunhild ;sudo addgroup brunhild sudo
 
@@ -18,3 +19,5 @@ sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland ;sudo
 
 sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Osa Paul Odigie" osa ;sudo addgroup osa sudo
 
+sudo useradd --uid 1018 --create-home 
+hanna;sudo chfn -f "Johannes Suska" hans
