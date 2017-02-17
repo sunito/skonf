@@ -17,6 +17,10 @@ Systemverwaltungs-Script-Sammelsurium für die routinemaäßige Konfiguration vo
     
 
     mkdir $HOME/bin ;cd $HOME/bin
+
+    sudo mkdir /wartung
+    sudo chown sunito.users /wartung
+    cd /wartung
     git clone git@github.com:sunito/skonf.git ;bash skonf/bin/sy-basiconf
     # pushbar, daher die Standardvariante
 

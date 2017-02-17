@@ -90,15 +90,18 @@ else
 fi
 
 skonfbin_teil=skonf/bin
-skonf_pfad=$HOME/bin/$skonfbin_teil
-if [[ -z `grep $skonfbin_teil $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+#skonf_pfad=$HOME/bin/$skonfbin_teil
+skonf_pfad=/wartung/$skonfbin_teil
+
+#if [[ -z `grep $skonfbin_teil $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+if [[ -z `grep $skonf_pfad $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
 # `date`, Sven: skonf mit im $PATH
 PATH=$PATH:$skonf_pfad
 PATH=$PATH:${skonf_pfad}older
 EOT
 else
-  echo "'$skonfbin_teil' schon zum PATH hingefügt"
+  echo "Hinzufügen vom '$skonf_pfad' zum PATH  war schon in .bashrc"
 fi
 
 if ! [[ -f ~/.alias ]] ;then
