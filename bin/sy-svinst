@@ -1,3 +1,5 @@
+sudo useradd --uid 1000 -m sunito
+
 sudo adduser --uid 1001 --ingroup users --add_extra_groups --force-badname NEW ;sudo chfn -f "Nele Emilie Wunna Wokan" NEW ;sudo addgroup NEW sudo
 
 sudo adduser --uid 1003 --ingroup users --add_extra_groups martin

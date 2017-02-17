@@ -59,10 +59,13 @@ kwriteconfig --file $kde_dir/share/config/kglobalshortcutsrc --group kwin  --key
 
 syve_section "Touchpad"
 
-kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key HorizTwoFingerScroll true
-kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key InvertHorizScroll true
-kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key InvertVertScroll true
-kwriteconfig  --file $kde_dir/share/config/touchpadrc  --group parameters  --key ThreeFingerTapButton MiddleButton
+touchpad_konf=$HOME/.config/touchpadrc
+
+kwriteconfig  --file $touchpad_konf  --group parameters  --key HorizTwoFingerScroll true
+kwriteconfig  --file $touchpad_konf  --group parameters  --key InvertHorizScroll true
+kwriteconfig  --file $touchpad_konf  --group parameters  --key InvertVertScroll true
+kwriteconfig  --file $touchpad_konf  --group parameters  --key ThreeFingerTapButton MiddleButton
+kwriteconfig  --file $touchpad_konf  --group parameters  --key Tapping true
 
 mkdir $HOME/.config/autostart/
 # workaround this bug: https://bugs.kde.org/show_bug.cgi?id=331361

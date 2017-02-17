@@ -233,5 +233,6 @@ apt_install rekonq
 syve_section "Spiele"
 
 apt_install supertux
+apt_install supertuxkart
 
 #syve_section "Lern-Programme installieren"
