@@ -3,7 +3,6 @@
 
 require 'optparse'
 
-#require '/yay/288/bin/syver/lib/werkzeug'
 #require File.join( File.dirname(__FILE__), 'werkzeug')
 
 class Werkzeug

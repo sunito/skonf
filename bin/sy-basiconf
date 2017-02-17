@@ -89,14 +89,16 @@ else
   echo "History-Sofortspeicherung wurde schon zu .bashrc hingefügt"
 fi
 
-if [[ -z `grep "syver/binolder" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+skonfbin_teil=skonf/bin
+skonf_pfad=$HOME/bin/$skonfbin_teil
+if [[ -z `grep $skonfbin_teil $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
-# `date`, Sven: syver mit im $PATH
-PATH=$PATH:$HOME/bin/syver/bin
-PATH=$PATH:$HOME/bin/syver/binolder
+# `date`, Sven: skonf mit im $PATH
+PATH=$PATH:$skonf_pfad
+PATH=$PATH:${skonf_pfad}older
 EOT
 else
-  echo "'bin/syver/bin' schon zum $PATH hingefügt"
+  echo "'$skonfbin_teil' schon zum PATH hingefügt"
 fi
 
 if ! [[ -f ~/.alias ]] ;then
@@ -276,7 +278,7 @@ if ! [[ -f $fernw_sym_path ]] ;then
 cat <<eot >$fernw_sym_path
 [Desktop Entry]
 Comment=
-Exec=konsole -p LocalTabTitleFormat=Fernwartung -e bash ~/bin/syver/bin/f1wartung
+Exec=konsole -p LocalTabTitleFormat=Fernwartung -e bash $skonf_pfad/f1wartung
 Icon=strigi
 Name=fernwartung
 NoDisplay=false
