@@ -40,11 +40,14 @@ if [ $has_apt ] ;then
     fi
     fi
 else
+  if false ;then
+  # Lieber icht so viel in den Reops rumpfuschen
     sudo zypper ar -f -n "Packman-Repo" http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed packman
     sudo zypper mr -rk -p 20 packman
     #sudo zypper --no-gpg-checks dup --allow-vendor-change --allow-downgrade --from packman
     sudo zypper ar -f -n "Tumbleweed-wurzel99" http://opensuse-guide.org/repo/openSUSE_Tumbleweed dvd
     sudo zypper --gpg-auto-import-keys dup --from packman --from dvd
+  fi
 fi
 
 apt_install libdvdread4
@@ -237,6 +240,7 @@ apt_install rekonq
 syve_section "Spiele"
 
 apt_install supertux
-apt_install supertuxkart
+# Autorennen, hat nicht den Kult-Wert von Supertux
+#apt_install supertuxkart
 
 #syve_section "Lern-Programme installieren"
