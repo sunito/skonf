@@ -1,0 +1,17 @@
+
+echo $1
+
+
+
+if [[ -z $1 ]] ; then
+  echo "Usage $0 [0|1]"
+  echo
+else
+  if [[ $1 == 1 ]] ;then 
+    wert=true 
+  else
+    wert=false 
+  fi
+  echo $wert
+  kwriteconfig --file ~/.config/akonadi/akonadiserverrc --group QMYSQL --key StartServer $wert
+fi
