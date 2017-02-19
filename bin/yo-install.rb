@@ -106,20 +106,6 @@ def move_and_symlink_or_ensure_correctness(store_name, orig_name)
   create_link( store_name, orig_name)
 end
 
-def create_dir_unless_exists dir_name
-  unless File.exist? dir_name
-    begin
-      Dir.mkdir dir_name 
-    rescue
-      puts $!
-      puts_and_execute "sudo mkdir #{dir_name}"
-      puts_and_execute "sudo chown #{ENV['USER']}.users #{dir_name}"
-    end     
-  else
-    puts "#{dir_name} exists"
-  end
-end
-
 
 
 

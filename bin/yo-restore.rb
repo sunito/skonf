@@ -21,23 +21,37 @@ def restore_link(target_name, link_name)
   puts "#{target_name} --> #{link_name}"
 end
 
-pairs = %w[
-  /111/ye-sys/kabc-neu/                  ~/.kde/share/apps/kabc
-  
-  /111/ye-sys/kmail-neu/                 ~/.kde/share/apps/kmail
-  /111/ye-sys/kmail-neu/kmailrc          ~/.kde/share/config/kmailrc
-  /111/ye-sys/kmail-neu/kmail2rc         ~/.kde/share/config/kmail2rc
-  /111/ye-sys/kmail-neu/emaildefaults    ~/.kde/share/config/emaildefaults
-  /111/ye-sys/kmail-neu/emailidentities  ~/.kde/share/config/emailidentities 
-  /111/ye-sys/kmail-neu/mailtransports   ~/.kde/share/config/mailtransports
-  /111/ye-sys/kmail-neu/ye-signaturen/   ~/.mail-signaturen
-  
-  /111/ye-sys/mozilla-neu/       ~/.mozilla  
+yesys_dir = "/111/ye-sys"
+create_dir_unless_exists yesys_dir
+kmail_dir = yesys_dir / "kmail-neu"
+create_dir_unless_exists kmail_dir
+ako_config = yesys_dir / "akonadi-konfig"
+create_dir_unless_exists ako_config
 
-  /yay/211/ye-vbox/dotVirtualBox  ~/.VirtualBox
+pairs = [
+  # ["/111/ye-sys/kabc-neu/",                "~/.kde/share/apps/kabc"], veraltet
+  
+  # ["/111/ye-sys/kmail-neu/",               "~/.kde/share/apps/kmail"], veraltet
+  #["/111/ye-sys/kmail-neu/kmailrc,          "~/.kde/share/config/kmailrc"], veraltet
+
+  [kmail_dir / "local-mail",                  "~/.local/share/local-mail"],
+
+  [ako_config / "config_akonadi",            "~/.config/akonadi"], # das ist ein Ordner
+    
+  [ako_config / "kmail2rc",                  "~/.config/kmail2rc"],
+  [ako_config / "emaildefaults",             "~/.config/emaildefaults"],
+  [ako_config / "emailidentities",           "~/.config/emailidentities"],
+  [ako_config / "mailtransports",            "~/.config/mailtransports"],
+  [ako_config / "ye-signaturen",             "~/.mail-signaturen"],
+  
+  [yesys_dir / "mozilla-neu",                "~/.mozilla"],
+
+  ["/yay/211/ye-vbox/dotVirtualBox",         "~/.VirtualBox"]
 
   
-].inject([[]]) do |result, new_val|
+]
+=begin
+.inject([[]]) do |result, new_val|
   new_val = new_val.sub('~/.kde', $kde_dir)
   if result.last.size < 2 
     result.last << new_val
@@ -45,7 +59,7 @@ pairs = %w[
     result << [new_val]
   end
   result
-end
+=end
 
 
 pairs.each do |target_name, link_name|

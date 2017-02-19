@@ -101,4 +101,28 @@ end
 
 def_YAY_consts
 
+
+class String
+  define_method "/" do |teil_pfad|
+    return self if teil_pfad.empty?
+    return teil_pfad if self.empty?  
+    File.join(self, teil_pfad)
+  end
+end
+
 puts "YAY_SWITCH_DIR=#{YAY_SWITCH_DIR}, YAY_SCHEME=#{YAY_SCHEME.inspect}"
+
+def create_dir_unless_exists dir_name
+  unless File.exist? dir_name
+    begin
+      Dir.mkdir dir_name 
+    rescue
+      puts $!
+      puts_and_execute "sudo mkdir #{dir_name}"
+      puts_and_execute "sudo chown #{ENV['USER']}.users #{dir_name}"
+    end     
+  else
+    puts "#{dir_name} exists"
+  end
+end
+
