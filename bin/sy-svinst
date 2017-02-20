@@ -24,4 +24,4 @@ sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Os
 sudo useradd --uid 1018 --create-home hanna;sudo chfn -f "Johannes Suska" hans
 
 
-sudo useradd --uid 12345 -m gast;sudo chfn -f "Gast-Benutzer" gast
+sudo useradd --uid 12345 -m -s /bin/bash Gast;sudo chfn -f "Gast-Benutzer" Gast
