@@ -21,5 +21,7 @@ sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland ;sudo
 
 sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Osa Paul Odigie" osa ;sudo addgroup osa sudo
 
-sudo useradd --uid 1018 --create-home 
-hanna;sudo chfn -f "Johannes Suska" hans
+sudo useradd --uid 1018 --create-home hanna;sudo chfn -f "Johannes Suska" hans
+
+
+sudo useradd --uid 12345 -m gast;sudo chfn -f "Gast-Benutzer" gast
