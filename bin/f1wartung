@@ -6,9 +6,14 @@ echo " Für die Fervwartung dieses Computers bitte Sven anrufen: +49-39881-49194
 echo " Oder mailen: fernwart123@suska.org "
 echo
 
+
 c=s
 cmd=$c${c}h
 user_file=$HOME/.$cmd/fernwartung/user
+
+function tabecho {
+  echo -e "--------------- $1 \t $2"
+}
 
 if [[ $1 == "--init" ]] ;then
   echo "Installiere" 
@@ -32,28 +37,28 @@ if ! [[ -f "$user_file" ]] ;then
   exit 4
 fi
 
-echo -n "    <info:"
-echo -n $cmd"-"
+echo "Fernwartungs-Info:"
+
+tabecho cmd: $cmd
+
 user=`cat $user_file`
-echo -n $user"-"
+tabecho user: $user
 
 port=`grep "Port " /etc/$cmd/${cmd}d_config |cut -d" " -f2`
-echo -n $port
+tabecho port: ${port:=22}
 
-echo -n "-"
 
 caller_base=$(basename $0)
 digit=${caller_base:1:1}
 if [[ ! $digit =~ [0-9] ]]  ;then 
   digit=0
 fi
-echo -n $digit
+tabecho digit: $digit
 
-echo -n "-"
+
 
 ownport=$((10${digit}40 + `id -u`))
-echo -n $ownport
-echo ">  "
+tabecho eigp: $ownport
 
 
 
