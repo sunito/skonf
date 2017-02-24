@@ -1,7 +1,8 @@
 
 echo $1
 
-
+echo -n "vorher: "
+kreadconfig --file ~/.config/akonadi/akonadiserverrc --group QMYSQL --key StartServer
 
 if [[ -z $1 ]] ; then
   echo "Usage $0 [0|1]"
@@ -12,6 +13,7 @@ else
   else
     wert=false 
   fi
+  echo -n "setze:  "
   echo $wert
   kwriteconfig --file ~/.config/akonadi/akonadiserverrc --group QMYSQL --key StartServer $wert
 fi
