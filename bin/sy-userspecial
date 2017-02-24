@@ -186,7 +186,7 @@ elif [ $USER = "hans" ] ;then
   desktop_dir=$HOME/Desktop
   rm $desktop_dir # falls es ein Link war
   mkdir $desktop_dir
-  for ud in Hans Hanna Fotos ;do
+  for ud in Hans Hanna Fotos Downloads--Allgemein ;do
     ln -s "$user_dat_dir/$ud" "$desktop_dir"/
   done
 fi
@@ -426,13 +426,6 @@ fi # nicht "assistent"
 
 
 syve_section "Software"
-
-case $USER in
-  hans | hanna | sabine )
-    apt_install evolution 
-    apt_install xboard
-    ;;
-esac
 
 syve_section "Lernprogramme"
 

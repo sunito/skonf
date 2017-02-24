@@ -25,7 +25,16 @@ Terminal=false
 Type=Application
 EOT
 
-apt_install thunderbird
+syve_section "Mailprogramm"
+
+case $USER in
+  hans | hanna | sabine )
+    apt_install evolution 
+    ;;
+  * ) 
+    apt_install thunderbird
+    ;;
+esac
 
 syve_section "Multimedia-Programme"
 
@@ -237,10 +246,3 @@ apt_install chromium-browser
 apt_install rekonq
 
 
-syve_section "Spiele"
-
-apt_install supertux
-# Autorennen, hat nicht den Kult-Wert von Supertux
-#apt_install supertuxkart
-
-#syve_section "Lern-Programme installieren"
