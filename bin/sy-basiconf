@@ -189,7 +189,9 @@ eot
 syve_section "Netzwerk"
 
 
-apt_install nmap ssh curl
+apt_install nmap 
+apt_install ssh 
+apt_install curl
 # Exportieren der Dat-Partition:
 apt_install nfs-kernel-server # (falls nicht oben schon erledigt)
 if [[ -z `grep "/dat" /etc/exports` ]] ;then
