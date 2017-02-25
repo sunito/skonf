@@ -97,7 +97,7 @@ elif [ $USER = "brunhild" ] ;then
   user_dat_dir=$dat_dir/B
   rm $HOME/B
   ln -s $user_dat_dir $HOME/B
-elif [ $USER = "hans" ] ;then
+elif [ ${USER:0:3} = "han" ] ;then
   user_dat_dir=$dat_dir/Eigene
 else
   if [ $dat_dir == /home ] ;then
@@ -177,18 +177,28 @@ elif [ $USER = "brunhild" ] ;then
   rm "$user_dat_dir/Eigene Bilder"
   rm -r "$user_dat_dir/Eigene Bilder"
   ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
-elif [ $USER = "hans" ] ;then
+elif [ ${USER:0:3} = "han" ] ;then
   rmdir -v $HOME/*
-  documents_dir=$user_dat_dir/Hans
+  documents_dir=$user_dat_dir/$CAP_USER
+  if [[ $USER = "hans" ]] ;then
   download_dir=$user_dat_dir/Downloads--Allgemein
+  else
+    download_dir=$user_dat_dir/Zwischenspeicher
+  fi
+  mkdir $download_dir
   pictures_dir=$user_dat_dir/Fotos
   videos_dir=$pictures_dir
   desktop_dir=$HOME/Desktop
   rm $desktop_dir # falls es ein Link war
   mkdir $desktop_dir
-  for ud in Hans Hanna Fotos Downloads--Allgemein ;do
-    ln -s "$user_dat_dir/$ud" "$desktop_dir"/
+  for ud in "$user_dat_dir/Hans" "$user_dat_dir/Hanna" "$documents_dir" "$pictures_dir" "$download_dir" ;do
+    if [[ "$ud" != "$desktop_dir" ]] ;then
+      ln -s "$ud" "$desktop_dir"/
+    fi
   done
+  if [[ $USER = "hanna" ]] ;then
+    ln -s "$pictures_dir" "$documents_dir"
+  fi
 fi
 
 cat <<EOT >$HOME/.config/user-dirs.dirs
@@ -201,8 +211,8 @@ XDG_VIDEOS_DIR="$videos_dir"
 EOT
 
 dolphin_dir=$user_dat_dir
-case $USER in
-  sunito|hans)
+case ${USER:0:3} in
+  sun|han)
     dolphin_dir=$documents_dir ;;
   *) 
     echo dolphin_dir unchanged ;;
@@ -282,6 +292,9 @@ mkdir $HOME/.minidlna/cache
 friendly_name="Computer von $CAP_USER"
 if [ $USER = "hans" ] ;then
   friendly_name="vom Computer in der Spielstube"
+fi
+if [ $USER = "hanna" ] ;then
+  friendly_name="vom Foto-Computer"
 fi
 cat <<EOT >$HOME/.minidlna/minidlna.conf
 # Use A, P, and V to restrict media 'type' in directory
