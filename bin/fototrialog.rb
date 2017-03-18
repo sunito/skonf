@@ -19,7 +19,13 @@ end
 =end
 
 def kdialog args
-  system "kdialog " + args.map{|key,val| %Q(--#{key} "#{val}")}.join(" ")
+  im_hintergrund = args.delete(:fork)
+  cmd = "kdialog  #{args.map{|key,val| %Q(--#{key} "#{val.to_s}")}.join(" ") + (im_hintergrund ? "&" : "")}"
+  if im_hintergrund
+    system cmd
+  else
+    `#{cmd}`
+  end
 end
 
 def trc kind, what=:_nonXistent
@@ -30,27 +36,47 @@ def trc kind, what=:_nonXistent
   end
 end
 
+class String
+  define_method "/" do |rest|
+    if empty?
+      rest
+    else
+      File.join( self, rest)
+    end
+  end
+end
+
+
+IS_SUSE = File.exist? "/run/media"
+
+MEDIA_DIR = if IS_SUSE
+  "/run/media"
+else
+  "/media"
+end
+
 class Transfer
   attr_reader :fehlermeldung
   def initialize
-      sd_card_paths = (Dir["/media/*"] + Dir["/media/#{ENV['USER']}/*"]).map do |pfad|
-	trc :pfad, pfad
-	ziel = File.join( pfad, "DCIM")
-	ziel if File.directory?(pfad) and pfad !~ /cdrom/i and File.directory?(ziel)
+      sd_card_paths = (Dir[MEDIA_DIR / "*"] + Dir[MEDIA_DIR / ENV['USER'] / "*"]).map do |pfad|
+        trc :pfad, pfad
+        ziel = pfad / "DCIM"
+        ziel if File.directory?(pfad) and pfad !~ /cdrom/i and File.directory?(ziel)
       end.compact
       if sd_card_paths.size > 1
-	@fehlermeldung = Iconv.conv("LATIN1", "UTF8", "Es sind mehrere Foto-Karten angeschlossen.\nBitte alle zur Zeit nicht benötigten entfernen!")
+	      @fehlermeldung = Iconv.conv("LATIN1", "UTF8", "Es sind mehrere Foto-Karten angeschlossen.\nBitte alle zur Zeit nicht benötigten entfernen!")
       elsif sd_card_paths.empty?
         @fehlermeldung = "Keine Digitalkamera-Karte gefunden"
       else
-	@fehlermeldung = nil
-	@sd_card_path = sd_card_paths.first
+	      @fehlermeldung = nil
+	      @sd_card_path = sd_card_paths.first
       end
+      #@sd_card_path = "/home/sunito/wiese"
       trc :sd_card_path, @sd_card_path
   end
   
   def target_base_dir
-    dirsfile_path = "#{ENV['HOME']}/.config/user-dirs.dirs"  
+    dirsfile_path = ENV['HOME'] / ".config/user-dirs.dirs"  
     xdg_pictures_dir = if File.exist?(dirsfile_path)
       # ToDo: use `xdg-user-dir PICTURES` 
       File.read(dirsfile_path).scan(/(XDG_PICTURES_DIR) *= *(.*) *$/).first[1]
@@ -176,56 +202,67 @@ begin
 #     empty_space = Qt::Label.new
     
 
-    transfer = nil
+    #transfer = nil
     
-    init_folders = proc do
-      transfer = Transfer.new
-      if transfer.sd_card_path
-        quellort_text = "Quelle: #{transfer.sd_card_path}"
-        if transfer.target_base_dir 
-          target_label.text = "<font color=grey>Ziel: #{transfer.target_base_dir.to_s}</color>"
+    def init_folders 
+      @transfer = Transfer.new
+      if @transfer.sd_card_path
+        @quellort_text = "Quelle: #{@transfer.sd_card_path}"
+        if @transfer.target_base_dir 
+          @zielort_text = "Ziel: #{@transfer.target_base_dir.to_s}"
         else
-          target_label.text = "<font color=grey>Ziel: </font><font color=red>Keinen Ziel-Ordner gefunden! 
-                               <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sven anrufen! (039881-49194) </color>
-                               <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Dann auf [Beenden] clicken! </color>"
+          @zielort_text = "Keinen Ziel-Ordner gefunden! 
+                               --> Sven anrufen! (039881-49194) "
         end
         true
       else
-        source_label.text = transfer.fehlermeldung 
+        @quellort_text = @transfer.fehlermeldung 
         false
       end
     end  
     
-    if init_folders.call
-      main_label = Qt::Label.new('<big>Was ist auf den Fotos (bzw. Videos)?   (kurz, wenige Worte)</big>')
-      beschr_edit = Qt::LineEdit.new(self)
-      beschr_edit.size = 300
-      fortschritt_pbar =  Qt::ProgressBar.new(self)
-      fortschritt_pbar.width = 300
-      fortschritt_pbar.minimum = 0
-      fortschritt_pbar.maximum = 300
+    
+    def starte_gui
+    #haupt_fenster.show
+      if init_folders
+        frage_text = 'Was ist auf den Bildern/Videos?   (wenige Worte)'
+        beschreibung = kdialog  title: FENSTERTITEL, inputbox: frage_text
+        puts beschreibung
+        return if beschreibung.empty?
+      #beschr_edit = Qt::LineEdit.new(self)
+      #beschr_edit.size = 300
+      #fortschritt_pbar =  Qt::ProgressBar.new(self)
+#       fortschritt_pbar.width = 300
+#       fortschritt_pbar.minimum = 0
+#       fortschritt_pbar.maximum = 300
  
-      transf_button = Qt::PushButton.new('Hier klicken um die Fotos und Videos zu verschieben') do
-        self.width = 400  # wirkungslos??
-        self.enabled = false
-        connect(SIGNAL :clicked) do 
-          main_label.text = "Beginne :" + beschr_edit.text
-	  
-          result = transfer.start(beschr_edit.text) do |foto_file_name, fortschritt_prozent|
-            fortschritt_pbar.value = fortschritt_prozent
-            main_label.text = foto_file_name.sub(/^.+...(.{30})/, '...\1')
-          end
-          main_label.text = result
-          self.enabled = false
-          #Qt::Application.instance.quit 
-        end
-      end
+        knopf_text = 'Hier klicken um die Fotos und Videos zu verschieben'
+        erg = kdialog title: FENSTERTITEL, yesno: "Jetzt verschieben: " + beschreibung, "yes-label": knopf_text
+        p erg
+#         self.width = 400  # wirkungslos??
+#         self.enabled = false
+#         connect(SIGNAL :clicked) do 
+#           main_label.text = "Beginne :" + beschr_edit.text
+        p 3
+ 	  #puts kdialog( msgbox: "foto_file_name +  {fortschritt_prozent}%", fork: true)
+           result = @transfer.start(beschreibung) do |foto_file_name, fortschritt_prozent|
+             Process.kill @pid if @pid
+             #@pid = kdialog msgbox: foto_file_name + " #{fortschritt_prozent}%", fork: true
+#             fortschritt_pbar.value = fortschritt_prozent
+#             main_label.text = foto_file_name.sub(/^.+...(.{30})/, '...\1')
+           end
+           p result
+#           main_label.text = result
+#           self.enabled = false
+#           #Qt::Application.instance.quit 
+#         end
+#       end
       
-      beschr_edit.connect(SIGNAL "textChanged(QString)") do |text|
-        transf_button.enabled = not(text.empty?)
+#       beschr_edit.connect(SIGNAL "textChanged(QString)") do |text|
+#         transf_button.enabled = not(text.empty?)
+#       end
       end
     end
-    
 
 #     self.layout = Qt::VBoxLayout.new do
 #       add_widget(source_label, 0, Qt::AlignLeft)
@@ -239,12 +276,8 @@ begin
 #     end    
   end
   
-  def starte_gui
-  #haupt_fenster.show
-    kdialog 
-  end
   if __FILE__ == $0
-    starte_gui
+    Fototrialog.new.starte_gui
   end  
 
 rescue
