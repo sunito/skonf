@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
  
-require 'thread' # workaround for NameError: "const_missing': uninitialized constant Qt::RubyThreadFix::Queue"
-require 'Qt4'
+#require 'thread' # workaround for NameError: "const_missing': uninitialized constant Qt::RubyThreadFix::Queue"
+#require 'Qt4'
 require 'fileutils'
 
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 
 =begin
 begin
@@ -17,6 +17,10 @@ rescue
   p $!
 end
 =end
+
+def kdialog args
+  system "kdialog " + args.map{|key,val| %Q(--#{key} "#{val}")}.join(" ")
+end
 
 def trc kind, what=:_nonXistent
   if what==:_nonXistent
@@ -135,40 +139,41 @@ class Transfer
 end # Transfer
 
 notfall_label = notfall_fenster = nil
-
-app = Qt::Application.new(ARGV) do
-  notfall_fenster = Qt::Widget.new do
-    self.window_title = 'Fehler'
-    resize(600, 80)
-
-    notfall_label = Qt::Label.new("Fehler aufgetreten")
-    empty_space = Qt::Label.new
-    contact_info_label = Qt::Label.new("Bitte Sven informieren: 039881-49194 oder fototrans2013@suska.org")
-    quit_button = Qt::PushButton.new('Beenden') do
-      connect(SIGNAL :clicked) { Qt::Application.instance.quit }
-    end
-    self.layout = Qt::VBoxLayout.new do
-      add_widget(notfall_label, 0, Qt::AlignCenter)
-      add_widget(empty_space, 0, Qt::AlignCenter)
-      add_widget(contact_info_label, 0, Qt::AlignRight)
-      add_widget(quit_button, 0, Qt::AlignRight)
-    end    
-  end
-end
+# 
+# app = Qt::Application.new(ARGV) do
+#   notfall_fenster = Qt::Widget.new do
+#     self.window_title = 'Fehler'
+#     resize(600, 80)
+# 
+#     notfall_label = Qt::Label.new("Fehler aufgetreten")
+#     empty_space = Qt::Label.new
+#     contact_info_label = Qt::Label.new("Bitte Sven informieren: 039881-49194 oder fototrans2013@suska.org")
+#     quit_button = Qt::PushButton.new('Beenden') do
+#       connect(SIGNAL :clicked) { Qt::Application.instance.quit }
+#     end
+#     self.layout = Qt::VBoxLayout.new do
+#       add_widget(notfall_label, 0, Qt::AlignCenter)
+#       add_widget(empty_space, 0, Qt::AlignCenter)
+#       add_widget(contact_info_label, 0, Qt::AlignRight)
+#       add_widget(quit_button, 0, Qt::AlignRight)
+#     end    
+#   end
+# end
 
 begin
-  haupt_fenster = Qt::Widget.new do
+  #haupt_fenster = Qt::Widget.new do
+  class Fototrialog
 
-    self.window_title = "Fototransfer v#{VERSION}"
-    resize(400, 100)
+    FENSTERTITEL = "Fototransfer v#{VERSION}"
+    #resize(400, 100)
 
-    quit_button = Qt::PushButton.new('Beenden') do
-      connect(SIGNAL :clicked) { Qt::Application.instance.quit }
-    end
+#     quit_button = Qt::PushButton.new('Beenden') do
+#       connect(SIGNAL :clicked) { Qt::Application.instance.quit }
+#     end
 
-    source_label = Qt::Label.new('')
-    target_label = Qt::Label.new('')
-    empty_space = Qt::Label.new
+#     source_label = Qt::Label.new('')
+#     target_label = Qt::Label.new('')
+#     empty_space = Qt::Label.new
     
 
     transfer = nil
@@ -176,7 +181,7 @@ begin
     init_folders = proc do
       transfer = Transfer.new
       if transfer.sd_card_path
-        source_label.text = "<font color=grey>Quelle: #{transfer.sd_card_path}</color>"
+        quellort_text = "Quelle: #{transfer.sd_card_path}"
         if transfer.target_base_dir 
           target_label.text = "<font color=grey>Ziel: #{transfer.target_base_dir.to_s}</color>"
         else
@@ -222,30 +227,37 @@ begin
     end
     
 
-    self.layout = Qt::VBoxLayout.new do
-      add_widget(source_label, 0, Qt::AlignLeft)
-      add_widget(target_label, 0, Qt::AlignLeft)
-      add_widget(empty_space, 0, Qt::AlignCenter)
-      add_widget(main_label, 0, Qt::AlignCenter)
-      add_widget(beschr_edit, 0, Qt::AlignCenter)
-      add_widget(transf_button, 0, Qt::AlignLeft)
-      add_widget(fortschritt_pbar, 0, Qt::AlignRight)
-      add_widget(quit_button, 0, Qt::AlignRight)
-    end    
+#     self.layout = Qt::VBoxLayout.new do
+#       add_widget(source_label, 0, Qt::AlignLeft)
+#       add_widget(target_label, 0, Qt::AlignLeft)
+#       add_widget(empty_space, 0, Qt::AlignCenter)
+#       add_widget(main_label, 0, Qt::AlignCenter)
+#       add_widget(beschr_edit, 0, Qt::AlignCenter)
+#       add_widget(transf_button, 0, Qt::AlignLeft)
+#       add_widget(fortschritt_pbar, 0, Qt::AlignRight)
+#       add_widget(quit_button, 0, Qt::AlignRight)
+#     end    
   end
   
-  
-  haupt_fenster.show
-  
+  def starte_gui
+  #haupt_fenster.show
+    kdialog 
+  end
+  if __FILE__ == $0
+    starte_gui
+  end  
+
 rescue
   trc :globalerror, $!
   trc $!.backtrace
-  notfall_label.text = "#{$!}"
-  notfall_fenster.show
+  kdialog title: "Fehler --- " + Fototrialog::FENSTERTITEL, msgbox: <<-eot
+    Es ist ein Fehler aufgetreten. 
+    Bitte Sven informieren: 039881-49194 oder fototrans2017@suska.org 
+
+    Fehlermeldung:
+    #{$!}
+  eot
+  #notfall_fenster.show
 end
 
 
-if __FILE__ == $0
-    #p transfer("Versuch2")
-    app.exec
-end  
