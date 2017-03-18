@@ -237,7 +237,7 @@ begin
 #       fortschritt_pbar.maximum = 300
  
         knopf_text = 'Hier klicken um die Fotos und Videos zu verschieben'
-        erg = kdialog title: FENSTERTITEL, yesno: "Jetzt verschieben: " + beschreibung, "yes-label": knopf_text
+        erg = kdialog title: FENSTERTITEL, yesno: "Jetzt verschieben: " + beschreibung, :"yes-label" => knopf_text
         p erg
 #         self.width = 400  # wirkungslos??
 #         self.enabled = false
