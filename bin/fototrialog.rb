@@ -252,6 +252,7 @@ begin
 #             main_label.text = foto_file_name.sub(/^.+...(.{30})/, '...\1')
            end
            p result
+           kdialog msgbox: result
 #           main_label.text = result
 #           self.enabled = false
 #           #Qt::Application.instance.quit 
