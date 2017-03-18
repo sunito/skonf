@@ -1,7 +1,9 @@
 #!/bin/bash
 
-buchst=`date +%y` - 10
-buchst=H
+reihe="ABCDEFGHIJKL$"
+buchst=${reihe:$(( `date +%y` - 10 )):1} 
+echo $buchst
+#buchst=H
 targ=`date +%m%d` 
 zieldatei="/111/Folks/sip-calls/twinklech-$buchst${targ}.csv" 
 cp -a ~/.twinkle/twinkle.ch $zieldatei  
