@@ -17,16 +17,9 @@ rescue
   p $!
 end
 =end
+SANDBOX = ARGV.delete("--sandbox")
 
-def kdialog args
-  im_hintergrund = args.delete(:fork)
-  cmd = "kdialog  #{args.map{|key,val| %Q(--#{key} "#{val.to_s}")}.join(" ") + (im_hintergrund ? "&" : "")}"
-  if im_hintergrund
-    system cmd
-  else
-    `#{cmd}`
-  end
-end
+p SANDBOX
 
 def trc kind, what=:_nonXistent
   if what==:_nonXistent
@@ -71,7 +64,9 @@ class Transfer
 	      @fehlermeldung = nil
 	      @sd_card_path = sd_card_paths.first
       end
-      #@sd_card_path = "/home/sunito/wiese"
+      if SANDBOX 
+        @sd_card_path = "/home/sunito/ft_sandbox/DCIM"
+      end
       trc :sd_card_path, @sd_card_path
   end
   
@@ -152,7 +147,7 @@ class Transfer
         trc :src_item, foto_file_name
         erg = FileUtils.mv foto_file_name, File.join(target_path, File.basename(foto_file_name))
         sleep 0.01	
-        yield [foto_file_name,    (idx+1) * 300 / foto_count]   
+        yield [foto_file_name,    (idx+1) * 100 / foto_count]   
       end
       erg = "#{foto_count} Dateien übertragen"
     rescue
@@ -185,6 +180,18 @@ notfall_label = notfall_fenster = nil
 #     end    
 #   end
 # end
+
+def cmd_zeile_kdialog(args)
+  "kdialog " + args.map{|key,val| %Q(--#{key} "#{val.to_s}")}.join(" ")
+end
+
+def kdialog args
+  `#{cmd_zeile_kdialog(args)}`
+end
+
+def fork_kdialog args
+  Process.spawn cmd_zeile_kdialog(args)
+end
 
 begin
   #haupt_fenster = Qt::Widget.new do
@@ -225,10 +232,10 @@ begin
     def starte_gui
     #haupt_fenster.show
       if init_folders
-        frage_text = 'Was ist auf den Bildern/Videos?   (wenige Worte)'
+        frage_text = 'Was ist auf den Bildern?   (wenige Worte)'
         beschreibung = kdialog  title: FENSTERTITEL, inputbox: frage_text
-        puts beschreibung
-        return if beschreibung.empty?
+        p beschreibung
+        return if beschreibung.strip.empty?
       #beschr_edit = Qt::LineEdit.new(self)
       #beschr_edit.size = 300
       #fortschritt_pbar =  Qt::ProgressBar.new(self)
@@ -245,12 +252,20 @@ begin
 #           main_label.text = "Beginne :" + beschr_edit.text
         p 3
  	  #puts kdialog( msgbox: "foto_file_name +  {fortschritt_prozent}%", fork: true)
+           vorig_zeit = Time.now - 999
+           pid = nil
            result = @transfer.start(beschreibung) do |foto_file_name, fortschritt_prozent|
-             Process.kill @pid if @pid
-             #@pid = kdialog msgbox: foto_file_name + " #{fortschritt_prozent}%", fork: true
+             if Time.now - vorig_zeit > 0.7
+               pid_neu = fork_kdialog msgbox: "#{fortschritt_prozent}% kopiert." #    Aktuelle Datei: " + foto_file_name 
+               Process.kill "TERM", pid if pid
+               pid = pid_neu
+               puts "pid: #{pid.inspect}"
+               vorig_zeit = Time.now
+             end
 #             fortschritt_pbar.value = fortschritt_prozent
 #             main_label.text = foto_file_name.sub(/^.+...(.{30})/, '...\1')
            end
+           Process.kill "TERM", pid if pid
            p result
            kdialog msgbox: result
 #           main_label.text = result
