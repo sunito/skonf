@@ -155,6 +155,7 @@ create_dir_unless_exists YAY_ENTRY_DIR
 create_dir_unless_exists YAY_SWITCH_DIR
 
 create_link "#{YAH111_LINK}/111", "#{HOME}/111"
+create_link "#{YAH111_LINK}/111", "#{HOME}/.111"
 create_link "#{YAH111_LINK}/111", "/111"
 
 create_link YAY_ENTRY_DIR, "#{HOME}/aa"
@@ -197,6 +198,11 @@ if File.symlink?(ya122_link)
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/linphonerc",   "#{HOME}/.linphonerc"
+  
+  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/kde-config/",         "#{$kde_dir}/share/config"
+  echo ".............. . . ."
+  echo ".............. Think about staring _all_ ~/.configs "
+  #move_and_symlink_or_ensure_correctness "#{ya122_link}/122/config/",         "#{$HOME}/.config"
 else
   puts "no symlink creation for 122, because #{ya122_link} does not exist."  
 end
@@ -207,7 +213,6 @@ if File.symlink?(ya322_link)
   # Die folgende Verlinkung würde den Akonadi-Server lahmlegen
   # move_and_symlink_or_ensure_correctness "#{ya322_link}/322/loc-sh-akonadi/",     "#{HOME}/.local/share/akonadi"
 
-  move_and_symlink_or_ensure_correctness "#{ya322_link}/322/kde-config/",         "#{$kde_dir}/share/config"
   
   create_dir_unless_exists       "#{$kde_dir}/share/config-local"  
   Dir["#{$kde_dir}/share/config/plasm*"].each do |komplett_name|
