@@ -200,8 +200,8 @@ if File.symlink?(ya122_link)
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/linphonerc",   "#{HOME}/.linphonerc"
   
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/kde-config/",         "#{$kde_dir}/share/config"
-  echo ".............. . . ."
-  echo ".............. Think about staring _all_ ~/.configs "
+  puts ".............. . . ."
+  puts ".............. Think about storing _all_ ~/.configs "
   #move_and_symlink_or_ensure_correctness "#{ya122_link}/122/config/",         "#{$HOME}/.config"
 else
   puts "no symlink creation for 122, because #{ya122_link} does not exist."  
