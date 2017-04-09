@@ -127,7 +127,7 @@ class Transfer
       end.flatten
       
       foto_count = all_fotos.size
-      return "Keie Fotos gefunden" if foto_count == 0
+      return "Keine Fotos gefunden" if foto_count == 0
       
       # best_time = Time.now
       # best_time = File.mtime(all_fotos.last)
@@ -232,7 +232,7 @@ begin
     def starte_gui
     #haupt_fenster.show
       if init_folders
-        frage_text = 'Was ist auf den Bildern?   (wenige Worte)'
+        frage_text = "Was ist auf den Bildern? \n(in wenigen Worten)"
         beschreibung = kdialog  title: FENSTERTITEL, inputbox: frage_text
         p beschreibung
         return if beschreibung.strip.empty?
@@ -255,7 +255,7 @@ begin
            vorig_zeit = Time.now - 999
            pid = nil
            result = @transfer.start(beschreibung) do |foto_file_name, fortschritt_prozent|
-             if Time.now - vorig_zeit > 0.7
+             if Time.now - vorig_zeit > 1.5
                pid_neu = fork_kdialog msgbox: "#{fortschritt_prozent}% kopiert." #    Aktuelle Datei: " + foto_file_name 
                Process.kill "TERM", pid if pid
                pid = pid_neu
