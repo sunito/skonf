@@ -73,11 +73,11 @@ def create_link_unless_exists(target_name, link_name)
   end
 end
 
-def move_and_symlink_or_ensure_correctness(store_name, orig_name)
+def move_and_symlink_or_ensure_correctness(store_name, orig_name, &blk)
   unless File.symlink?(store_name) or File.exist?(store_name) # Wenn es schon existiert, fassen wir es nicht an
     if File.exist?(orig_name)
       begin
-	FileUtils.move(orig_name, store_name)  
+	      FileUtils.move(orig_name, store_name)  
       rescue
 	puts $!
 	puts "##!!## sudo(#{store_name}):"
@@ -86,7 +86,7 @@ def move_and_symlink_or_ensure_correctness(store_name, orig_name)
       puts "##!!## #{orig_name} ##> #{store_name}"
     else
       if store_name =~ /\/$/
-	Dir.mkdir store_name
+	      Dir.mkdir store_name
         puts "##!!## Directory #{store_name.inspect} created"
       else
 	# gefährlich, wegen Auto-sync, neue leere Datei würde die alte gute Datei überschreiben
@@ -97,7 +97,7 @@ def move_and_symlink_or_ensure_correctness(store_name, orig_name)
   else
     if File.exist?(orig_name) and not File.symlink?(orig_name)
       if File.directory?(orig_name) and Dir.entries(orig_name).size == 2 # nur "." und ".."
-	Dir.rmdir(orig_name)
+	      Dir.rmdir(orig_name)
       else	
         raise RelevantDataInTwoPlacesError, "!!!!!\n!!!!! Please manually merge #{orig_name} into #{store_name} !!!!!!\n!!!!!"
       end
@@ -155,6 +155,7 @@ create_dir_unless_exists YAY_ENTRY_DIR
 create_dir_unless_exists YAY_SWITCH_DIR
 
 create_link "#{YAH111_LINK}/111", "#{HOME}/111"
+create_link "#{YAH111_LINK}/111", "#{HOME}/.111"
 create_link "#{YAH111_LINK}/111", "/111"
 
 create_link YAY_ENTRY_DIR, "#{HOME}/aa"
@@ -172,11 +173,11 @@ if ya122_dir
   create_dir_unless_exists "#{ya122_link}/122"
 end
 
-ya322_dir = ya122_dir
-ya322_link = "#{YAY_SWITCH_DIR}/ya322"
-if ya322_dir
-  create_link_unless_exists ya322_dir, ya322_link
-  create_dir_unless_exists "#{ya322_link}/322"
+ya222_dir = ya122_dir
+ya222_link = "#{YAY_SWITCH_DIR}/ya222"
+if ya222_dir
+  create_link_unless_exists ya222_dir, ya222_link
+  create_dir_unless_exists "#{ya222_link}/222"
 end
 
 ya177_link = "#{YAY_SWITCH_DIR}/ya177"
@@ -197,17 +198,24 @@ if File.symlink?(ya122_link)
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
   move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/linphonerc",   "#{HOME}/.linphonerc"
+  
+  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/kde-config/",         "#{$kde_dir}/share/config"
+  puts ".............. . . ."
+  puts ".............. Think about storing _all_ ~/.configs "
+  #move_and_symlink_or_ensure_correctness "#{ya122_link}/122/config/",         "#{$HOME}/.config"
 else
   puts "no symlink creation for 122, because #{ya122_link} does not exist."  
 end
 
-if File.symlink?(ya322_link)
-  puts "Performing ya322 actions"
-  move_and_symlink_or_ensure_correctness "#{ya322_link}/322/conf-akonadi/",       "#{HOME}/.config/akonadi"
+if File.symlink?(ya222_link)
+  puts "Performing ya222 actions"
+  move_and_symlink_or_ensure_correctness "#{ya222_link}/222/conf-akonadi/",       "#{HOME}/.config/akonadi"
   # Die folgende Verlinkung würde den Akonadi-Server lahmlegen
   # move_and_symlink_or_ensure_correctness "#{ya322_link}/322/loc-sh-akonadi/",     "#{HOME}/.local/share/akonadi"
 
-  move_and_symlink_or_ensure_correctness "#{ya322_link}/322/kde-config/",         "#{$kde_dir}/share/config"
+  move_and_symlink_or_ensure_correctness "#{ya222_link}/222/data-baloo/",         "#{HOME}/.local/share/baloo" do
+    "balooctl stop"   # erstmal nur als Idee, funktioniert noch nicht
+  end
   
   create_dir_unless_exists       "#{$kde_dir}/share/config-local"  
   Dir["#{$kde_dir}/share/config/plasm*"].each do |komplett_name|
@@ -216,7 +224,7 @@ if File.symlink?(ya322_link)
     move_and_symlink_or_ensure_correctness "#{$kde_dir}/share/config-local/#{basename}",     komplett_name
   end	
 else
-  puts "no 322-symlink creation, #{ya322_link} does not exist."  
+  puts "no 222-symlink creation, #{ya222_link} does not exist."  
 end
 
 
@@ -228,4 +236,4 @@ SEGMENTS.each do |segment|
   create_link "#{YAY_SWITCH_DIR}/ya#{segment}/#{segment}", "#{YAY_ENTRY_DIR}/#{segment}"
 end
 
-  move_and_symlink_or_ensure_correctness "/111/ye-sys/kmail-neu/local-mail/",     "#{HOME}/.local/share/local-mail"
+move_and_symlink_or_ensure_correctness "/111/ye-sys/kmail-neu/local-mail/",     "#{HOME}/.local/share/local-mail"

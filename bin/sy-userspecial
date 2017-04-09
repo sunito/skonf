@@ -152,6 +152,7 @@ elif [ $USER = "NEW" ] ;then
 elif [ $USER = "assistent" ] ;then
   documents_dir=$HOME/Business
   ln -s /111/Business $documents_dir
+  echo ">>>> ln -s /111/Business $documents_dir"
   echo "ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch"
   ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch
   

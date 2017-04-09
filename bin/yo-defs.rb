@@ -9,7 +9,16 @@ POSSIBLE_YAY_SWITCH_DIRS = [BEST_YAY_SWITCH_DIR, "/yay", "/etc/yay", HOME]
 YAY_ENTRY_DIR = (BEST_YAY_SWITCH_DIR=="/yay/switch") ? "/yay" : BEST_YAY_SWITCH_DIR
 
 # SEGMENTS = %w[111 133 311 322 122 411 422 455 811 822]
-SEGMENTS = %w[111 122 133 144 177 211 266 311 322 355 444  477  511  533  555  566  644 699 766  777  811  888  999]
+SEGMENTS = %w[111 122 133 144         177   
+              211 222             266   
+              311             355               
+                                      477      499
+              511     533     555 566  
+                          644                  699 
+                                  766 777  
+              811                              888  
+                                                   999
+           ]
 
 =begin
 11 - arbeit
