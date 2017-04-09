@@ -132,7 +132,8 @@ eot
 fi
 
 # Wine-Emulator
-apt_install wine winetricks
+apt_install wine
+apt_install winetricks
 
 # Wir wollwn die neueste Version von PoL:
 if [ -z `ls /etc/apt/sources.list.d |grep playonlinux` ]
