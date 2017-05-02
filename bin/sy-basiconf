@@ -283,6 +283,7 @@ sudo update-grub2
 
 fernw_sym_path=$HOME/.local/share/applications/fernwartung.desktop
 if ! [[ -f $fernw_sym_path ]] ;then
+mkdir -p $(dirname $fernw_sym_path)
 cat <<eot >$fernw_sym_path
 [Desktop Entry]
 Comment=
