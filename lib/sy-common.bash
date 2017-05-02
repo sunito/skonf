@@ -30,3 +30,5 @@ if [[ -f $kde_dir/share/config//kwinrc ]] ;then
 else
   kde_dir=$HOME/.kde
 fi
+
+config_dir="$HOME/.config"
