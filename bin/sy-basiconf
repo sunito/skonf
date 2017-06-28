@@ -221,7 +221,8 @@ fi
 syve_section "Wichtige Programme installieren"
 
 # Für die Rechtschreibprüfung in Libreoffice:
-apt_install hunspell-de-de
+apt_install hunspell-de-de # ubuntu
+apt_install myspell-de_DE  # opensuse
 
 # Entwicklung
 apt_install git vim
