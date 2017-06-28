@@ -360,6 +360,11 @@ eot
   fi
 fi
 
+# evtl noch für weitere Nutzer einschränken
+if [ $USER != "NEW" ] ;then
+  sudo sed -i -r -e 's/^(DISPLAYMANAGER_AUTOLOGIN)=.*$/\1="'$USER'"/' /etc/sysconfig/displaymanager
+fi
+
 
 ruby $(dirname $own_folder)/lib/sy-userspec.rb
 
@@ -462,10 +467,10 @@ fi # if [ $USER = "NEW" ] ;then
 apt_install ktouch
 
 if false ;then
-Feb25 01:47:34 hanna@arbeitsrechner:~> diff ./.config/libreoffice/4-suse/user/registrymodifications.xcu ./.config/libreoffice/4-suse/user/registrymodifications.xcu_h225a_homedir
-3c3
-< <item oor:path="/org.openoffice.Office.Paths/Paths/org.openoffice.Office.Paths:NamedPath['Work']"><prop oor:name="WritePath" oor:op="fuse"><value>file:///dat/Eigene</value></prop></item>
----
-> <item oor:path="/org.openoffice.Office.Paths/Paths/org.openoffice.Office.Paths:NamedPath['Work']"><prop oor:name="WritePath" oor:op="fuse"><value>file:///dat/Eigene/Hanna</value></prop></item>
-76c76
+#Feb25 01:47:34 hanna@arbeitsrechner:~> diff ./.config/libreoffice/4-suse/user/registrymodifications.xcu ./.config/libreoffice/4-suse/user/registrymodifications.xcu_h225a_homedir
+#3c3
+#< <item oor:path="/org.openoffice.Office.Paths/Paths/org.openoffice.Office.Paths:NamedPath['Work']"><prop oor:name="WritePath" oor:op="fuse"><value>file:///dat/Eigene</value></prop></item>
+echo ---
+#> <item oor:path="/org.openoffice.Office.Paths/Paths/org.openoffice.Office.Paths:NamedPath['Work']"><prop oor:name="WritePath" oor:op="fuse"><value>file:///dat/Eigene/Hanna</value></prop></item>
+#76c76
 fi
