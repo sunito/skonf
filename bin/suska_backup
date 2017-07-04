@@ -1,15 +1,15 @@
 #! /bin/bash
 ### BEGIN INIT INFO
 # Provides:          suska_backup
-# Required-Start:    $syslog $remote_fs
-# Required-Stop:     $syslog $remote_fs
-# Should-Start:      $network avahi
+# Required-Start:    $syslog 
+# Required-Stop:     $syslog 
+# Should-Start:      
 # Should-Stop:
-# X-Start-Before:    samba
-# X-Stop-After:      samba
+# X-Start-Before:    
+# X-Stop-After:      
 # Default-Start:     2
 # Default-Stop:      0
-# Short-Description: CUPS Printing spooler and server
+# Short-Description: Einfaches Backup durch Spiegel den User-DAteien
 ### END INIT INFO
 
 # Install:
@@ -62,12 +62,12 @@ sync_dir() {
 
 case "$1" in
   start)
-	log_begin_msg "Duumy-Starting $DESC: $NAME"
+	log_begin_msg "Pseudo-Starting $DESC: $NAME"
 	success=1
 	log_end_msg $?
 	;;
   stop)
-	log_begin_msg "Stopping for $DESC: $NAME"
+	log_begin_msg "Stopping for $DESC: $NAME -- now starting real work"
 	mount $BACKUP_MOUNTPOINT || $LOGGER "$BACKUP_MOUNTPOINT already mounted??"
 	if mountpoint $BACKUP_MOUNTPOINT ; then
 	  success=0
@@ -80,11 +80,11 @@ case "$1" in
 	log_end_msg $success
 	;;
   reload|force-reload)
-       log_begin_msg "Reloading $DESC: $NAME"
+       log_begin_msg "Dummy-Reloading $DESC: $NAME"
        log_end_msg $?
        ;;
   restart)
-	log_begin_msg "Restarting $DESC: $NAME"
+	log_begin_msg "Dummy-Restarting $DESC: $NAME"
 	log_end_msg $?
 	;;
   status)
