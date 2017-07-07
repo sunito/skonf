@@ -168,6 +168,9 @@ elif [ $USER = "gerhard" ] ;then
   pictures_dir="$user_dat_dir/06 Fotos"
   videos_dir="$user_dat_dir/06 Videos"
 elif [ $USER = "brunhild" ] ;then
+  if [ ! -d $download_dir ] ;then
+    ln -s $documents_dir $download_dir
+  fi
   rmdir -v $HOME/*
   for ud in ${u_dirs[*]} ;do
     ln -s "$ud" "$HOME"
