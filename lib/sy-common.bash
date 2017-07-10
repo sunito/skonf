@@ -24,6 +24,7 @@ function apt_install {
   fi  
 }
 
+# todo: verwende: kde4-config --localprefix
 kde_dir=$HOME/.kde4
 if [[ -f $kde_dir/share/config//kwinrc ]] ;then
   echo §kde_dir
