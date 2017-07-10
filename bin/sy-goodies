@@ -170,6 +170,7 @@ apt_install transmission-qt # suse
 
 apt_install scribus
 
+if [ -z `which zypper` ] ;then # suse 
 if [ -z `ls /etc/apt/sources.list.d |grep retroshare` ]
 then  
   sudo add-apt-repository --yes ppa:csoler-users/retroshare
@@ -178,6 +179,14 @@ fi
 # 2016-Jan, Sv: in Linux Mint Rosa scheint was mit dem Key-import nicht zu klappen, also workaround:
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D8D05E222E10C9E3
 apt_install retroshare
+else
+  if [ -z `zypper lr |grep home_AsamK_RetroShare` ] ;then
+    sudo zypper addrepo http://download.opensuse.org/repositories/home:AsamK:RetroShare/openSUSE_Leap_`lsb_release -rs`/home:AsamK:RetroShare.repo
+  fi
+  sudo zypper refresh
+  apt_install retroshare06
+fi
+
 
 if [[ ! $USER = "brunhild" ]] ;then
   apt_install workrave
@@ -244,6 +253,7 @@ apt_install kteatime
 syve_section "Weitere Browser"
  
 apt_install chromium-browser
+apt_install opera
 apt_install rekonq
 
 
