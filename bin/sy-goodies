@@ -172,20 +172,19 @@ apt_install scribus
 
 if [ -z `which zypper` ] ;then # suse 
 if [ -z `ls /etc/apt/sources.list.d |grep retroshare` ]
-then  
-  sudo add-apt-repository --yes ppa:csoler-users/retroshare
-  sudo apt-get update >/dev/null  
-fi
+  then  
+    sudo add-apt-repository --yes ppa:retroshare/stable
+    sudo apt-get update >/dev/null  
+  fi
 # 2016-Jan, Sv: in Linux Mint Rosa scheint was mit dem Key-import nicht zu klappen, also workaround:
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D8D05E222E10C9E3
-apt_install retroshare
+#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D8D05E222E10C9E3
 else
   if [ -z `zypper lr |grep home_AsamK_RetroShare` ] ;then
     sudo zypper addrepo http://download.opensuse.org/repositories/home:AsamK:RetroShare/openSUSE_Leap_`lsb_release -rs`/home:AsamK:RetroShare.repo
+    sudo zypper refresh
   fi
-  sudo zypper refresh
-  apt_install retroshare06
 fi
+apt_install retroshare06
 
 
 if [[ ! $USER = "brunhild" ]] ;then
