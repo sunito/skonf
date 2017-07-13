@@ -14,6 +14,7 @@ if [ $has_apt ] ;then
     fi
     fi
 else
+  # eventuell ist diese URL besser: zypper addrepo -f http://packman.inode.at/suse/openSUSE_Leap_42.X/ packman
     sudo zypper ar -f -n "Packman-Repo" http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_`lsb_release -rs` packman
     #sudo zypper ar -f -n "Packman-Repo" http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed packman
     sudo zypper mr -rk -p 20 packman
