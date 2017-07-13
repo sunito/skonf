@@ -131,7 +131,6 @@ if [ $USER = "sunito" ] ;then
   music_dir=$user_dat_dir/477/MusikAusmNetz
   pictures_dir=$user_dat_dir/533/Fotos
   videos_dir=$pictures_dir
-  rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
   user_arch_dir=$dat_dir/n.e.w.-zzArchiv
   documents_dir=$user_dat_dir/Geschriebseltes
@@ -139,14 +138,10 @@ elif [ $USER = "NEW" ] ;then
   videos_dir=$user_dat_dir/1videos
   pictures_dir=$user_dat_dir/"fotoos"
   
-  rmdir -v $HOME/*
   ln -s $user_dat_dir $HOME
   
   mkdir $download_dir
 
-  rm $HOME/"$(basename "$download_dir")"
-  ln -s $download_dir $HOME
-  
   rm $user_dat_dir/"$(basename "$download_dir")"
   ln -s $download_dir $user_dat_dir
 elif [ $USER = "assistent" ] ;then
@@ -171,7 +166,11 @@ elif [ $USER = "brunhild" ] ;then
   if [ ! -d $download_dir ] ;then
     ln -s $documents_dir $download_dir
   fi
-  rmdir -v $HOME/*
+fi
+
+rmdir -v $HOME/*
+
+if [ $USER = "brunhild" ] ;then
   for ud in ${u_dirs[*]} ;do
     ln -s "$ud" "$HOME"
   done
@@ -182,7 +181,6 @@ elif [ $USER = "brunhild" ] ;then
   rm -r "$user_dat_dir/Eigene Bilder"
   ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
 elif [ ${USER:0:3} = "han" ] ;then
-  rmdir -v $HOME/*
   documents_dir=$user_dat_dir/$CAP_USER
   if [[ $USER = "hans" ]] ;then
   download_dir=$user_dat_dir/Downloads--Allgemein
@@ -214,13 +212,10 @@ XDG_PICTURES_DIR="$pictures_dir"
 XDG_VIDEOS_DIR="$videos_dir"
 EOT
 
-dolphin_dir=$user_dat_dir
-case ${USER:0:3} in
-  sun|han)
-    dolphin_dir=$documents_dir ;;
-  *) 
-    echo dolphin_dir unchanged ;;
-esac
+for userdir in ${u_dirs[*]} ;do
+  rm $userdir
+  mkdir $userdir
+done
 
 for userdir in "$user_dat_dir" "$download_dir" "$desktop_dir" "$documents_dir";do
   link_in_homedir="$HOME/$(basename $userdir)"
@@ -241,6 +236,15 @@ if [[ "$desktop_dir" != "$desktop_link_in_homedir" ]] ;then
   ln -s "$desktop_dir" "$desktop_link_in_homedir"
 fi
 fi
+
+
+dolphin_dir=$user_dat_dir
+case ${USER:0:3} in
+  sun|han)
+    dolphin_dir=$documents_dir ;;
+  *) 
+    echo dolphin_dir unchanged ;;
+esac
 
 # 2016-Apr, Sven: der zweite Ordner (~/.config) istr der neuere (Plasma 5)
 for dolph_conf_dir in "$kde_dir/share/config" "$HOME/.config" ;do
