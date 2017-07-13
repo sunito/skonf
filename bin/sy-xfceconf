@@ -1,0 +1,31 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+
+source $(dirname $own_folder)/lib/sy-common.bash
+
+
+syve_section "Thunar settings"
+
+
+
+syve_section "Touchpad"
+
+#<     <property name="ReverseScrolling" type="bool" value="false"/>
+#---
+#>     <property name="ReverseScrolling" type="bool" value="true"/>
+sed -i -r -e 's/(name="ReverseScrolling".* value)="[^"]*"/\1="true"/' $config_dir/xfce4/xfconf/xfce-perchannel-xml/pointers.xml
+
+#<   <property name="DisableTouchpadWhileTyping" type="bool" value="false"/>
+#---
+#>   <property name="DisableTouchpadWhileTyping" type="bool" value="true"/>
+sed -i -r -e 's/(name="DisableTouchpadWhileTyping".* value)="[^"]*"/\1="true"/' $config_dir/xfce4/xfconf/xfce-perchannel-xml/pointers.xml
+
+syve_section "Packages"
+
+apt_install xscreensaver
+
+
+syve_section "$(basename $0) finished."
+
+exit 0
