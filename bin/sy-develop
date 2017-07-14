@@ -20,6 +20,10 @@ apt_install gitk
 
 syve_section "System-Tools"
 
+@ keep more kernels for booting from
+sudo sed -i -r -e 's/^(multiversion.kernels =).*$/\1 latest,latest-1,latest-2,latest-3,running/' /etc/zypp/zypp.conf
+
+
 apt_install trash-cli
 apt_install bonnie++  # disk benchmark
 apt_install akonadiconsole
