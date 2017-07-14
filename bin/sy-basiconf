@@ -191,6 +191,9 @@ syve_section "Netzwerk"
 
 apt_install nmap 
 apt_install ssh 
+sudo systemctl enable sshd.service
+sudo service sshd start
+
 apt_install curl
 
 # Exportieren der Dat-Partition:
