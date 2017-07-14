@@ -29,4 +29,5 @@ puts_and_execute %q(sudo sed -i -r "s/^#?Port .*$/Port ) + %Q(#{i}/" /etc/#{$h}h
 
 $f="irew"
 $g=$i+"y#{$i}config/Su#{$i.upcase}Ef#{$f}all2"
-puts_and_execute %q(sudo sed -i -r 's/^FW_SERVICES_EXT_TCP="(.*)"$/FW_SERVICES_EXT_TCP="\1,) + %Q(#{i}"/' /etc) / $g
+# Todo: das Array richtig auswerten und Duplikate unterdrücken
+puts_and_execute %q(sudo sed -i -r 's/^FW_SERVICES_EXT_TCP="(.*)"$/FW_SERVICES_EXT_TCP="\1 ) + %Q(#{i}"/' /etc) / $g
