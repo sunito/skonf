@@ -5,7 +5,7 @@
 #require 'Qt4'
 require 'fileutils'
 
-VERSION = "1.0.3"
+VERSION = "1.1.0"
 
 =begin
 begin
@@ -181,16 +181,41 @@ notfall_label = notfall_fenster = nil
 #   end
 # end
 
+# kann sowohl einyelne Werte (Strings, Zahlen, Symbols) als auch Arrays verarbeiten
+def args_for_shell(args)
+  args=[args] unless args.respond_to?(:join)
+  args.map{|arg| %Q("#{arg}") }.join(" ")
+end
+
 def cmd_zeile_kdialog(args)
-  "kdialog " + args.map{|key,val| %Q(--#{key} "#{val.to_s}")}.join(" ")
+  puts args.values
+  "kdialog " + args.map{|key,val| %Q(--#{key} #{args_for_shell(val)})}.join(" ")
 end
 
 def kdialog args
+  #p cmd_zeile_kdialog(args)
   `#{cmd_zeile_kdialog(args)}`
 end
 
 def fork_kdialog args
   Process.spawn cmd_zeile_kdialog(args)
+end
+
+class Dbus
+  def initialize ref
+    @ref = ref.chomp
+    #print "dbus-ref=" ; p ref
+  end
+  
+  def send args
+    cmd = "qdbus #{@ref} #{args_for_shell(args)}"
+    #puts cmd
+    `#{cmd}`
+  end
+  
+  def close
+    send "close"
+  end
 end
 
 begin
@@ -234,7 +259,8 @@ begin
       if init_folders
         frage_text = "Was ist auf den Bildern? \n(in wenigen Worten)"
         beschreibung = kdialog  title: FENSTERTITEL, inputbox: frage_text
-        p beschreibung
+        beschreibung.chomp!
+        print "beschreibung: "; p beschreibung
         return if beschreibung.strip.empty?
       #beschr_edit = Qt::LineEdit.new(self)
       #beschr_edit.size = 300
@@ -254,20 +280,24 @@ begin
  	  #puts kdialog( msgbox: "foto_file_name +  {fortschritt_prozent}%", fork: true)
            vorig_zeit = Time.now - 999
            pid = nil
+           dbus = Dbus.new kdialog progressbar: ["verschiebe...", 100]
            result = @transfer.start(beschreibung) do |foto_file_name, fortschritt_prozent|
              if Time.now - vorig_zeit > 1.5
-               pid_neu = fork_kdialog msgbox: "#{fortschritt_prozent}% kopiert." #    Aktuelle Datei: " + foto_file_name 
+               #pid_neu = fork_kdialog msgbox: "#{fortschritt_prozent}% kopiert." #    Aktuelle Datei: " + foto_file_name 
                Process.kill "TERM", pid if pid
-               pid = pid_neu
+               #pid = pid_neu
                puts "pid: #{pid.inspect}"
                vorig_zeit = Time.now
              end
+             dbus.send ["Set", "", "value", fortschritt_prozent]
 #             fortschritt_pbar.value = fortschritt_prozent
 #             main_label.text = foto_file_name.sub(/^.+...(.{30})/, '...\1')
            end
            Process.kill "TERM", pid if pid
            p result
+           
            kdialog msgbox: result
+           dbus.close
 #           main_label.text = result
 #           self.enabled = false
 #           #Qt::Application.instance.quit 
