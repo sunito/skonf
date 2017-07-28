@@ -290,6 +290,8 @@ begin
                vorig_zeit = Time.now
              end
              dbus.send ["Set", "", "value", fortschritt_prozent]
+             dbus.send ["setLabelText", File.basename(foto_file_name)]
+                        
 #             fortschritt_pbar.value = fortschritt_prozent
 #             main_label.text = foto_file_name.sub(/^.+...(.{30})/, '...\1')
            end
