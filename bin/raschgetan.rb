@@ -38,29 +38,41 @@ class TanMails
     nil
   end
   
-  def info
+  def status
     neu_text = File.read neueste
     tan = extrahiere_tan neu_text
     if tan
       zeit_str = neu_text.scan(/^Date: (.+)$/).first.first
       zeit = Time.parse(zeit_str) if zeit_str
       if zeit.nil?
-        "keine Zeit in der Mail gefunden!! (Tan: #{tan}"
+        [false, "keine Zeit in der Mail gefunden!! (Tan: #{tan}"]
       else
-        (Time.now - zeit < 600 ? '' : "Keine neue Tan-Mail \n  Alte ") +
+        erfolg =  (Time.now - zeit < 600)
+        [ erfolg, (erfolg ? '' : "Keine neue Tan-Mail \n  Alte ") +
           "Tan: #{tan}      Zeit: #{zeit.strftime('%b-%d. %T')}"
+        ]
       end
     else
-      "Keine aktuelle Tan-Mail gefunden"
+      [false, "Keine aktuelle Tan-Mail gefunden"]
     end
   end
   
+  def warte wartedauer=4
+    anf_zeit = Time.now
+    text = nil
+    while Time.now - anf_zeit <= wartedauer do
+      `kmail-check`
+      erfolg, text = status
+      break text if erfolg
+      sleep 0.7
+    end
+    text
+  end
 end
 
-`kmail-check`
-sleep 1
+
 
 
 tm = TanMails.new "/111/ye-sys/kmail-neu/local-mail/.e-EingangPrio.directory/e-Anrufe/"
 
-puts tm.info
+puts tm.warte
