@@ -211,6 +211,9 @@ fi
 echo
 echo #TODO# SUSE: Interface zu Firewall hinzu und den NFS-Dienst erlauben!!
 echo
+# reciht das?
+sudo systemctl enable nfs-server
+sudo service nfs-server start
 
 
 apt_install bridge-utils
