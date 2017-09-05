@@ -14,6 +14,9 @@ class String
   end
 end
 
+def dont
+  # dont do anything
+end
 
 
 class TanMails
@@ -22,8 +25,11 @@ class TanMails
   end
   
   def neueste
-    alle_dateinamen = Dir[@dir/"cur/*"] + Dir[@dir/"new/*"]
-    neueste_datei = alle_dateinamen.sort_by{|dn| File.mtime(dn)}.last
+    alle_dateinamen = Dir[@dir/"*/*"]  # Dir[@dir/"cur/*"] + 
+    neueste_datei = alle_dateinamen.sort_by{|dn| dont { print File.mtime(dn); puts " <-- "+dn};   File.mtime(dn)}.last
+    #p File.mtime(neueste_datei)    
+    #p neueste_datei
+    neueste_datei
   end
   
   def extrahiere_tan text
@@ -57,14 +63,14 @@ class TanMails
     end
   end
   
-  def warte wartedauer=4
+  def warte wartedauer=6
     anf_zeit = Time.now
     text = nil
     while Time.now - anf_zeit <= wartedauer do
       `kmail-check`
       erfolg, text = status
       break text if erfolg
-      sleep 0.7
+      sleep 1.4
     end
     text
   end
