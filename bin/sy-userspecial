@@ -122,8 +122,6 @@ music_dir=$user_dat_dir/Musik
 pictures_dir=$user_dat_dir/Bilder
 videos_dir=$user_dat_dir/Videos
 
-u_dirs=( "$desktop_dir" "$documents_dir" "$download_dir" "$music_dir" "$pictures_dir" "$videos_dir" )
-
 if [ $USER = "sunito" ] ;then
   documents_dir=$user_dat_dir/111
   desktop_dir=$documents_dir
@@ -180,6 +178,8 @@ if [ $USER = "brunhild" ] ;then
   rm "$user_dat_dir/Eigene Bilder"
   rm -r "$user_dat_dir/Eigene Bilder"
   ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
+elif [ $USER = "sabine" ] ;then
+  documents_dir=$user_dat_dir/DokumenteSabine
 elif [ ${USER:0:3} = "han" ] ;then
   documents_dir=$user_dat_dir/$CAP_USER
   if [[ $USER = "hans" ]] ;then
@@ -202,6 +202,8 @@ elif [ ${USER:0:3} = "han" ] ;then
     ln -s "$pictures_dir" "$documents_dir"
   fi
 fi
+
+u_dirs=( "$desktop_dir" "$documents_dir" "$download_dir" "$music_dir" "$pictures_dir" "$videos_dir" )
 
 cat <<EOT >$HOME/.config/user-dirs.dirs
 XDG_DESKTOP_DIR="$desktop_dir"
@@ -367,9 +369,11 @@ eot
   fi
 fi
 
-# evtl noch für weitere Nutzer einschränken
-if [ $USER != "NEW" ] ;then
+# evtl noch für weitere Nutzer einschränken (kein "ja2 --> kein Autologin
+if [ `ruby -e 'puts  (/^(NEW|brunhild|sabine|maria|julian)$/ =~ (ENV["USER"])  ) ? "" : "ja"' ` ] ;then
   sudo sed -i -r -e 's/^(DISPLAYMANAGER_AUTOLOGIN)=.*$/\1="'$USER'"/' /etc/sysconfig/displaymanager
+else
+  sudo sed -i -r -e 's/^(DISPLAYMANAGER_AUTOLOGIN)=.*$/\1="''"/' /etc/sysconfig/displaymanager
 fi
 
 

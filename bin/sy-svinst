@@ -25,5 +25,9 @@ sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Os
 
 sudo useradd --uid 1018 --create-home hanna;sudo chfn -f "Johanna Suska" hanna
 
+sudo useradd --uid 1026 --create-home sabine;sudo chfn -f "Sabine Suska" sabine ;sudo addgroup sabine sudo
+sudo useradd --uid 1027 --create-home maria;sudo chfn -f "Maria Suska" maria ;sudo addgroup maria sudo
+sudo useradd --uid 1028 --create-home julian;sudo chfn -f "Jullian Suska" julian ;sudo addgroup julian sudo
+
 
 sudo useradd --uid 12345 -m -s /bin/bash Gast;sudo chfn -f "Gast-Benutzer" Gast
