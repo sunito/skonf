@@ -318,6 +318,8 @@ if false ;then
   wget https://download.teamviewer.com/download/teamviewer_i386.deb
   sudo dpkg -i teamviewer_i386.deb
   sudo apt-get install -f
+else
+  wget https://downloadus2.teamviewer.com/download/version_12x/teamviewer_12.0.76279.i686.rpm
 fi
 
 syve_section "Workaround für fehlenden klipper-Start in Linux Mint 17.3"
