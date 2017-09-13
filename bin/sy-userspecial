@@ -180,6 +180,8 @@ if [ $USER = "brunhild" ] ;then
   ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
 elif [ $USER = "sabine" ] ;then
   documents_dir=$user_dat_dir/DokumenteSabine
+elif [ $USER = "maria" ] ;then
+  documents_dir=$user_dat_dir/Geschriebenes
 elif [ ${USER:0:3} = "han" ] ;then
   documents_dir=$user_dat_dir/$CAP_USER
   if [[ $USER = "hans" ]] ;then
