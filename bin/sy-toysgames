@@ -6,7 +6,7 @@ source $(dirname $own_folder)/lib/sy-common.bash
 syve_section "Spiele"
 
 if [[ -z `zypper lr |grep "openSUSE Games"` ]] ;then
-  sudo zypper addrepo http://download.opensuse.org/repositories/games/openSUSE_Leap_42.2/games.repo
+  sudo zypper addrepo http://download.opensuse.org/repositories/games/openSUSE_Leap_`lsb_release -rs`/games.repo
   sudo zypper refresh
 fi
 
