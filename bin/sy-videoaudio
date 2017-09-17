@@ -19,7 +19,7 @@ else
     #sudo zypper ar -f -n "Packman-Repo" http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed packman
     sudo zypper mr -rk -p 20 packman
 
-    zypper addrepo -f http://opensuse-guide.org/repo/openSUSE_Leap_`lsb_release -rs`/ dvd
+    sudo zypper addrepo -f http://opensuse-guide.org/repo/openSUSE_Leap_`lsb_release -rs`/ dvd
     #sudo zypper --no-gpg-checks dup --allow-vendor-change --allow-downgrade --from packman
     
     # 2017-Feb, Sunito: versteh ich nicht, deaktiviert:
