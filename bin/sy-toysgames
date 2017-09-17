@@ -14,6 +14,7 @@ case $USER in
   hans  )
     apt_install xboard
     apt_install xskat
+    apt_install lskat
     apt_install chessx
     apt_install gnuchess
     apt_install polyglot
