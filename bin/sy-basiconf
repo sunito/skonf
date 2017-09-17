@@ -246,6 +246,12 @@ apt_install mmv
 apt_install beep sox jovie
 
 # Wichtige graphische Tools
+
+if [[ -z `zypper lr |grep "dmacvicar"` ]] ;then
+  sudo zypper addrepo http://download.opensuse.org/repositories/home:/dmacvicar/openSUSE_Leap_`lsb_release -rs`/ dmacvicar_qdirstat
+  sudo zypper refresh
+fi
+
 apt_install k4dirstat 
 apt_install qdirstat
 apt_install kdirstat
