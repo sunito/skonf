@@ -7,3 +7,8 @@ syve_section "Lern-Programme"
 
 apt_install marble-kde
 
+syve_section "Mind-Mapping"
+
+
+apt_repo https://download.opensuse.org/repositories/Office
+apt_install freeplane
