@@ -28,3 +28,6 @@ apt_install supertux
 #apt_install supertuxkart
 
 #syve_section "Lern-Programme installieren"
+apt_ppa ppa:minecraft-installer-peeps/minecraft-installer
+apt_install minecraft-installer
+
