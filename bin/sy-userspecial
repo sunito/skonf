@@ -459,6 +459,10 @@ fi # nicht "assistent"
 
 syve_section "Software"
 
+# Fast alle haben HP-Drucker, eventuell nach User differnzieren
+apt_install hplip   
+
+
 syve_section "Lernprogramme"
 
 
