@@ -374,7 +374,7 @@ fi
 # evtl noch für weitere Nutzer einschränken (kein "ja2 --> kein Autologin
 if [ `ruby -e 'puts  (/^(NEW|brunhild|sabine|maria|julian)$/ =~ (ENV["USER"])  ) ? "" : "ja"' ` ] ;then
   sudo sed -i -r -e 's/^(DISPLAYMANAGER_AUTOLOGIN)=.*$/\1="'$USER'"/' /etc/sysconfig/displaymanager
-else
+else # also nicht: hans|hanna|
   sudo sed -i -r -e 's/^(DISPLAYMANAGER_AUTOLOGIN)=.*$/\1="''"/' /etc/sysconfig/displaymanager
 fi
 
