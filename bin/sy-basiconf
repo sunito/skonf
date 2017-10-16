@@ -97,11 +97,10 @@ skonf_pfad=/wartung/$skonfbin_teil
 #if [[ -z `grep $skonfbin_teil $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 if [[ -z `grep $skonf_pfad $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<EOT
 
-# `date`, Sven: skonf mit im PATH
-PATH=\$PATH:$skonf_pfad
-PATH=\$PATH:${skonf_pfad}older
+    # `date`, Sven: skonf mit im PATH
+    PATH=\$PATH:$skonf_pfad
+    PATH=\$PATH:${skonf_pfad}older
 EOT
-
 else
   echo "Hinzufügen vom '$skonf_pfad' zum PATH  war schon in .bashrc"
 fi
@@ -113,8 +112,15 @@ fi
 
 if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
-# Sven: Nicht versehentlich Konsolen schließen:
-export IGNOREEOF=3
+   # Sven: Nicht versehentlich Konsolen schließen:
+   export IGNOREEOF=3
+EOT
+fi
+
+if [[ -z `grep "LS_OPTIONS" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+
+   # Sven: farbige ls-Ausgabe (2017-Okt: funktioniert nicht):
+   export LS_OPTIONS=-N --color=tty -T 0
 EOT
 fi
 

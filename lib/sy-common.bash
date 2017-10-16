@@ -10,7 +10,19 @@ function syve_section {
 # 2016-Apr, Sv: bei 42.1 ist auch apt-get vorhanden, also umgekehrt:
 # ziemlich umständlich, aber funktioniert erstmal
 #has_apt=[ ! $(which zypper) ]
-has_apt=$( if [ -z $(which zypper) ] ;then echo apt ;fi  ) 
+if  [ ! -z $(which pacman) ] ;then 
+  has_apt="" 
+  has_zyp="" 
+  has_pac=pac
+else
+  has_apt=$( if [ -z $(which zypper) ] ;then echo apt ;fi  ) 
+  has_zyp=$( if [ ! -z $(which zypper) ] ;then echo zyp;fi  ) 
+  has_pac=pac
+fi  
+
+echo apt:$has_apt
+echo pac:$has_pac
+echo zyp:$has_zyp
 
 function apt_install {
   sudo echo
@@ -18,6 +30,8 @@ function apt_install {
   logger SyveInstalling $*
   if [ $has_apt ] ;then
     sudo apt-get --yes install $*
+  elif [ $has_pac ] ;then
+    sudo pacman --sync --noconfirm $*  
   else
     #sudo zypper -n install $* 
     sudo zypper install -y $*
