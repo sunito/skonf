@@ -117,12 +117,12 @@ if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 EOT
 fi
 
-if [[ -z `grep "LS_OPTIONS" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+#if [[ -z `grep "LS_OPTIONS" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
    # Sven: farbige ls-Ausgabe (2017-Okt: funktioniert nicht):
-   export LS_OPTIONS=-N --color=tty -T 0
-EOT
-fi
+   #export LS_OPTIONS=-N --color=tty -T 0
+#EOT
+#fi
 
 apt_install screen
 
