@@ -143,9 +143,9 @@ elif [ $USER = "NEW" ] ;then
   rm $user_dat_dir/"$(basename "$download_dir")"
   ln -s $download_dir $user_dat_dir
 elif [ $USER = "assistent" ] ;then
-  documents_dir=$HOME/Business
-  ln -s /111/Business $documents_dir
-  echo ">>>> ln -s /111/Business $documents_dir"
+  documents_dir=/111/Business
+  #ln -s /111/Business  $HOME/   # <-- hineinverlinken, also wird zu $documents_dir
+  #echo ">>>> ln -s /111/Business $HOME/"
   echo "ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch"
   ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch
   
