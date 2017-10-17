@@ -43,13 +43,18 @@ apt_install ruby
 
 syve_section "Gruppenzugehörigkeit und Rechte"
 
+our_umask=002
 # Umask auf 002 setzen
 echo "Aktuelle Default-UMASK:"
 grep ^UMASK /etc/login.defs
-sudo sed -ri "s/^(UMASK\s+).+$/\1002/" /etc/login.defs
+sudo sed -ri "s/^(UMASK\s+).+$/\1$our_umask/" /etc/login.defs
 # Nachschauen, ob Umask auch 002 ist.
 echo "Neue Default-UMASK:"
 grep ^UMASK /etc/login.defs
+
+# 2017-Okt,Sv: mei Manjaro ist anscheinen das nötig:
+sudo sed -ri "s/^(umask\s+).+$/\1$our_umask/" /etc/profile
+
 # echter Test, ob es wirkt:
 if [ ] ;then su $USER -c umask ;fi
 
