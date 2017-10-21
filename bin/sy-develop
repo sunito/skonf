@@ -35,6 +35,8 @@ syve_section "node.js"
 apt_install nodejs-common
 
 
+apt_install ruby-devel
+
 syve_section "FreePlane MindMapping"
 
 # echo "TODO"
