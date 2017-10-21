@@ -444,6 +444,26 @@ X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ign
 EOT
 fi # if [ $USER = "NEW" ] ;then
 
+if [ `ruby -e 'puts  (/^(hans|hanna|sunito|NEW|sabine|maria|julian)$/ =~ (ENV["USER"])  ) ? "ja" : ""' ` ] ;then
+  echo "erstelle FotoTrans-Action"
+user_media_dir=/media/$USER
+# quoting "EOT" does not work, because we need $dat_dir inside, so escaped the backticks
+cat <<EOT >$HOME/.local/share/solid/actions/FotoTransfer.desktop
+[Desktop Action open]
+Exec=/wartung/skonf/bin/fototrialog.rb
+Icon=folder-photos
+Name=FotoTransfer (... von SD-Karte auf Computer)
+
+[Desktop Entry]
+Actions=open;
+Type=Service
+X-KDE-Action-Custom=true
+X-KDE-Solid-Predicate=[ StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == false ]
+EOT
+fi # if [ $USER = "hans" ] ;then
+
+
+
 if [ $USER = "sunito" ] ;then
 cat >$HOME/.config/autostart/transmission-slowstart.desktop <<EOT
 [Desktop Entry]
