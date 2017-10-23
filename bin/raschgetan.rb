@@ -47,6 +47,7 @@ class TanMails
   def status
     neu_text = File.read neueste
     tan = extrahiere_tan neu_text
+    # ToDo: Erkennung leerer SMS-Mails
     if tan
       zeit_str = neu_text.scan(/^Date: (.+)$/).first.first
       zeit = Time.parse(zeit_str) if zeit_str
