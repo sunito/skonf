@@ -7,7 +7,7 @@
 # Should-Stop:
 # X-Start-Before:    
 # X-Stop-After:      
-# Default-Start:     2
+# Default-Start:     2 3 4 5 
 # Default-Stop:      0
 # Short-Description: Einfaches Backup durch Spiegel den User-DAteien
 ### END INIT INFO
@@ -33,8 +33,6 @@ unset TMPDIR
 #mkdir -p /var/run/cups/certs
 
 . /lib/lsb/init-functions
-
-# Get the timezone set.
 
 LOGGER="logger -t$NAME "
 BACKUP_MOUNTPOINT=/spiegel
