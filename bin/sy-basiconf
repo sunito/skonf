@@ -43,13 +43,18 @@ apt_install ruby
 
 syve_section "Gruppenzugehörigkeit und Rechte"
 
+our_umask=002
 # Umask auf 002 setzen
 echo "Aktuelle Default-UMASK:"
 grep ^UMASK /etc/login.defs
-sudo sed -ri "s/^(UMASK\s+).+$/\1002/" /etc/login.defs
+sudo sed -ri "s/^(UMASK\s+).+$/\1$our_umask/" /etc/login.defs
 # Nachschauen, ob Umask auch 002 ist.
 echo "Neue Default-UMASK:"
 grep ^UMASK /etc/login.defs
+
+# 2017-Okt,Sv: mei Manjaro ist anscheinen das nötig:
+sudo sed -ri "s/^(umask\s+).+$/\1$our_umask/" /etc/profile
+
 # echter Test, ob es wirkt:
 if [ ] ;then su $USER -c umask ;fi
 
@@ -97,11 +102,10 @@ skonf_pfad=/wartung/$skonfbin_teil
 #if [[ -z `grep $skonfbin_teil $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 if [[ -z `grep $skonf_pfad $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<EOT
 
-# `date`, Sven: skonf mit im PATH
-PATH=\$PATH:$skonf_pfad
-PATH=\$PATH:${skonf_pfad}older
+    # `date`, Sven: skonf mit im PATH
+    PATH=\$PATH:$skonf_pfad
+    PATH=\$PATH:${skonf_pfad}older
 EOT
-
 else
   echo "Hinzufügen vom '$skonf_pfad' zum PATH  war schon in .bashrc"
 fi
@@ -113,8 +117,22 @@ fi
 
 if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
-# Sven: Nicht versehentlich Konsolen schließen:
-export IGNOREEOF=3
+   # `date`, Sven: Nicht versehentlich Konsolen schließen:
+   export IGNOREEOF=3
+EOT
+fi
+
+#if [[ -z `grep "LS_OPTIONS" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
+
+   # Sven: farbige ls-Ausgabe (2017-Okt: funktioniert nicht):
+   #export LS_OPTIONS=-N --color=tty -T 0
+#EOT
+#fi
+
+if [[ -z `grep "EDITOR" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
+
+   # `date`,  Sven: Nicht versehentlich Konsolen schließen:
+   export EDITOR=vim
 EOT
 fi
 
@@ -191,6 +209,9 @@ syve_section "Netzwerk"
 
 apt_install nmap 
 apt_install ssh 
+sudo systemctl enable sshd.service
+sudo service sshd start
+
 apt_install curl
 
 # Exportieren der Dat-Partition:
@@ -208,6 +229,9 @@ fi
 echo
 echo #TODO# SUSE: Interface zu Firewall hinzu und den NFS-Dienst erlauben!!
 echo
+# reciht das?
+sudo systemctl enable nfs-server
+sudo service nfs-server start
 
 
 apt_install bridge-utils
@@ -240,6 +264,12 @@ apt_install mmv
 apt_install beep sox jovie
 
 # Wichtige graphische Tools
+
+if [[ -z `zypper lr |grep "dmacvicar"` ]] ;then
+  sudo zypper addrepo http://download.opensuse.org/repositories/home:/dmacvicar/openSUSE_Leap_`lsb_release -rs`/ dmacvicar_qdirstat
+  sudo zypper refresh
+fi
+
 apt_install k4dirstat 
 apt_install qdirstat
 apt_install kdirstat
@@ -312,6 +342,8 @@ if false ;then
   wget https://download.teamviewer.com/download/teamviewer_i386.deb
   sudo dpkg -i teamviewer_i386.deb
   sudo apt-get install -f
+else
+  wget https://downloadus2.teamviewer.com/download/version_12x/teamviewer_12.0.76279.i686.rpm
 fi
 
 syve_section "Workaround für fehlenden klipper-Start in Linux Mint 17.3"

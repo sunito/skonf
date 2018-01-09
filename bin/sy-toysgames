@@ -6,7 +6,7 @@ source $(dirname $own_folder)/lib/sy-common.bash
 syve_section "Spiele"
 
 if [[ -z `zypper lr |grep "openSUSE Games"` ]] ;then
-  sudo zypper addrepo http://download.opensuse.org/repositories/games/openSUSE_Leap_42.2/games.repo
+  sudo zypper addrepo http://download.opensuse.org/repositories/games/openSUSE_Leap_`lsb_release -rs`/games.repo
   sudo zypper refresh
 fi
 
@@ -14,6 +14,7 @@ case $USER in
   hans  )
     apt_install xboard
     apt_install xskat
+    apt_install lskat
     apt_install chessx
     apt_install gnuchess
     apt_install polyglot
@@ -27,3 +28,6 @@ apt_install supertux
 #apt_install supertuxkart
 
 #syve_section "Lern-Programme installieren"
+apt_ppa ppa:minecraft-installer-peeps/minecraft-installer
+apt_install minecraft-installer
+

@@ -4,7 +4,7 @@
 
 has_apt=system %Q(which apt-get)
 
-
+# todo: verwende: kde4-config --localprefix
 $kde_dir = ENV['HOME'] + "/.kde4"
 if File.exist?( $kde_dir + "/share/config/kwinrc" )  
   puts $kde_dir

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+source $(dirname $own_folder)/lib/sy-common.bash
+
+syve_section "Lern-Programme"
+
+apt_install marble-kde
+
+syve_section "Mind-Mapping"
+
+
+apt_repo https://download.opensuse.org/repositories/Office
+apt_install freeplane

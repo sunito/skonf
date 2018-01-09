@@ -20,11 +20,23 @@ apt_install gitk
 
 syve_section "System-Tools"
 
+@ keep more kernels for booting from
+sudo sed -i -r -e 's/^(multiversion.kernels =).*$/\1 latest,latest-1,latest-2,latest-3,running/' /etc/zypp/zypp.conf
+
+
+apt_install gcc-c++
 apt_install trash-cli
 apt_install bonnie++  # disk benchmark
 apt_install akonadiconsole
 apt_install unetbootin extlinux
-  
+
+syve_section "node.js"
+
+apt_install nodejs-common
+
+
+apt_install ruby-devel
+
 syve_section "FreePlane MindMapping"
 
 # echo "TODO"

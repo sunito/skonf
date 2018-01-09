@@ -209,13 +209,15 @@ end
 
 if File.symlink?(ya222_link)
   puts "Performing ya222 actions"
-  move_and_symlink_or_ensure_correctness "#{ya222_link}/222/conf-akonadi/",       "#{HOME}/.config/akonadi"
+  # 2017-Jun, Sven> config-akonadi wird jetzt in yo-restore verwaltet:
+  #move_and_symlink_or_ensure_correctness "#{ya222_link}/222/conf-akonadi/",       "#{HOME}/.config/akonadi"
   # Die folgende Verlinkung würde den Akonadi-Server lahmlegen
   # move_and_symlink_or_ensure_correctness "#{ya322_link}/322/loc-sh-akonadi/",     "#{HOME}/.local/share/akonadi"
 
-  move_and_symlink_or_ensure_correctness "#{ya222_link}/222/data-baloo/",         "#{HOME}/.local/share/baloo" do
-    "balooctl stop"   # erstmal nur als Idee, funktioniert noch nicht
-  end
+  # 2017-Jul-10, Suse43.2 auf 480G SSD, Sven: Nicht mehr n
+  #move_and_symlink_or_ensure_correctness "#{ya222_link}/222/data-baloo/",         "#{HOME}/.local/share/baloo" do
+  #  "balooctl stop"   # erstmal nur als Idee, funktioniert noch nicht
+  #end
   
   create_dir_unless_exists       "#{$kde_dir}/share/config-local"  
   Dir["#{$kde_dir}/share/config/plasm*"].each do |komplett_name|

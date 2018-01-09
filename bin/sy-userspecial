@@ -122,8 +122,6 @@ music_dir=$user_dat_dir/Musik
 pictures_dir=$user_dat_dir/Bilder
 videos_dir=$user_dat_dir/Videos
 
-u_dirs=( "$desktop_dir" "$documents_dir" "$download_dir" "$music_dir" "$pictures_dir" "$videos_dir" )
-
 if [ $USER = "sunito" ] ;then
   documents_dir=$user_dat_dir/111
   desktop_dir=$documents_dir
@@ -131,7 +129,6 @@ if [ $USER = "sunito" ] ;then
   music_dir=$user_dat_dir/477/MusikAusmNetz
   pictures_dir=$user_dat_dir/533/Fotos
   videos_dir=$pictures_dir
-  rmdir -v $HOME/*
 elif [ $USER = "NEW" ] ;then
   user_arch_dir=$dat_dir/n.e.w.-zzArchiv
   documents_dir=$user_dat_dir/Geschriebseltes
@@ -139,24 +136,20 @@ elif [ $USER = "NEW" ] ;then
   videos_dir=$user_dat_dir/1videos
   pictures_dir=$user_dat_dir/"fotoos"
   
-  rmdir -v $HOME/*
   ln -s $user_dat_dir $HOME
   
   mkdir $download_dir
 
-  rm $HOME/"$(basename "$download_dir")"
-  ln -s $download_dir $HOME
-  
   rm $user_dat_dir/"$(basename "$download_dir")"
   ln -s $download_dir $user_dat_dir
 elif [ $USER = "assistent" ] ;then
-  documents_dir=$HOME/Business
-  ln -s /111/Business $documents_dir
-  echo ">>>> ln -s /111/Business $documents_dir"
+  documents_dir=/111/Business
+  #ln -s /111/Business  $HOME/   # <-- hineinverlinken, also wird zu $documents_dir
+  #echo ">>>> ln -s /111/Business $HOME/"
   echo "ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch"
-  ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch
-  
+  ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch  
   desktop_dir=$documents_dir
+  download_dir=$documents_dir
   if [ -d $HOME/Desktop ] ;then
     mv $HOME/Desktop $HOME/Desktop_orig
   fi
@@ -168,7 +161,14 @@ elif [ $USER = "gerhard" ] ;then
   pictures_dir="$user_dat_dir/06 Fotos"
   videos_dir="$user_dat_dir/06 Videos"
 elif [ $USER = "brunhild" ] ;then
-  rmdir -v $HOME/*
+  if [ ! -d $download_dir ] ;then
+    ln -s $documents_dir $download_dir
+  fi
+fi
+
+rmdir -v $HOME/*
+
+if [ $USER = "brunhild" ] ;then
   for ud in ${u_dirs[*]} ;do
     ln -s "$ud" "$HOME"
   done
@@ -178,8 +178,11 @@ elif [ $USER = "brunhild" ] ;then
   rm "$user_dat_dir/Eigene Bilder"
   rm -r "$user_dat_dir/Eigene Bilder"
   ln -s $pictures_dir  "$user_dat_dir/Eigene Bilder"
+elif [ $USER = "sabine" ] ;then
+  documents_dir=$user_dat_dir/DokumenteSabine
+elif [ $USER = "maria" ] ;then
+  documents_dir=$user_dat_dir/Geschriebenes
 elif [ ${USER:0:3} = "han" ] ;then
-  rmdir -v $HOME/*
   documents_dir=$user_dat_dir/$CAP_USER
   if [[ $USER = "hans" ]] ;then
   download_dir=$user_dat_dir/Downloads--Allgemein
@@ -202,6 +205,8 @@ elif [ ${USER:0:3} = "han" ] ;then
   fi
 fi
 
+u_dirs=( "$desktop_dir" "$documents_dir" "$download_dir" "$music_dir" "$pictures_dir" "$videos_dir" )
+
 cat <<EOT >$HOME/.config/user-dirs.dirs
 XDG_DESKTOP_DIR="$desktop_dir"
 XDG_DOCUMENTS_DIR="$documents_dir"
@@ -211,13 +216,10 @@ XDG_PICTURES_DIR="$pictures_dir"
 XDG_VIDEOS_DIR="$videos_dir"
 EOT
 
-dolphin_dir=$user_dat_dir
-case ${USER:0:3} in
-  sun|han)
-    dolphin_dir=$documents_dir ;;
-  *) 
-    echo dolphin_dir unchanged ;;
-esac
+for userdir in ${u_dirs[*]} ;do
+  rm $userdir
+  mkdir $userdir
+done
 
 for userdir in "$user_dat_dir" "$download_dir" "$desktop_dir" "$documents_dir";do
   link_in_homedir="$HOME/$(basename $userdir)"
@@ -238,6 +240,15 @@ if [[ "$desktop_dir" != "$desktop_link_in_homedir" ]] ;then
   ln -s "$desktop_dir" "$desktop_link_in_homedir"
 fi
 fi
+
+
+dolphin_dir=$user_dat_dir
+case ${USER:0:3} in
+  sun|han|ass)
+    dolphin_dir=$documents_dir ;;
+  *) 
+    echo dolphin_dir unchanged ;;
+esac
 
 # 2016-Apr, Sven: der zweite Ordner (~/.config) istr der neuere (Plasma 5)
 for dolph_conf_dir in "$kde_dir/share/config" "$HOME/.config" ;do
@@ -360,9 +371,11 @@ eot
   fi
 fi
 
-# evtl noch für weitere Nutzer einschränken
-if [ $USER != "NEW" ] ;then
+# evtl noch für weitere Nutzer einschränken (kein "ja2 --> kein Autologin
+if [ `ruby -e 'puts  (/^(NEW|brunhild|sabine|maria|julian)$/ =~ (ENV["USER"])  ) ? "" : "ja"' ` ] ;then
   sudo sed -i -r -e 's/^(DISPLAYMANAGER_AUTOLOGIN)=.*$/\1="'$USER'"/' /etc/sysconfig/displaymanager
+else # also nicht: hans|hanna|
+  sudo sed -i -r -e 's/^(DISPLAYMANAGER_AUTOLOGIN)=.*$/\1="''"/' /etc/sysconfig/displaymanager
 fi
 
 
@@ -431,6 +444,26 @@ X-KDE-Solid-Predicate=[StorageVolume.usage == 'FileSystem' AND StorageVolume.ign
 EOT
 fi # if [ $USER = "NEW" ] ;then
 
+if [ `ruby -e 'puts  (/^(hans|hanna|sunito|NEW|sabine|maria|julian)$/ =~ (ENV["USER"])  ) ? "ja" : ""' ` ] ;then
+  echo "erstelle FotoTrans-Action"
+user_media_dir=/media/$USER
+# quoting "EOT" does not work, because we need $dat_dir inside, so escaped the backticks
+cat <<EOT >$HOME/.local/share/solid/actions/FotoTransfer.desktop
+[Desktop Action open]
+Exec=/wartung/skonf/bin/fototrialog.rb
+Icon=folder-photos
+Name=FotoTransfer (... von SD-Karte auf Computer)
+
+[Desktop Entry]
+Actions=open;
+Type=Service
+X-KDE-Action-Custom=true
+X-KDE-Solid-Predicate=[ StorageVolume.usage == 'FileSystem' AND StorageVolume.ignored == false ]
+EOT
+fi # if [ $USER = "hans" ] ;then
+
+
+
 if [ $USER = "sunito" ] ;then
 cat >$HOME/.config/autostart/transmission-slowstart.desktop <<EOT
 [Desktop Entry]
@@ -445,6 +478,10 @@ fi # nicht "assistent"
 
 
 syve_section "Software"
+
+# Fast alle haben HP-Drucker, eventuell nach User differnzieren
+apt_install hplip   
+
 
 syve_section "Lernprogramme"
 

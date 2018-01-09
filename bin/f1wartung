@@ -10,6 +10,7 @@ echo
 c=s
 cmd=$c${c}h
 user_file=$HOME/.$cmd/fernwartung/user
+port_file=$HOME/.$cmd/fernwartung/port
 
 function tabecho {
   echo -e "--------------- $1 \t $2"
@@ -25,6 +26,9 @@ if [[ $1 == "--init" ]] ;then
   
   echo "Lade Schlüssel hoch"
   ${cmd}-copy-id $user@suska.org
+  
+  port=`sudo grep "Port " /etc/$cmd/${cmd}d_config |cut -d" " -f2`
+  echo $port >"$port_file"
   exit 1
 fi
 
@@ -45,6 +49,9 @@ user=`cat $user_file`
 tabecho user: $user
 
 port=`grep "Port " /etc/$cmd/${cmd}d_config |cut -d" " -f2`
+if [  x$port == "x" ] ;then
+  port=`cat $port_file`
+fi
 tabecho port: ${port:=22}
 
 

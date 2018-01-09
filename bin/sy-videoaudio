@@ -14,9 +14,12 @@ if [ $has_apt ] ;then
     fi
     fi
 else
+  # eventuell ist diese URL besser: zypper addrepo -f http://packman.inode.at/suse/openSUSE_Leap_42.X/ packman
     sudo zypper ar -f -n "Packman-Repo" http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_`lsb_release -rs` packman
     #sudo zypper ar -f -n "Packman-Repo" http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed packman
     sudo zypper mr -rk -p 20 packman
+
+    sudo zypper addrepo -f http://opensuse-guide.org/repo/openSUSE_Leap_`lsb_release -rs`/ dvd
     #sudo zypper --no-gpg-checks dup --allow-vendor-change --allow-downgrade --from packman
     
     # 2017-Feb, Sunito: versteh ich nicht, deaktiviert:
@@ -26,6 +29,12 @@ fi
 
 apt_install libdvdread4
 sudo /usr/share/doc/libdvdread4/install-css.sh
+apt_install libdvdcss2 # reduntant
+apt_install gstreamer-plugins-libav
+apt_install gstreamer-plugins-ugly
+apt_install gstreamer-plugins-ugly-orig-addon
+
+
 
 #205-Dez, Sven: veraltet: apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
 
