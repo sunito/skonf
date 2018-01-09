@@ -7,7 +7,7 @@
 # Should-Stop:
 # X-Start-Before:    
 # X-Stop-After:      
-# Default-Start:     2 3 4 5 
+# Default-Start:     2 3 4 5 6
 # Default-Stop:      0
 # Short-Description: Einfaches Backup durch Spiegel den User-DAteien
 ### END INIT INFO
