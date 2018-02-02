@@ -7,7 +7,7 @@
 # Should-Stop:
 # X-Start-Before:    
 # X-Stop-After:      
-# Default-Start:     2
+# Default-Start:     2 3 5
 # Default-Stop:      0
 # Short-Description: Einfaches Backup durch Spiegel den User-DAteien
 ### END INIT INFO
@@ -15,6 +15,9 @@
 # Install:
 # sudo cp -a suska_backup /etc/init.d/
 # sudo update-rc.d suska_backup defaults
+# sudo mkdir /spiegel
+# an /etc/fstab anhängen:
+# LABEL=BACKUP         /spiegel             ext4     noauto,users            0 0
 
 # Ausführen:
 # sudo service suska_backup stop
@@ -31,6 +34,19 @@ unset TMPDIR
 #test -x $DAEMON || exit 0
 
 #mkdir -p /var/run/cups/certs
+
+log_begin_msg () {
+    echo -n $1
+}
+
+log_end_msg () {
+    # Dummy function to be replaced by LSB library.
+
+    if test "$1" != "0"; then
+      echo "Error with $DESCRIPTION: $NAME"
+    fi
+    return $1
+}
 
 . /lib/lsb/init-functions
 
@@ -73,6 +89,7 @@ case "$1" in
 	  success=0
 	  sync_dir "etc"   || success=4
 	  sync_dir "home"  || success=8
+	  sync_dir "dat"  || success=16
 	else
 	  success=1
 	fi
