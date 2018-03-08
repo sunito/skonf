@@ -22,6 +22,7 @@ case $USER in
     ;;
 esac
 
+apt_install gcompris
 
 apt_install supertux
 # Autorennen, hat nicht den Kult-Wert von Supertux
