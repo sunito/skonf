@@ -11,7 +11,7 @@ if [[ -z `zypper lr |grep "openSUSE Games"` ]] ;then
 fi
 
 case $USER in
-  hans  )
+  hans | sunito )
     apt_install xboard
     apt_install xskat
     apt_install lskat

@@ -65,3 +65,5 @@ apt_install gstreamer1.0-fluendo-mp3
 # sudo apt-get update >/dev/null
 # apt_install simplescreenrecorder
 
+syve_section "OCR"
+apt_install tesseract-ocr-traineddata-german

@@ -4,6 +4,10 @@
 require 'fileutils'
 require 'time'
 
+MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 120
+TIMEOUT_SEKUNDEN = 10 # auch 8sek hat nicht gereicht f GLS
+#TIMEOUT_SEKUNDEN = 8 # 6 wäre für GLS zu wenig
+
 class String
   define_method "/" do |rest|
     if empty?
@@ -54,7 +58,7 @@ class TanMails
       if zeit.nil?
         [false, "keine Zeit in der Mail gefunden!! (Tan: #{tan}"]
       else
-        erfolg =  (Time.now - zeit < 600)
+        erfolg =  (Time.now - zeit < MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET)
         [ erfolg, (erfolg ? '' : "Keine neue Tan-Mail \n  Alte ") +
           "Tan: #{tan}      Zeit: #{zeit.strftime('%b-%d. %T')}"
         ]
@@ -64,7 +68,7 @@ class TanMails
     end
   end
   
-  def warte wartedauer=6
+  def warte wartedauer=TIMEOUT_SEKUNDEN
     anf_zeit = Time.now
     text = nil
     while Time.now - anf_zeit <= wartedauer do

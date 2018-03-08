@@ -1,0 +1,116 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+ 
+require 'fileutils'
+require 'ox'
+
+VERSION = "1.1.0"
+
+SANDBOX = ARGV.delete("--sandbox")
+
+def trc kind, what=:_nonXistent
+  if what==:_nonXistent
+    puts kind
+  else
+    puts "#{kind}: #{what.inspect}"
+  end
+end
+
+class String
+  define_method "/" do |rest|
+    if empty?
+      rest
+    else
+      File.join( self, rest)
+    end
+  end
+end
+
+
+IS_SUSE = File.exist? "/run/media"
+
+MEDIA_DIR = if IS_SUSE
+  "/run/media"
+else
+  "/media"
+end
+
+def args_for_shell(args)
+  args=[args] unless args.respond_to?(:join)
+  args.map{|arg| %Q("#{arg}") }.join(" ")
+end
+
+def cmd_zeile_kdialog(args)
+  puts args.values
+  "kdialog " + args.map{|key,val| %Q(--#{key} #{args_for_shell(val)})}.join(" ")
+end
+
+def kdialog args
+  #p cmd_zeile_kdialog(args)
+  `#{cmd_zeile_kdialog(args)}`
+end
+
+def fork_kdialog args
+  Process.spawn cmd_zeile_kdialog(args)
+end
+
+class Dbus
+  def initialize ref
+    @ref = ref.chomp
+    #print "dbus-ref=" ; p ref
+  end
+  
+  def send args
+    cmd = "qdbus #{@ref} #{args_for_shell(args)}"
+    #puts cmd
+    `#{cmd}`
+  end
+  
+  def close
+    send "close"
+  end
+end
+
+begin
+  eingabe_ordner = ENV["HOME"] / ".local/share/pix/catalogs"
+  eingabe_dateiname = Dir[eingabe_ordner/"*.catalog"].first
+  eingabe_xml = File.read eingabe_dateiname
+  eingabe_xml_doc = Ox.parse(eingabe_xml)
+  #foto_dateinamen_liste = eingabe_xml.scan(/uri="([^"]+)"/).map(&:first)
+  files = eingabe_xml_doc.catalog.files
+  files.extend Enumerable
+  foto_dateinamen_liste = files.map{|e| e["uri"]}
+  puts foto_dateinamen_liste
+  foto_dateinamen_liste.map! {|dn| dn.sub("file://","")}
+  puts foto_dateinamen_liste
+  
+  ziel_basis_ordner = "/111/misc/l2links"
+  ziel_ordner = nil
+  Dir.mkdir ziel_basis_ordner rescue nil
+  (1..9).each do |idx| 
+    begin
+      ziel_ordner = ziel_basis_ordner / File.basename(eingabe_dateiname, ".catalog") + "_#{'%03d'%idx}"  
+      Dir.mkdir ziel_ordner and break
+    rescue 
+      puts $!
+      nil 
+    end
+  end
+  foto_dateinamen_liste.each_with_index do |dn, idx|
+    cmd = "ln -s #{dn} #{ziel_ordner}/#{'%03d'%idx}_#{File.basename(dn)}"
+    puts cmd
+    system cmd
+  end
+rescue
+  trc :globalerror, $!
+  trc $!.backtrace
+  kdialog title: "Fehler --- " + "", msgbox: <<-eot
+    Es ist ein Fehler aufgetreten. 
+    Bitte Sven informieren: 039881-49194 oder foto2links2018@suska.org 
+
+    Fehlermeldung:
+    #{$!}
+  eot
+end
+
+
