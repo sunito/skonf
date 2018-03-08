@@ -7,4 +7,4 @@ echo $buchst
 targ=`date +%m%d` 
 zieldatei="/111/Folks/sip-calls/twinklech-$buchst${targ}.csv" 
 cp -a ~/.twinkle/twinkle.ch $zieldatei  
-libreoffice $zieldatei &
+#libreoffice $zieldatei &

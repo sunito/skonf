@@ -7,7 +7,7 @@
 # Should-Stop:
 # X-Start-Before:    
 # X-Stop-After:      
-# Default-Start:     2 3 5
+# Default-Start:     2 3 4 5 6
 # Default-Stop:      0
 # Short-Description: Einfaches Backup durch Spiegel den User-DAteien
 ### END INIT INFO
@@ -49,8 +49,6 @@ log_end_msg () {
 }
 
 . /lib/lsb/init-functions
-
-# Get the timezone set.
 
 LOGGER="logger -t$NAME "
 BACKUP_MOUNTPOINT=/spiegel

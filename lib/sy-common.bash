@@ -17,7 +17,7 @@ if  [ ! -z $(which pacman) ] ;then
 else
   has_apt=$( if [ -z $(which zypper) ] ;then echo apt ;fi  ) 
   has_zyp=$( if [ ! -z $(which zypper) ] ;then echo zyp;fi  ) 
-  has_pac=pac
+  has_pac=
 fi  
 
 echo apt:$has_apt
