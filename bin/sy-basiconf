@@ -372,7 +372,8 @@ eot
 syve_section "Ruby für Qt"
 
 # Svens Apps, dafür Ruby mit KDE-Bindings installieren:
-apt_install ruby-dev
+apt_install ruby-dev #debian
+apt_install ruby-devel #suse
 apt_install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
 apt_install g++
 apt_install libqt4-dev
