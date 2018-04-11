@@ -39,7 +39,8 @@ class TanMails
   def extrahiere_tan text
     [
       / lautet: ([\w\d]{6})/, # Postb
-      / lautet ([\d]{6}),/    # GLS
+      / lautet ([\d]{6}),/,   # GLS standard
+      / TAN ([\w\d]{6})\./     # 3dsecure-cardprocess.de (Mastercard Securcode)
     ].find do |re|
       if re =~ text
         return $1
