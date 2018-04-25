@@ -20,7 +20,7 @@ apt_install gitk
 
 syve_section "System-Tools"
 
-@ keep more kernels for booting from
+# keep more kernels for booting from
 sudo sed -i -r -e 's/^(multiversion.kernels =).*$/\1 latest,latest-1,latest-2,latest-3,running/' /etc/zypp/zypp.conf
 
 
@@ -51,7 +51,9 @@ fi
 syve_section "Sqlite" 
 
 apt_install sqlite3
-apt_install libsqlite3-dev ruby-sqlite3
+apt_install libsqlite3-dev     # deb
+apt_install sqlite3-devel      # rpm
+apt_install ruby-sqlite3
 
 exit 0
 
