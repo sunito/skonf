@@ -28,7 +28,7 @@ apt_install gcc-c++
 apt_install trash-cli
 apt_install bonnie++  # disk benchmark
 apt_install akonadiconsole
-apt_install unetbootin extlinux
+
 
 syve_section "node.js"
 
@@ -48,19 +48,41 @@ if false ;then
 11101  sudo zypper in qxmledit
 fi
 
-syve_section "Sqlite" 
+syve_section "Sqlite"
 
 apt_install sqlite3
 apt_install libsqlite3-dev     # deb
 apt_install sqlite3-devel      # rpm
 apt_install ruby-sqlite3
 
+syve_section IDEs
+
+sudo zypper addrepo https://download.opensuse.org/repositories/home:/Herbster0815/openSUSE_Leap_15.0/home:Herbster0815.repo
+sudo zypper addrepo https://download.opensuse.org/repositories/home:/smarty12/openSUSE_Leap_15.0/home:smarty12.repo
+
+
+syve_section rust
+sudo zypper addrepo https://download.opensuse.org/repositories/home:/flacco:/ff/openSUSE_Leap_15.0/home:flacco:ff.repo
+apt_install rust
+
+syve_section "Tools for Low-Level Tasks"
+apt_install unetbootin
+apt_install extlinux
+
+apt_rpm_repo https://bintray.com/resin-io/redhat/rpm bintray-resin-io-redhat.repo
+apt_install etcher-electron
+
+
 exit 0
+###############################################################
+###############################################################
+###############################################################
+
 
 syve_section "Ruby via rbenv"
 
 #apt_install rbenv
-if [[ -d ~/.rbenv/versions/1.8.7-debian ]] 
+if [[ -d ~/.rbenv/versions/1.8.7-debian ]]
 then
   echo "Ruby 1.8 already linked to rbenv"
 else
@@ -69,7 +91,7 @@ else
   pushd /usr/bin ;for f in `ls *1.8` ;do echo $f ;ln -s /usr/bin/$f ~/.rbenv/versions/1.8.7-debian/bin/${f:0:-3} ;done ;popd
 fi
 today=`date +%F`
-if [[ -z `grep "rbenv init" $HOME/.bashrc` ]] ;then 
+if [[ -z `grep "rbenv init" $HOME/.bashrc` ]] ;then
 cat >>~/.bashrc <<EOT
 
 # Sven, $today: Initialize Ruby Version Manager:
