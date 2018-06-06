@@ -10,15 +10,15 @@ function syve_section {
 # 2016-Apr, Sv: bei 42.1 ist auch apt-get vorhanden, also umgekehrt:
 # ziemlich umständlich, aber funktioniert erstmal
 #has_apt=[ ! $(which zypper) ]
-if  [ ! -z $(which pacman) ] ;then 
-  has_apt="" 
-  has_zyp="" 
+if  [ ! -z $(which pacman) ] ;then
+  has_apt=""
+  has_zyp=""
   has_pac=pac
 else
-  has_apt=$( if [ -z $(which zypper) ] ;then echo apt ;fi  ) 
-  has_zyp=$( if [ ! -z $(which zypper) ] ;then echo zyp;fi  ) 
+  has_apt=$( if [ -z $(which zypper) ] ;then echo apt ;fi  )
+  has_zyp=$( if [ ! -z $(which zypper) ] ;then echo zyp;fi  )
   has_pac=
-fi  
+fi
 
 echo apt:$has_apt
 echo pac:$has_pac
@@ -31,11 +31,11 @@ function apt_install {
   if [ $has_apt ] ;then
     sudo apt-get --yes install $*
   elif [ $has_pac ] ;then
-    sudo pacman --sync --noconfirm $*  
+    sudo pacman --sync --noconfirm $*
   else
-    #sudo zypper -n install $* 
+    #sudo zypper -n install $*
     sudo zypper install -y $*
-  fi  
+  fi
 }
 
 # todo: verwende: kde4-config --localprefix
@@ -47,6 +47,22 @@ else
 fi
 
 config_dir="$HOME/.config"
+
+function apt_rpm_repo {
+  url=$1
+  basenam=$2
+  if [ x$basenam == x ] ;then
+    basenam=$($url/http*:/)
+    basenam=$($basenam/\//_)
+    basenam=$($basenam/__/_)
+  fi
+  if [ $has_zyp ] ;then
+    repo_filenam=/etc/zypp/repos.d/$basenam
+    if [ ! -f $repo_filenam ] ;then
+      sudo wget $url -O $repo_filenam
+    fi
+  fi
+}
 
 function apt_repo {
   sudo echo
@@ -62,10 +78,10 @@ function apt_repo {
     release_descr=$(lsb_release -ds)
     echo $release_descr
     release_id=${release_descr// /_}   # replace all (that's what the second slash is for) spaces by underscore
-    repourl=$main_repourl${release_id//\"/}  # remove all (that's what the second slash is for) quotes 
+    repourl=$main_repourl${release_id//\"/}  # remove all (that's what the second slash is for) quotes
   fi
-      
-  
+
+
   if [ $has_apt ] ;then
     echo NOT Repo basenam=$basenam repourl=$repourl
   else
@@ -75,7 +91,7 @@ function apt_repo {
       sudo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"
       sudo zypper refresh
     fi
-  fi  
+  fi
 }
 
 function apt_ppa {
@@ -92,10 +108,10 @@ function apt_ppa {
     release_descr=$(lsb_release -ds)
     echo $release_descr
     release_id=${release_descr// /_}   # replace all (that's what the second slash is for) spaces by underscore
-    repourl=$main_repourl${release_id//\"/}  # remove all (that's what the second slash is for) quotes 
+    repourl=$main_repourl${release_id//\"/}  # remove all (that's what the second slash is for) quotes
   fi
-    
-  
+
+
   if [ $has_apt ] ;then
     echo Repo basenam=$basenam repourl=$repourl
     logger SyveRepo basenam=$basenam args="$*"
@@ -105,6 +121,5 @@ function apt_ppa {
     fi
   else
     echo NOT Repo basenam=$basenam repourl=$repourl
-  fi  
+  fi
 }
-
