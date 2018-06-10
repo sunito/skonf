@@ -29,9 +29,9 @@ syve_section "Mailprogramm"
 
 case $USER in
   hans | hanna | sabine )
-    apt_install evolution 
+    apt_install evolution
     ;;
-  * ) 
+  * )
     apt_install thunderbird
     ;;
 esac
@@ -74,11 +74,11 @@ apt_install simplescreenrecorder
 
 
 # if [ -z `ls /etc/apt/sources.list.d |grep ps3mediaserver` ]
-# then  
+# then
 #   sudo add-apt-repository --yes ppa:happy-neko/ps3mediaserver
 #   # Hack von: http://adam.pohorecki.pl/blog/2014/05/16/how-to-install-ps3-media-server-on-ubuntu-14-dot-04-trusty-tahr/
 #   sudo sed -i s/trusty/raring/ /etc/apt/sources.list.d/happy-neko-ps3mediaserver-trusty.list
-#   sudo apt-get update >/dev/null  
+#   sudo apt-get update >/dev/null
 # fi
 # apt_install ps3mediaserver
 
@@ -92,13 +92,13 @@ syve_section "Unterstützung für Windows-Programme installieren"
 # Virtuelle Umgebungen
 
 #if [[ -z `dpkg -l virtualbox| grep "ii  virt"` ]] ;then
-if [ -z `ls /etc/apt/sources.list.d |grep virtualbox` ] ;then  
+if [ -z `ls /etc/apt/sources.list.d |grep virtualbox` ] ;then
   #wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc | sudo apt-key add -
   echo "### Achtung! nicht-trusty XXX fest verdrahtet!!! ###"
   # sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian trusty non-free contrib" > /etc/apt/sources.list.d/virtualbox.org.list'
   # bringt nix
   # sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian xenial non-free contrib" > /etc/apt/sources.list.d/virtualbox.org.list'
-  # sudo apt-get update >/dev/null 
+  # sudo apt-get update >/dev/null
 fi
 #apt_install virtualbox-4.3
 apt_install kernel-default-devel #suse
@@ -137,7 +137,7 @@ apt_install winetricks
 
 # Wir wollwn die neueste Version von PoL:
 if [ -z `ls /etc/apt/sources.list.d |grep playonlinux` ]
-then  
+then
   sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E0F72778C4676186
   sudo wget http://deb.playonlinux.com/playonlinux_trusty.list -O /etc/apt/sources.list.d/playonlinux.list
   sudo apt-get update >/dev/null
@@ -149,14 +149,38 @@ apt_install ttf-mscorefonts-installer
 apt_install winbind # needed for Office2010
 # wine 1.5.2, gecko 2.40, mono-4.5.6, msxml6
 
+if false ;then
+  TODO ToDo ----
+cat ./.local/share/applications/cxstart.desktop
+[Desktop Entry]
+Comment[de_DE]=
+Comment=
+Exec=/opt/cxoffice/bin/cxstart  --bottle gia1  --workdir  "%d" "%f"
+GenericName[de_DE]=Im eigenen Verzeichnis
+GenericName=Im eigenen Verzeichnis
+MimeType=application/x-ms-dos-executable;
+Name[de_DE]=cxstart
+Name=cxstart
+NoDisplay=true
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+fi
+
 syve_section "Weitere Software installieren"
 
 # seems already installed:
-# apt_install libreoffice-pdfimport 
+# apt_install libreoffice-pdfimport
 
 echo "Ensure that mtools_skip_check=1 is in .mtoolsrc"
 if [[ ! -f $HOME/.mtoolsr && -z `grep mtools_skip_check=1 $HOME/.mtoolsrc`  ]] ;then
-  echo mtools_skip_check=1 >> $HOME/.mtoolsrc 
+  echo mtools_skip_check=1 >> $HOME/.mtoolsrc
 fi
 
 apt_install kdiff3
@@ -166,15 +190,15 @@ apt_install cups-pdf
 
 apt_install simple-scan
 
-apt_install transmission-qt # suse                                                                                                                                                                                                                     
+apt_install transmission-qt # suse
 
 apt_install scribus
 
-if [ -z `which zypper` ] ;then # suse 
+if [ -z `which zypper` ] ;then # suse
 if [ -z `ls /etc/apt/sources.list.d |grep retroshare` ]
-  then  
+  then
     sudo add-apt-repository --yes ppa:retroshare/stable
-    sudo apt-get update >/dev/null  
+    sudo apt-get update >/dev/null
   fi
 # 2016-Jan, Sv: in Linux Mint Rosa scheint was mit dem Key-import nicht zu klappen, also workaround:
 #sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D8D05E222E10C9E3
@@ -250,9 +274,7 @@ eot
 apt_install kteatime
 
 syve_section "Weitere Browser"
- 
+
 apt_install chromium-browser
 apt_install opera
 apt_install rekonq
-
-
