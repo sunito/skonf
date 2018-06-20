@@ -39,11 +39,11 @@ class TanMails
   def extrahiere_tan text
     [
       # ToDo: weitere Erkenner (z.B. generisch), da aktuell alle nicht-Standard-Tans als "Leer" klassifiziert werden
-      / lautet: ([\w\d]{6})/, # Postb
+      / lautet: ([\w\d]{6})/, # Postb Standard
       /\+Postba()/,           # Postb leer
-      / lautet ([\d]{6}),/,   # GLS standard
+      / lautet ([\d]{6}),/,   # GLS Standard, funktioniert auch f Dauerauftr
       /\+GLS TAN()/,            # GLS leer
-      / TAN ([\w\d]{6})\./     # 3dsecure-cardprocess.de (Mastercard Securcode)
+      / TAN ([\w\d]{6})\./     # 3ds -cardprocess.de (Masterc Secucode)
     ].find do |re|
       if re =~ text
         return $1
@@ -59,18 +59,18 @@ class TanMails
       [false, "FEHLER!! \n Die Tan-SMS kam leer an.\n Bitte NEUE Tan anfordern!"]
    else
     if tan
-      zeit_str = neu_text.scan(/^Date: (.+)$/).first.first
-      zeit = Time.parse(zeit_str) if zeit_str
-      if zeit.nil?
-        [true, "Ungewöhnliche Tan-Mail erhalten:\n keine Zeit in der Mail gefunden!! (Tan: #{tan}"]
-      else
-        erfolg =  (Time.now - zeit < MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET)
-        [ erfolg, (erfolg ? '' : "KEINE NEUE Tan-Mail \n\n  Alte ") +
-          "Tan: #{tan}      Zeit: #{zeit.strftime('%b-%d. %T')}"
-        ]
-      end
+        zeit_str = neu_text.scan(/^Date: (.+)$/).first.first
+        zeit = Time.parse(zeit_str) if zeit_str
+        if zeit.nil?
+          [true, "Ungewöhnliche Tan-Mail erhalten:\n keine Zeit in der Mail gefunden!! (Tan: #{tan}"]
+        else
+          erfolg =  (Time.now - zeit < MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET)
+          [ erfolg, (erfolg ? '' : "KEINE NEUE Tan-Mail \n\n  Alte ") +
+            "Tan: #{tan}      Zeit: #{zeit.strftime('%b-%d. %T')}"
+          ]
+        end
     else
-      [false, "Keine aktuelle Tan-Mail gefunden"]
+        [false, "Keine aktuelle Tan-Mail gefunden"]
     end
    end
   end
