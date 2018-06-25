@@ -55,10 +55,10 @@ class TanMails
   def status
     neu_text = File.read neueste
     tan = extrahiere_tan neu_text
-   if tan.empty? # erster Ansatz zur Erkennung leerer SMS-Mails
-      [false, "FEHLER!! \n Die Tan-SMS kam leer an.\n Bitte NEUE Tan anfordern!"]
-   else
     if tan
+      if tan.empty? # erster Ansatz zur Erkennung leerer SMS-Mails
+         [false, "FEHLER!! \n Die Tan-SMS kam leer an.\n Bitte NEUE Tan anfordern!"]
+      else
         zeit_str = neu_text.scan(/^Date: (.+)$/).first.first
         zeit = Time.parse(zeit_str) if zeit_str
         if zeit.nil?
@@ -69,10 +69,10 @@ class TanMails
             "Tan: #{tan}      Zeit: #{zeit.strftime('%b-%d. %T')}"
           ]
         end
+      end
     else
-        [false, "Keine aktuelle Tan-Mail gefunden"]
+      [false, "Keine aktuelle Tan-Mail gefunden"]
     end
-   end
   end
 
   def warte wartedauer=TIMEOUT_SEKUNDEN
