@@ -77,6 +77,9 @@ if [[ -z `grep /dat /etc/fstab` ]] ;then
 else
   dat_dir=/dat
 fi
+if [ ${USER: -4} = "gast" ] ;then
+  dat_dir=/home
+fi
 sudo chown $USER.users /dat
 sudo chown $USER.users $dat_dir
 
@@ -164,6 +167,14 @@ elif [ $USER = "brunhild" ] ;then
   if [ ! -d $download_dir ] ;then
     ln -s $documents_dir $download_dir
   fi
+elif [ ${USER: -4} = "gast" ] ;then
+  user_dat_dir=$documents_dir
+  
+  desktop_dir=$documents_dir
+  download_dir=$documents_dir
+  music_dir=$documents_dir
+  pictures_dir=$documents_dir
+  videos_dir=$documents_dir
 fi
 
 rmdir -v $HOME/*

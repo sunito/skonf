@@ -31,5 +31,5 @@ sudo useradd --uid 1028 --create-home julian;sudo chfn -f "Jullian Suska" julian
 
 
 sudo useradd --uid 12345 -m -s /bin/bash Gast;sudo chfn -f "Gast-Benutzer" Gast
-sudo useradd --uid 12345 -m -s /bin/bash aaa_gast;sudo chfn -f "Gast-Benutzer" aaa_gast
+sudo useradd --uid 12345 -m -s /bin/bash aaa_gast;sudo chfn -f "Gast-Nutzer" aaa_gast
 
