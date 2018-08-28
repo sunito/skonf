@@ -273,6 +273,18 @@ done
 #---  27a28
 #---  > HomeUrl=file:///111
 
+
+
+# 2018-Aug-28: Versuche:
+anf_xml='<item oor:path=\"/org.openoffice.Office.Paths/Paths/org.openoffice.Office.Paths:NamedPath['"'Work'"']"><prop oor:name=\"WritePath\" oor:op=\"fuse\"><value>'
+
+#anf_xml=${anf_xml:0:-1}
+echo "################"
+echo -n $anf_xml
+echo "############"
+end_xml="</value></prop></item>"
+sed -i "s#${anf_xml}.*${end_xml}#${anf_xml}$documents_dir${end_xml}#"    $HOME/.config/libreoffice/4/user/registrymodifications.xcu
+
 winepref=${WINEPREFIX=$HOME/.wine}
 
 if [ ! -z $winepref ] ;then
