@@ -234,26 +234,15 @@ for userdir in ${u_dirs[*]} ;do
   mkdir $userdir
 done
 
-for userdir in "$user_dat_dir" "$download_dir" "$desktop_dir" "$documents_dir";do
+for userdir in "$user_dat_dir" "$download_dir" "$desktop_dir" "$documents_dir";do  # $documents_dir muss als LETZTES kommen!
   link_in_homedir="$HOME/$(basename $userdir)"
   rm "$link_in_homedir"
   if [[ "$userdir" != "$link_in_homedir" ]] ;then
     ln -s "$userdir" "$link_in_homedir"
   fi
+  
+  documents_link_in_homedir="$link_in_homedir" # funktioniert, weil $documents_dir im letzten Schleifendurchlauf kommt
 done
-# dadurch jetzt unnötig:
-if false ;then
-download_link_in_homedir="$HOME/$(basename $download_dir)"
-rm "$download_link_in_homedir"
-ln -s "$download_dir" "$download_link_in_homedir"
-
-desktop_link_in_homedir="$HOME/$(basename $desktop_dir)"
-rm "$desktop_link_in_homedir"
-if [[ "$desktop_dir" != "$desktop_link_in_homedir" ]] ;then
-  ln -s "$desktop_dir" "$desktop_link_in_homedir"
-fi
-fi
-
 
 dolphin_dir=$user_dat_dir
 case ${USER:0:3} in
@@ -275,15 +264,16 @@ done
 
 
 
-# 2018-Aug-28: Versuche:
-anf_xml='<item oor:path=\"/org.openoffice.Office.Paths/Paths/org.openoffice.Office.Paths:NamedPath['"'Work'"']"><prop oor:name=\"WritePath\" oor:op=\"fuse\"><value>'
-
-#anf_xml=${anf_xml:0:-1}
+# 2018-Aug-28: Sven: Handstände, um den Libreoffice-Arbeitspfad ("My Documents") zu setzen (anscheinend kann man ihn nur relativ zu $(home) oder $(work) angeben:
+documents_link_ohne_home="${documents_link_in_homedir/\/home\/$USER/}"
 echo "################"
-echo -n $anf_xml
+echo $documents_link_ohne_home
 echo "############"
-end_xml="</value></prop></item>"
-sed -i "s#${anf_xml}.*${end_xml}#${anf_xml}$documents_dir${end_xml}#"    $HOME/.config/libreoffice/4/user/registrymodifications.xcu
+# eigentlich: <item oor:path=\"/org.openoffice.Office.Paths/Paths/org.openoffice.Office.Paths:NamedPath['Work']"><prop oor:name=\"WritePath\" oor:op=\"fuse\"><value>'
+#anf_xml='<item oor:path=\"/org.openoffice.Office.Paths/Paths/org.openoffice.Office.Paths:NamedPath['"'Work'"']"><prop oor:name=\"WritePath\" oor:op=\"fuse\"><value>'
+#end_xml="</value></prop></item>"
+
+sed -i -r "s#(Paths:NamedPath\['Work'\].?>\s*<prop[^<]+<value>).*(</value></prop></item>)#\1\$(home)$documents_link_ohne_home\2#"    $HOME/.config/libreoffice/4/user/registrymodifications.xcu
 
 winepref=${WINEPREFIX=$HOME/.wine}
 
