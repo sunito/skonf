@@ -129,12 +129,21 @@ fi
 #EOT
 #fi
 
+# Entwicklung
+apt_install git vim
 if [[ -z `grep "EDITOR" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
-
-   # `date`,  Sven: Nicht versehentlich Konsolen schließen:
+   # `date`,  Sven
    export EDITOR=vim
 EOT
 fi
+if [[ -z `grep "VISUAL" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
+   # `date`,  Sven
+   export VISUAL=vim
+EOT
+fi
+
+# Multiple Move
+apt_install mmv
 
 apt_install screen
 
@@ -253,11 +262,6 @@ syve_section "Wichtige Programme installieren"
 apt_install hunspell-de-de # ubuntu
 apt_install myspell-de_DE  # opensuse
 
-# Entwicklung
-apt_install git vim
-
-# Konsole
-apt_install mmv
 # already installed:
 #apt_install procps
 # Sound auf Konsole
