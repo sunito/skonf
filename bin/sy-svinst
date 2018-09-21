@@ -2,7 +2,8 @@ sudo useradd --uid 1000 -m sunito
 
 sudo adduser --uid 1001 --ingroup users --add_extra_groups --force-badname NEW ;sudo chfn -f "Nele Emilie Wunna Wokan" NEW ;sudo addgroup NEW sudo
 
-sudo adduser --uid 1003 --ingroup users --add_extra_groups martin
+sudo adduser --uid 1003 --ingroup users --add_extra_groups martin ;sudo chfn -f "Martin Pfeil" martin ;sudo addgroup martin sudo
+sudo useradd --uid 1003 -g users --create-home martin ;sudo chfn -f "Martin Pfeil" martin ;sudo addgroup martin sudo
 
 
 sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild ;sudo chfn -f "Brunhild Wokan" brunhild ;sudo addgroup brunhild sudo
@@ -10,24 +11,24 @@ sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild ;sudo chfn -
 sudo adduser --uid 1007 --ingroup users --add_extra_groups claudia ;sudo chfn -f "Claudia Brendler" claudia ;sudo addgroup claudia sudo
 
 sudo adduser --uid 1008 --ingroup users --add_extra_groups hans ;sudo chfn -f "Johannes Suska" hans ;sudo addgroup hans sudo
-sudo useradd --uid 1008 --create-home hans ;sudo chfn -f "Johannes Suska" hans
+sudo useradd --uid 1008 -g users --create-home hans ;sudo chfn -f "Johannes Suska" hans
 
 sudo adduser --uid 1010 --ingroup users --add_extra_groups gerhard ;sudo chfn -f "Gerhard Lichtner" gerhard ;sudo addgroup gerhard sudo
 
 sudo adduser --uid 1011 --ingroup users --add_extra_groups sylvia ;sudo chfn -f "Sylvia" sylvia ;sudo addgroup sylvia sudo
 
 sudo adduser --uid 1011 --ingroup users --add_extra_groups assistent ;sudo chfn -f "Sabrina Peisker" assistent ;sudo addgroup assistent sudo
-sudo useradd --uid 1011 -m assistent ;sudo chfn -f "Sabrina Peisker" assistent ;sudo gpasswd -a assistent wheel
+sudo useradd --uid 1011 -g users -m assistent ;sudo chfn -f "Sabrina Peisker" assistent ;sudo gpasswd -a assistent wheel
 
 sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland ;sudo chfn -f "Hof Urstromland" hof-urstromland
 
 sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Osa Paul Odigie" osa ;sudo addgroup osa sudo
 
-sudo useradd --uid 1018 --create-home hanna;sudo chfn -f "Johanna Suska" hanna
+sudo useradd --uid 1018 -g users --create-home hanna;sudo chfn -f "Johanna Suska" hanna
 
-sudo useradd --uid 1026 --create-home sabine;sudo chfn -f "Sabine Suska" sabine ;sudo addgroup sabine sudo
-sudo useradd --uid 1027 --create-home maria;sudo chfn -f "Maria Suska" maria ;sudo addgroup maria sudo
-sudo useradd --uid 1028 --create-home julian;sudo chfn -f "Jullian Suska" julian ;sudo addgroup julian sudo
+sudo useradd --uid 1026 -g users --create-home sabine;sudo chfn -f "Sabine Suska" sabine ;sudo addgroup sabine sudo
+sudo useradd --uid 1027 -g users --create-home maria;sudo chfn -f "Maria Suska" maria ;sudo addgroup maria sudo
+sudo useradd --uid 1028 -g users --create-home julian;sudo chfn -f "Julian Suska" julian ;sudo addgroup julian sudo
 
 
 sudo useradd --uid 12345 -m -s /bin/bash Gast;sudo chfn -f "Gast-Benutzer" Gast

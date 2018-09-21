@@ -246,7 +246,12 @@ sudo service nfs-server start
 apt_install bridge-utils
 
 
-syve_section "NTFS workaround"
+
+syve_section "Windows File systems"
+apt_install exfat-utils
+
+
+# "NTFS workaround"
 
 # 2016-Jul, Sven: taken from http://askubuntu.com/questions/86086/fsck-cant-find-fsck-ntfs
 if [[ ! -e  /sbin/fsck.ntfs ]] ;then

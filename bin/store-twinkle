@@ -2,9 +2,9 @@
 
 reihe="ABCDEFGHIJKL$"
 buchst=${reihe:$(( `date +%y` - 10 )):1} 
-echo $buchst
-#buchst=H
+#echo $buchst
 targ=`date +%m%d` 
 zieldatei="/111/Folks/sip-calls/twinklech-$buchst${targ}.csv" 
+echo $zieldatei
 cp -a ~/.twinkle/twinkle.ch $zieldatei  
 #libreoffice $zieldatei &
