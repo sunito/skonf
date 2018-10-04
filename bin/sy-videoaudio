@@ -51,6 +51,9 @@ apt_install gstreamer1.0-libav
 apt_install gstreamer1.0-fluendo-mp3
 
 
+apt_install mp3splt-gtk
+
+
 # if [ -z `ls /etc/apt/sources.list.d |grep ps3mediaserver` ]
 # then  
 #   sudo add-apt-repository --yes ppa:happy-neko/ps3mediaserver
