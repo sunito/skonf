@@ -152,11 +152,12 @@ elif [ $USER = "assistent" ] ;then
   echo "ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch"
   ln -s $documents_dir/Buchhalt/WisoSteuer $HOME/Steuer-Sparbuch  
   desktop_dir=$documents_dir
-  download_dir=$documents_dir
+  download_dir=$HOME/Downloads
   if [ -d $HOME/Desktop ] ;then
     mv $HOME/Desktop $HOME/Desktop_orig
   fi
   ln -s $desktop_dir $HOME/Desktop
+  ln -s $downloads_dir $documents_dir/
 elif [ $USER = "gerhard" ] ;then
   desktop_dir=$user_dat_dir
   documents_dir=$user_dat_dir
