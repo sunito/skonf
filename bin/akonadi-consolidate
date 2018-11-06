@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+
+class String
+  def / rest
+    File.join( self, rest)
+  end
+end
+
+def puts_and_execute command
+  puts   "-->  " + command
+  `#{command}`
+end
+
+def kdialog args
+  #p cmd_zeile_kdialog(args)
+  `#{cmd_zeile_kdialog(args)}`
+end
+
+
+puts
+puts "Setze die KMail-Ordner für Drafts, Sent, Templates aud die Werte des ersten Accounts"
+
+FILENAME="/111/ye-sys/akonadi-konfig/emailidentities"
+
+
+def read_from_default(key)
+  puts_and_execute(%Q[kreadconfig --file #{FILENAME} --group "Identity #0" --key #{key}]).chomp
+end
+
+
+["Drafts", "Fcc", "Templates"].each do |key|
+  puts 
+  folder_id = read_from_default(key)
+  puts print "default #{key}=#{folder_id}"
+  if folder_id =~ /[^\d]/
+    puts "Folder-Id muss numerisch sein!!"
+    exit
+  end
+  puts_and_execute  %Q[sed -i "s/^#{key}=.*$/#{key}=#{folder_id}/g" "#{FILENAME}"]
+end
