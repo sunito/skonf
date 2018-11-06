@@ -2,7 +2,7 @@
 
 
 class String
-  def / rest
+  define_method :"/" do |rest|
     File.join( self, rest)
   end
 end
@@ -19,13 +19,24 @@ end
 
 
 puts
-puts "Setze die KMail-Ordner für Drafts, Sent, Templates aud die Werte des ersten Accounts"
+puts "Setze die KMail-Ordner für Drafts, Sent, Templates auf die Werte des ersten Accounts"
+
+puts_and_execute "akonadictl stop"
+
+puts
+puts "Dies ist noch MANUELL zu tun: "
+puts "- Setzen der Posteingangsordner für alle Postfächer."
+puts "- Setzen der Ordner in den Filtern"
+puts
+
+sleep 1
 
 FILENAME="/111/ye-sys/akonadi-konfig/emailidentities"
 
 
 def read_from_default(key)
-  puts_and_execute(%Q[kreadconfig --file #{FILENAME} --group "Identity #0" --key #{key}]).chomp
+  default_group = "Identity #0"
+  puts_and_execute( %Q[kreadconfig --file #{FILENAME} --group "#{default_group}" --key "#{key}"] ).chomp
 end
 
 
