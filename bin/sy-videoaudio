@@ -40,6 +40,8 @@ apt_install gstreamer-plugins-ugly-orig-addon
 
 apt_install vlc
 apt_install xfburn # k3b hat Macken
+apt_install audex
+apt_install flac
 apt_install pavucontrol
 apt_install audacity
 
