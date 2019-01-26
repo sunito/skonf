@@ -13,8 +13,9 @@ if [ $has_apt ] ;then
 else
   if true ;then
     echo ecsos         http://download.opensuse.org/repositories/home:/ecsos/openSUSE_Leap_15.0/
-    sudo zypper ar  http://download.opensuse.org/repositories/home:/ecsos/openSUSE_Leap_`lsb_release -rs`/home:ecsos.repo home_ecsos
-    sudo zypper mr -rk -p 50 home_ecsos
+    #sudo zypper ar  http://download.opensuse.org/repositories/home:/ecsos/openSUSE_Leap_`lsb_release -rs`/home:ecsos.repo home_ecsos
+    sudo zypper ar -n "Suse-Archiving" http://download.opensuse.org/repositories/Archiving/openSUSE_Leap_`lsb_release -rs`/ Archiving 
+    sudo zypper mr -rk  Archiving
     #sudo zypper --no-gpg-checks dup --allow-vendor-change --allow-downgrade --from packman
   fi
 fi
