@@ -3,6 +3,14 @@
 own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
+
+syve_section "master-pdf-editor"
+echo todo: allgemeiner, andere Stelle im Script
+#wget https://code-industry.net/public/master-pdf-editor-5.3.02_qt5.x86_64.rpm
+apt_install master-pdf-editor-5.3.02_qt5.x86_64.rpm
+
+
+
 syve_section "Telefonie"
 
 if [ $has_apt ] ;then
