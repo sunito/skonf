@@ -156,7 +156,12 @@ X-KDE-Username=
 eot
 fi
 
-# Wine-Emulator
+syve_section Wine-Emulator
+# todo: Verlagern aller Emulatoren in eigene Datei
+
+    sudo zypper addrepo http://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Leap_`lsb_release -rs`/Emulators:Wine.repo
+    sudo zypper refresh
+    
 apt_install wine
 apt_install winetricks
 
