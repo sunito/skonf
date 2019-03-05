@@ -37,12 +37,12 @@ number.gsub(/[^+0-9]/, "")
 number = "+49" + number[1..-1] if number =~ /^0[^0]/
 
 provider = if $0 =~ /inter/
-    "intervoip"
+    "intervoip/er*"
   else
-    "nonoh"
+    "nonoh/he*"
   end
 
-uname_files = Dir[ ENV["HOME"] / ".ssh"/"passwords"/provider / "he*"] 
+uname_files = Dir[ ENV["HOME"] / ".ssh"/"passwords"/provider ] 
 raise "username entry not found" if uname_files.empty?
 raise "several username entries found" if uname_files.size > 1
 uname_file = uname_files.first
