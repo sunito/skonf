@@ -63,9 +63,25 @@ apt_install ruby-sqlite3
 
 syve_section Java
 
-apt_install jdk8_openjdk
+apt_install jdk8-openjdk
+apt_install java-openjfx
 apt_repo https://download.opensuse.org/repositories/Education
 apt_install bluej
+cat <<EOT >$HOME/.local/share/applications/BlueJ.desktop
+[Desktop Entry]
+Comment=
+Exec=java -Dawt.useSystemAAFontSettings=on -cp /opt/bluej41/lib/bluej.jar:/usr/lib/jvm/java-8-openjdk/lib/tools.jar  bluej.Boot
+Icon=bluegriffon
+Name=BlueJ
+NoDisplay=false
+Path[$e]=
+StartupNotify=true
+Terminal=0
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+EOT
 
 
 syve_section IDEs
