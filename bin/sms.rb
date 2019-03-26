@@ -36,13 +36,17 @@ end
 number.gsub(/[^+0-9]/, "")
 number = "+49" + number[1..-1] if number =~ /^0[^0]/
 
-provider = if $0 =~ /inter/
-    "intervoip/er*"
+
+provdata = if $0 =~ /inter/
+    %w[intervoip.com er*]
   else
-    "nonoh/he*"
+    %w[nonoh.net he*]
   end
 
-uname_files = Dir[ ENV["HOME"] / ".ssh"/"passwords"/provider ] 
+domain, nam = provdata
+dir=domain.split(".").first
+
+uname_files = Dir[ ENV["HOME"] / ".ssh"/"passwords"/dir/nam ] 
 raise "username entry not found" if uname_files.empty?
 raise "several username entries found" if uname_files.size > 1
 uname_file = uname_files.first
@@ -54,7 +58,7 @@ username = File.basename(uname_file)
 puts "Text size = #{text.size} characters"
 
 #cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4939877052998&to=#{number}&text=#{text}'"
-cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4915792311751&to=#{number}&text=#{text}'"
+cmd = "wget -O - 'https://www.#{domain}/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4915792311751&to=#{number}&text=#{text}'"
 puts cmd
 if false   # opts.dryrun?
   puts "Trockenlauf."
