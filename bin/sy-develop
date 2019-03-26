@@ -110,3 +110,9 @@ echo "added rbenv init to .bashrc"
 else
 echo "rbenv init already in .bashrc"
 fi
+
+syve_section Java
+
+apt_repo https://download.opensuse.org/repositories/Education
+apt_install bluej
+
