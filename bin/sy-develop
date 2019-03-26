@@ -61,6 +61,13 @@ apt_install libsqlite3-dev     # deb
 apt_install sqlite3-devel      # rpm
 apt_install ruby-sqlite3
 
+syve_section Java
+
+apt_install jdk8_openjdk
+apt_repo https://download.opensuse.org/repositories/Education
+apt_install bluej
+
+
 syve_section IDEs
 
 sudo zypper addrepo https://download.opensuse.org/repositories/home:/Herbster0815/openSUSE_Leap_15.0/home:Herbster0815.repo
@@ -110,9 +117,4 @@ echo "added rbenv init to .bashrc"
 else
 echo "rbenv init already in .bashrc"
 fi
-
-syve_section Java
-
-apt_repo https://download.opensuse.org/repositories/Education
-apt_install bluej
 
