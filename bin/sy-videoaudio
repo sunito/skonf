@@ -55,6 +55,8 @@ apt_install gstreamer1.0-fluendo-mp3
 
 apt_install mp3splt-gtk
 
+apt_install chromium-widevinecdm-plugin   # z.B. für Amazon-Prime
+
 
 # if [ -z `ls /etc/apt/sources.list.d |grep ps3mediaserver` ]
 # then  
