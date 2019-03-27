@@ -88,6 +88,7 @@ function apt_repo {
     echo Repo basenam=$basenam repourl=$repourl
     logger SyveRepo basenam=$basenam args="$*"
     if [[ -z `zypper lr |grep $basenam` ]] ;then
+      echo adding $repourl
       sudo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"
       sudo zypper refresh
     fi
