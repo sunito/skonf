@@ -281,7 +281,7 @@ if [[ -z `zypper lr |grep "dmacvicar"` ]] ;then
   sudo zypper refresh
 fi
 
-apt_install k4dirstat 
+#apt_install k4dirstat  <-- buggy (2019-März,Sv)
 apt_install qdirstat
 apt_install kdirstat
 
