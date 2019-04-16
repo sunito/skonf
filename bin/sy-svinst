@@ -24,7 +24,7 @@ sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland ;sudo
 
 sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Osa Paul Odigie" osa ;sudo addgroup osa sudo
 
-sudo useradd --uid 1018 -g users --create-home hanna;sudo chfn -f "Johanna Suska" hanna
+export u=hanna  ;sudo useradd --uid 1018 -g users --create-home $u ;sudo chfn -f "Johanna Suska" $u ;sudo usermod -a -G wheel $u
 export u=dustin ;sudo useradd --uid 1018 -g users --create-home $u ;sudo chfn -f "Dustin" $u ;sudo usermod -a -G wheel $u
 
 sudo useradd --uid 1026 -g users --create-home sabine;sudo chfn -f "Sabine Suska" sabine ;sudo addgroup sabine sudo
