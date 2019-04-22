@@ -281,6 +281,12 @@ apt_install myspell-de_DE  # opensuse
 # Sound auf Konsole
 apt_install beep sox jovie
 
+# Manjaro: AUR-Tool
+
+apt_install base-devel 
+#apt_install yaourt
+apt_install pacaur
+
 # Wichtige graphische Tools
 
 if [[ -z `zypper lr |grep "dmacvicar"` ]] ;then
@@ -306,10 +312,12 @@ then
   #sudo add-apt-repository ppa:savoirfairelinux/sflphone-nightly
   sudo apt-get update >/dev/null
 fi
-apt_install sflphone-gnome sflphone-kde
 
 # doch nicht #veraltet:
-apt_install twinkle pidgin
+apt_install twinkle
+#pacaur -S  --noconfirm twinkle-qt5
+pacaur -S   twinkle-qt5
+
 apt_install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
 
 # Damit der CDDN.Dialog in K3B funktioniert
