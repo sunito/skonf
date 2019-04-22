@@ -102,6 +102,7 @@ sed -i -r -e 's/^(holidaysRegions *)=.*$/\1=de_de/' "$plasma_applets_file"
 
 syve_section "Packages"
 
+apt_install kmail
 apt_install kde-service-menu-fuseiso
 apt_install kdeplasma-addons
 apt_install kubuntu-restricted-extras
