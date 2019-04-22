@@ -10,7 +10,10 @@ apt_repo https://download.opensuse.org/repositories/home:glebr
 apt_install wire-desktop
 
 
-syve_section "master-pdf-editor"
+syve_section "Office"
+
+apt_install libreoffice
+
 echo todo: allgemeiner, andere Stelle im Script
 #wget https://code-industry.net/public/master-pdf-editor-5.3.02_qt5.x86_64.rpm
 apt_install master-pdf-editor-5.3.02_qt5.x86_64.rpm
