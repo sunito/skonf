@@ -67,57 +67,6 @@ case $USER in
     ;;
 esac
 
-syve_section "Multimedia-Programme"
-
-apt_install libav-tools
-
-if [ $has_apt ] ;then
-    # todo:  tmp dir auf andere Stellen übertragen
-    if false ;then
-    if [ `uname -i` = "x86_64" ] ; then
-        wget ftp://ftp.ubuntu.com/ubuntu/pool/universe/k/k9copy/k9copy_2.3.8-1_amd64.deb -P /tmp
-        sudo dpkg -i /tmp/k9copy_2.3.8-1_amd64.deb
-    fi
-    fi
-else
-  if false ;then
-  # Lieber icht so viel in den Reops rumpfuschen
-    sudo zypper ar -f -n "Packman-Repo" http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed packman
-    sudo zypper mr -rk -p 20 packman
-    #sudo zypper --no-gpg-checks dup --allow-vendor-change --allow-downgrade --from packman
-    sudo zypper ar -f -n "Tumbleweed-wurzel99" http://opensuse-guide.org/repo/openSUSE_Tumbleweed dvd
-    sudo zypper --gpg-auto-import-keys dup --from packman --from dvd
-  fi
-fi
-
-apt_install libdvdread4
-sudo /usr/share/doc/libdvdread4/install-css.sh
-
-#205-Dez, Sven: veraltet: apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
-
-apt_install vlc
-apt_install xfburn # k3b hat Macken
-apt_install pavucontrol
-apt_install audacity
-
-apt_install simplescreenrecorder
-
-
-
-# if [ -z `ls /etc/apt/sources.list.d |grep ps3mediaserver` ]
-# then
-#   sudo add-apt-repository --yes ppa:happy-neko/ps3mediaserver
-#   # Hack von: http://adam.pohorecki.pl/blog/2014/05/16/how-to-install-ps3-media-server-on-ubuntu-14-dot-04-trusty-tahr/
-#   sudo sed -i s/trusty/raring/ /etc/apt/sources.list.d/happy-neko-ps3mediaserver-trusty.list
-#   sudo apt-get update >/dev/null
-# fi
-# apt_install ps3mediaserver
-
-#syve_section "### simplescreenrecorder" deaktiviert, da Netrunner schon gut ausgestattet
-# sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
-# sudo apt-get update >/dev/null
-# apt_install simplescreenrecorder
-
 syve_section "Unterstützung für Windows-Programme installieren"
 
 # Virtuelle Umgebungen
