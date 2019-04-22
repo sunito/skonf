@@ -35,6 +35,13 @@ source $(dirname $own_folder)/lib/sy-common.bash  || echo "Fehler beim Laden! fo
 
 echo "starting..............."
 
+if [ ! -f /usr/bin/kreadconfig ] ;then
+  echo symlink to kreadconfig
+  sudo ln -s /usr/bin/kreadconfig5 /usr/bin/kreadconfig
+  echo symlink to kwriteconfig
+  sudo ln -s /usr/bin/kwriteconfig5 /usr/bin/kwriteconfig
+fi
+
 syve_section "Erste Schritte"
 # Wir brauchen NFS und Ruby:
 apt_install nfs-kernel-server 
