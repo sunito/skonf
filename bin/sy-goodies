@@ -65,6 +65,10 @@ case $USER in
   hans | hanna | sabine )
     apt_install evolution
     ;;
+  sunito )
+     apt_install kmail
+     apt_install kaddressbook
+     ;;
   * )
     apt_install thunderbird
     ;;
