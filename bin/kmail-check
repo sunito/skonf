@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #export $(strings /proc/*/environ  2>/dev/null |grep DBUS_SESSION_BUS_ADDRESS |tail -1)
-eval $(dbus-session-env)
+eval $($(dirname $0)/dbus-session-env)
 _dummy=${DISPLAY:=:0}
 kmail --check
 echo "EMail-Check ausgelöst"

@@ -75,11 +75,12 @@ class TanMails
     end
   end
 
+  SCRIPT_DIR = File.dirname(__FILE__)
   def warte wartedauer=TIMEOUT_SEKUNDEN
     anf_zeit = Time.now
     text = nil
     while Time.now - anf_zeit <= wartedauer do
-      `kmail-check`
+      `#{SCRIPT_DIR}/kmail-check`
       erfolg, text = status
       break text if erfolg
       sleep 1.4
