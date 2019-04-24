@@ -70,9 +70,10 @@ case $USER in
     apt_install evolution
     ;;
   sunito )
+     # bei Manjaro nicht von Hause aus dabei:
      apt_install kmail
-     apt_install kaddressbook
-     apt_install kdepim-addons
+     apt_install kaddressbook  
+     apt_install kdepim-addons  # auf Manjaro sonst: org.kde.pim.contacteditor:  error during loading contacteditor plugin :  "The shared library was not found."
      ;;
   * )
     apt_install thunderbird
