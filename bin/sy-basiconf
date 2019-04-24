@@ -133,6 +133,13 @@ fi
 
 # Entwicklung
 apt_install git vim
+if [[ -z `grep ".bashrc" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
+  # `date`,  Sven Für Manjaro damit auch für ssh-Logins .bashrc gelesen wird
+  if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+  fi
+EOT
+
 if [[ -z `grep "EDITOR" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
    # `date`,  Sven
    export EDITOR=vim
