@@ -438,100 +438,100 @@ exit 0
 #  <Action shortcut="Del; Backspace" name="akonadi_move_to_trash"/>
 # </ActionProperties>
 #</kpartgui>
-
-diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
-140a141,143
-> [Containments][2][Applets][112][Configuration][General]
-> show_suspend=true
-
-
-diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/config/powerdevilrc
-3a4,6
-> [General]
-> configLockScreen=false
-> 
-diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
-27a28
-> HomeUrl=file:///111
-
-
-
-20:50:14 sunito@NetZen:~$ grep -A 20 sven2013 /111/ye-sys/kmail-neu/emailidentities
-Bcc=sven2013@suska.org
-Dictionary=Deutsch
-Drafts=544
-Email Address=sven2013@suska.org
-Email Aliases=
-Fcc=554
-Identity=7 Sven (2013)
-Image Location=
-Inline Signature=
-Name=Sven Suska
-Preferred Crypto Message Format=auto
-Signature Enabled=true
-Signature File[]=/home/sunito/.mail-signaturen/mailsig-std.txt
-Signature Type=file
-Templates=617
-VCardFile=
-X-FaceEnabled=false
-uoid=1282982449
-
-
-diff -r /dat/conf-dot/.kde/share/config/ksmserverrc /home/sunito/.kde/share/config/ksmserverrc
-2a3
-> 
-3a5,6
-> confirmLogout=true
-> excludeApps=
-4a8,9
-> offerShutdown=true
-> shutdownType=2
-
-[$Version]
-update_info=ksmserver.upd:kde3
-
-[General]
-confirmLogout=true
-excludeApps=
-loginMode=default
-offerShutdown=true
-shutdownType=2
-
-
-diff -r /dat/conf-dot/.kde/share/config/kscreensaverrc /home/sunito/.kde/share/config/kscreensaverrc
-2,3c2,3
-< Enabled=true
-< LegacySaverEnabled=true
----
-> Enabled=false
-> LegacySaverEnabled=false
-6c6
-< PlasmaEnabled=false
----
-> PlasmaEnabled=true
-8c8
-< Timeout=60
----
-> Timeout=300
-
-kmail Filter anwenden:
-  <ActionList name="toolbar_messagetag_actions"/>
-  <Action name="create_todo"/>
-  <Action name="apply_filters"/>
- </ToolBar>
-in /home/sunito/.kde/share/apps/kmail2/kmmainwin.rc
-diff -r /dat/conf-dot/.config/synaptiks/management.json /home/sunito/.config/synaptiks/management.json
-5c5
-<   "monitor_keyboard": false, 
----
->   "monitor_keyboard": true, 
-
-
-diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
-229,230c229,230
-< maxRecentApps=5
-< views=RecentlyUsedApplications,Applications,RunCommand,Leave
----
-> maxRecentApps=8
-> views=RecentlyUsedApplications,Applications,Favorites,RecentlyUsed,RunCommand,Leave
-
+# 
+# diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
+# 140a141,143
+# > [Containments][2][Applets][112][Configuration][General]
+# > show_suspend=true
+# 
+# 
+# diff -r /dat/conf-dot/.kde/share/config/powerdevilrc /home/sunito/.kde/share/config/powerdevilrc
+# 3a4,6
+# > [General]
+# > configLockScreen=false
+# > 
+# diff -r /dat/conf-dot/.kde/share/config/dolphinrc /home/sunito/.kde/share/config/dolphinrc
+# 27a28
+# > HomeUrl=file:///111
+# 
+# 
+# 
+# 20:50:14 sunito@NetZen:~$ grep -A 20 sven2013 /111/ye-sys/kmail-neu/emailidentities
+# Bcc=sven2013@suska.org
+# Dictionary=Deutsch
+# Drafts=544
+# Email Address=sven2013@suska.org
+# Email Aliases=
+# Fcc=554
+# Identity=7 Sven (2013)
+# Image Location=
+# Inline Signature=
+# Name=Sven Suska
+# Preferred Crypto Message Format=auto
+# Signature Enabled=true
+# Signature File[]=/home/sunito/.mail-signaturen/mailsig-std.txt
+# Signature Type=file
+# Templates=617
+# VCardFile=
+# X-FaceEnabled=false
+# uoid=1282982449
+# 
+# 
+# diff -r /dat/conf-dot/.kde/share/config/ksmserverrc /home/sunito/.kde/share/config/ksmserverrc
+# 2a3
+# > 
+# 3a5,6
+# > confirmLogout=true
+# > excludeApps=
+# 4a8,9
+# > offerShutdown=true
+# > shutdownType=2
+# 
+# [$Version]
+# update_info=ksmserver.upd:kde3
+# 
+# [General]
+# confirmLogout=true
+# excludeApps=
+# loginMode=default
+# offerShutdown=true
+# shutdownType=2
+# 
+# 
+# diff -r /dat/conf-dot/.kde/share/config/kscreensaverrc /home/sunito/.kde/share/config/kscreensaverrc
+# 2,3c2,3
+# < Enabled=true
+# < LegacySaverEnabled=true
+# ---
+# > Enabled=false
+# > LegacySaverEnabled=false
+# 6c6
+# < PlasmaEnabled=false
+# ---
+# > PlasmaEnabled=true
+# 8c8
+# < Timeout=60
+# ---
+# > Timeout=300
+# 
+# kmail Filter anwenden:
+#   <ActionList name="toolbar_messagetag_actions"/>
+#   <Action name="create_todo"/>
+#   <Action name="apply_filters"/>
+#  </ToolBar>
+# in /home/sunito/.kde/share/apps/kmail2/kmmainwin.rc
+# diff -r /dat/conf-dot/.config/synaptiks/management.json /home/sunito/.config/synaptiks/management.json
+# 5c5
+# <   "monitor_keyboard": false, 
+# ---
+# >   "monitor_keyboard": true, 
+# 
+# 
+# diff -r /dat/conf-dot/.kde/share/config/plasma-desktop-appletsrc /home/sunito/.kde/share/config/plasma-desktop-appletsrc
+# 229,230c229,230
+# < maxRecentApps=5
+# < views=RecentlyUsedApplications,Applications,RunCommand,Leave
+# ---
+# > maxRecentApps=8
+# > views=RecentlyUsedApplications,Applications,Favorites,RecentlyUsed,RunCommand,Leave
+# 
