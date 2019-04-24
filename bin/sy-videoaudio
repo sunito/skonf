@@ -3,7 +3,10 @@
 own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
+
 syve_section "Multimedia-Programme"
+
+apt_install libav-tools
 
 if [ $has_apt ] ;then
     # todo:  tmp dir auf andere Stellen übertragen
@@ -36,10 +39,12 @@ apt_install gstreamer-plugins-ugly-orig-addon
 
 
 
-#205-Dez, Sven: veraltet: apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
+#2015-Dez, Sven: veraltet: apt_install libavcodec-extra-53 # wird für Video-Konvertierung zu MP3 gebraucht
 
 apt_install vlc
 apt_install xfburn # k3b hat Macken
+apt_install audex
+apt_install flac
 apt_install pavucontrol
 apt_install audacity
 
@@ -52,6 +57,8 @@ apt_install gstreamer1.0-fluendo-mp3
 
 
 apt_install mp3splt-gtk
+
+apt_install chromium-widevinecdm-plugin   # z.B. für Amazon-Prime
 
 
 # if [ -z `ls /etc/apt/sources.list.d |grep ps3mediaserver` ]

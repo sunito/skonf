@@ -31,7 +31,7 @@ function apt_install {
   if [ $has_apt ] ;then
     sudo apt-get --yes install $*
   elif [ $has_pac ] ;then
-    sudo pacman --sync --noconfirm $*
+    sudo pacman --sync --needed --noconfirm $*
   else
     #sudo zypper -n install $*
     sudo zypper install -y $*
@@ -88,6 +88,7 @@ function apt_repo {
     echo Repo basenam=$basenam repourl=$repourl
     logger SyveRepo basenam=$basenam args="$*"
     if [[ -z `zypper lr |grep $basenam` ]] ;then
+      echo adding $repourl
       sudo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"
       sudo zypper refresh
     fi

@@ -35,6 +35,13 @@ source $(dirname $own_folder)/lib/sy-common.bash  || echo "Fehler beim Laden! fo
 
 echo "starting..............."
 
+if [ ! -f /usr/bin/kreadconfig ] ;then
+  echo symlink to kreadconfig
+  sudo ln -s /usr/bin/kreadconfig5 /usr/bin/kreadconfig
+  echo symlink to kwriteconfig
+  sudo ln -s /usr/bin/kwriteconfig5 /usr/bin/kwriteconfig
+fi
+
 syve_section "Erste Schritte"
 # Wir brauchen NFS und Ruby:
 apt_install nfs-kernel-server 
@@ -281,6 +288,12 @@ apt_install myspell-de_DE  # opensuse
 # Sound auf Konsole
 apt_install beep sox jovie
 
+# Manjaro: AUR-Tool
+
+apt_install base-devel 
+#apt_install yaourt
+apt_install pacaur
+
 # Wichtige graphische Tools
 
 if [[ -z `zypper lr |grep "dmacvicar"` ]] ;then
@@ -288,7 +301,7 @@ if [[ -z `zypper lr |grep "dmacvicar"` ]] ;then
   sudo zypper refresh
 fi
 
-apt_install k4dirstat 
+#apt_install k4dirstat  <-- buggy (2019-März,Sv)
 apt_install qdirstat
 apt_install kdirstat
 
@@ -306,10 +319,12 @@ then
   #sudo add-apt-repository ppa:savoirfairelinux/sflphone-nightly
   sudo apt-get update >/dev/null
 fi
-apt_install sflphone-gnome sflphone-kde
 
 # doch nicht #veraltet:
-apt_install twinkle pidgin
+apt_install twinkle
+#pacaur -S  --noconfirm twinkle-qt5
+pacaur -S   twinkle-qt5
+
 apt_install empathy-call telepathy-sofiasip # beide Pakete sind zum Telefonieren erforderlich
 
 # Damit der CDDN.Dialog in K3B funktioniert

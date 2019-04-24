@@ -39,6 +39,11 @@ sed -i -r -e 's/^(sortingStrategy *)=.*$/\1=1/' "$plasma_applets_file"
 # ---
 # > kwin4_effect_fallapartEnabled=true
 
+syve_section "Latte-Dock"
+
+apt_install latte-dock
+
+
 syve_section "Lid without action"
 
 kwriteconfig --file "$config_dir"/powermanagementprofilesrc --group AC --group HandleButtonEvents --key lidAction 0
