@@ -146,7 +146,7 @@ if [[ -z `grep ".bashrc" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"
         . ~/.bashrc
   fi
 EOT
-
+fi
 if [[ -z `grep "EDITOR" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
    # `date`,  Sven
    export EDITOR=vim
