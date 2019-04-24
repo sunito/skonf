@@ -4,6 +4,10 @@ own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
 
+
+apt_install snapd
+
+
 syve_section ""
 apt_repo https://download.opensuse.org/repositories/home:glebr
 #apt_repo https://download.opensuse.org/repositories/Education
@@ -68,6 +72,7 @@ case $USER in
   sunito )
      apt_install kmail
      apt_install kaddressbook
+     apt_install kdepim-addons
      ;;
   * )
     apt_install thunderbird
