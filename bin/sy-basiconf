@@ -286,7 +286,9 @@ apt_install myspell-de_DE  # opensuse
 # already installed:
 #apt_install procps
 # Sound auf Konsole
-apt_install beep sox jovie
+apt_install beep
+apt_install sox 
+apt_install jovie
 
 # Manjaro: AUR-Tool
 
@@ -423,6 +425,7 @@ if [ -z "`gem list |grep qtbindings`" ] ;then
 sudo gem install qtbindings 
 fi
 sudo gem install slop -v 3.5
+gem install slop -v 3.5
 
 if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
   # Nur wenn schon akonadi installiert
