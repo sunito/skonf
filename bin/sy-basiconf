@@ -368,6 +368,11 @@ X-KDE-SubstituteUID=false
 eot
 fi
 
+syve_section "Sonstiges"
+
+apt_install apt-transport-https
+
+
 syve_section "teamviewer"
 
 echo TODO

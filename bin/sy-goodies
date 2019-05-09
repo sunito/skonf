@@ -7,7 +7,8 @@ source $(dirname $own_folder)/lib/sy-common.bash
 apt_install gnome-keyring
 
 apt_install snapd
-
+sudo systemctl enable --now snapd.socket      # nur für Manjaro?
+sudo ln -s /var/lib/snapd/snap /snap             # symlink für die "classic"-Snaps
 
 syve_section ""
 apt_repo https://download.opensuse.org/repositories/home:glebr

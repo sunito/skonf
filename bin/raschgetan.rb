@@ -4,7 +4,8 @@
 require 'fileutils'
 require 'time'
 
-MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 150 # 2.5 Minuten -- schneller überweiset man nicht
+MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 90 # 1.5 Minuten -- schneller überweiset man nicht
+# 90 Sek sind eher kurz, 2018-Apr-29 von 150 Sek runtergegangen, das war in manchen Fällen zu lang
 TIMEOUT_SEKUNDEN = 10 # auch 8sek hat nicht gereicht f GLS
 #TIMEOUT_SEKUNDEN = 8 # 6 wäre für GLS zu wenig
 
@@ -37,6 +38,7 @@ class TanMails
   end
 
   def extrahiere_tan text
+    #p text.encoding
     [
       # ToDo: weitere Erkenner (z.B. generisch), da aktuell alle nicht-Standard-Tans als "Leer" klassifiziert werden
       / lautet: ([\w\d]{6})/, # Postb Standard
@@ -53,7 +55,7 @@ class TanMails
   end
 
   def status
-    neu_text = File.read neueste
+    neu_text = File.read neueste, encoding: 'utf-8'
     tan = extrahiere_tan neu_text
     if tan
       if tan.empty? # erster Ansatz zur Erkennung leerer SMS-Mails
