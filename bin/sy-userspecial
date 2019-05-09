@@ -400,7 +400,6 @@ ruby $(dirname $own_folder)/lib/sy-userspec.rb
 
 syve_section "Geräte-Aktionen"
 
-mkdir -p $kde_dir/share/apps/solid/actions
 
 if [ $USER = "brunhild" ] ;then
 ruby <<EOC
@@ -430,6 +429,8 @@ EOC
 fi
 
 if [ $USER = "NEW" ] ;then
+# Dieser Ort ($kde_dir/share/apps/solid) ist voll veraltet!
+mkdir -p $kde_dir/share/apps/solid/actions
 user_media_dir=/media/$USER
 # quoting "EOT" does not work, because we need $dat_dir inside, so escaped the backticks
 cat <<EOT >$kde_dir/share/apps/solid/actions/Comp-NachHandykarte.desktop
@@ -464,6 +465,7 @@ if [ `ruby -e 'puts  (/^(hans|hanna|sunito|NEW|sabine|maria|julian)$/ =~ (ENV["U
   echo "erstelle FotoTrans-Action"
 user_media_dir=/media/$USER
 # quoting "EOT" does not work, because we need $dat_dir inside, so escaped the backticks
+mkdir -p $HOME/.local/share/solid/actions
 cat <<EOT >$HOME/.local/share/solid/actions/FotoTransfer.desktop
 [Desktop Action open]
 Exec=/wartung/skonf/bin/fototrialog.rb
