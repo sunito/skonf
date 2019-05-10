@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# die Session-Environment und DISPLAY werden fur Remote-Aufrufen gebraucht
+
 #export $(strings /proc/*/environ  2>/dev/null |grep DBUS_SESSION_BUS_ADDRESS |tail -1)
 eval $($(dirname $0)/dbus-session-env)
-_dummy=${DISPLAY:=:0}
-kmail --check
+
+# Bringt das folgende noch was, wo DISPLAY sp√ter eh gesetzt wird? (Oder waere es nur mit der export-Variante ueberfluessig?)
+_dummy=${DISPLAY=:0}
+# Die folgende DISPLAY-Setzung ist n√∂tig, um bei Manjaro 18.0.4 Abst√rze (coredumps) des kmail-Kommandos zu vermeiden
+# es reicht die einzelne Setzung am Kommando, das export ist unn√tig
+#export DISPLAY=:0 
+DISPLAY=:0 kmail --check
+
 echo "EMail-Check ausgel√∂st"
 
