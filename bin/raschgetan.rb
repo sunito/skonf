@@ -100,6 +100,8 @@ end
 
 
 
-tm = TSMSMails.new "/111/ye-sys/kmail-neu/local-mail/.e-EingangPrio.directory/e-Anrufe/"
+#tm = TSMSMails.new "/111/ye-sys/kmail-neu/local-mail/.e-EingangPrio.directory/e-Anrufe/"
+tm = TSMSMails.new "#{ENV['HOME']}/.local/share/local-mail/inbox/"
+
 
 puts tm.warte
