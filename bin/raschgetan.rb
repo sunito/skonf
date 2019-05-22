@@ -39,14 +39,17 @@ class TSMSMails
 
   def extrahiere text
     #p text.encoding
-    ab='AN'
+    d_wd = ['\d', '\w\d']
+    dig, an = d_wd.map { |zeichen|  "([#{zeichen}]{6})" }
+    ab='AN'; ap='+P'; f="T#{ab}"
     [
       # ToDo: weitere Erkenner (z.B. generisch), da aktuell alle Nicht-Standard-SMS als "Leer" klassifiziert werden
-      / lautet: ([\w\d]{6})/, # Postb Standard
-      /\+Postb()/,           # Postb leer
+      / lautet: #{dig}/, # Pb Standard
+      /\#{ap}[aoe]s[ty]b()/,           # Pb leer
       / lautet ([\d]{6}),/,   # GLS Standard, funktioniert auch f Dauauftr
-      /\+GLS T#{ab}()/,            # GLS leer
-      / T#{ab} ([\w\d]{6})\./     # 3ds -cardprocess.de (Mastc Secode)
+      /\+GLS #{f}()/,            # gls leer
+      /#{f} #{an}/,     # sk und 3ds (mc seco)
+      /Hier ist die #{f}.+hr: #{dig}/ # Standarding
     ].find do |re|
       if re =~ text
         return $1
