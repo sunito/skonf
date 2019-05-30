@@ -4,10 +4,11 @@
 require 'fileutils'
 require 'time'
 
-MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 90 # 1.5 Minuten -- schneller schafft man die nächste nicht
-# 90 Sek sind eher kurz, 2018-Apr-29 von 150 Sek runtergegangen, das war in manchen Fällen zu lang
-TIMEOUT_SEKUNDEN = 10 # auch 8sek hat nicht gereicht f GLS
-#TIMEOUT_SEKUNDEN = 8 # 6 wäre für GLS zu wenig
+MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 120 # 2 Minuten <2019,Mai30>
+# 1.5 Minuten -- schneller schafft man die nächste nicht. 90 Sek sind eher kurz, 2018Apr von 150 Sek runtergegangen, das war in manchen Fällen zu lang
+TIMEOUT_SEKUNDEN = 7
+# War mal 10, das reicht immer, 8sek hat nicht gereicht f Gls
+#TIMEOUT_SEKUNDEN = 8 # 6 wäre für Gls zu wenig
 
 class String
   define_method "/" do |rest|
