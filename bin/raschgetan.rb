@@ -41,11 +41,11 @@ class TSMSMails
     #p text.encoding
     d_wd = ['\d', '\w\d']
     dig, an = d_wd.map { |zeichen|  "([#{zeichen}]{6})" }
-    ab='AN'; ap='+P'; f="T#{ab}"
+    ab='AN'; ap='\+P'; f="T#{ab}"
     [
       # ToDo: weitere Erkenner (z.B. generisch), da aktuell alle Nicht-Standard-SMS als "Leer" klassifiziert werden
-      / lautet: #{dig}/, # Pb Standard
-      /\#{ap}[aoe]s[ty]b()/,           # Pb leer
+      / lautet: #{an}/, # Pb Standard
+      /#{ap}[aoe]s[ty]b()/,           # Pb leer
       / lautet ([\d]{6}),/,   # GLS Standard, funktioniert auch f Dauauftr
       /\+GLS #{f}()/,            # gls leer
       /#{f} #{an}/,     # sk und 3ds (mc seco)
@@ -99,9 +99,14 @@ end
 
 
 
+[
+  "/111/ye-sys/kmail-neu/local-mail/.e-EingangPrio.directory/e-Anrufe/",
+  "#{ENV['HOME']}/.local/share/local-mail/inbox/"
+].find do |dirname|
+  if File.exist? dirname
+    tm = TSMSMails.new dirname
+    puts tm.warte
+    true
+  end
+end
 
-#tm = TSMSMails.new "/111/ye-sys/kmail-neu/local-mail/.e-EingangPrio.directory/e-Anrufe/"
-tm = TSMSMails.new "#{ENV['HOME']}/.local/share/local-mail/inbox/"
-
-
-puts tm.warte
