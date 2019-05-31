@@ -106,7 +106,12 @@ end
 ].find do |dirname|
   if File.exist? dirname
     tm = TSMSMails.new dirname
-    puts tm.warte
+    erg = tm.warte
+    puts erg
+    if erg =~ /(n:) ([\w\d]{6})/
+      f=$2
+      system("qdbus org.kde.klipper /klipper setClipboardContents  #{f}")
+    end
     true
   end
 end
