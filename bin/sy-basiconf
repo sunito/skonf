@@ -277,6 +277,10 @@ else
   echo "fsck.ntfs existiert bereits"
 fi
 
+syve_section "Drucken unter Majaro"
+# 2019-Jun, war nötig für Canaon-Drucker:
+apt_install manjaro-printer
+
 syve_section "Wichtige Programme installieren"
 
 # Für die Rechtschreibprüfung in Libreoffice:
@@ -291,7 +295,6 @@ apt_install sox
 apt_install jovie
 
 # Manjaro: AUR-Tool
-
 apt_install base-devel 
 #apt_install yaourt
 apt_install pacaur
