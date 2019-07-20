@@ -18,6 +18,9 @@ kwriteconfig --file $kde_dir/share/apps/dolphin/view_properties/global/.director
 
 syve_section "Plasma settings"
 
+kwriteconfig --file "$config_dir"/plasmanotifyrc --group Notifications  --key PopupPosition BottomRight
+
+
 echo SwitchingMode
 kreadconfig --file "$config_dir"/kwinrc --group TabBox  --key "SwitchingMode" 
 kwriteconfig --file "$config_dir"/kwinrc --group TabBox  --key "SwitchingMode" 0
@@ -78,6 +81,15 @@ kwriteconfig  --file $touchpad_konf  --group parameters  --key InvertVertScroll 
 kwriteconfig  --file $touchpad_konf  --group parameters  --key ThreeFingerTapButton MiddleButton
 kwriteconfig  --file $touchpad_konf  --group parameters  --key Tapping true
 
+touchpad_konf=$HOME/.config/touchpadxlibinputrc
+
+tp_gruppe=$(grep -i touchpad "$touchpad_konf" |head -1)
+tp_gruppe=${tp_gruppe:1}   # erstes Zeichen "[" weg
+tp_gruppe=${tp_gruppe%]}    # "]" am Ende weg 
+echo $tp_gruppe
+kwriteconfig  --file $touchpad_konf  --group "$tp_gruppe"  --key naturalScroll true
+
+if false ;then
 mkdir $HOME/.config/autostart/
 # workaround this bug: https://bugs.kde.org/show_bug.cgi?id=331361
 cat <<EOT >$HOME/.config/autostart/synaptiks_2014-not-match-saved-settings.desktop
@@ -90,7 +102,7 @@ StartupNotify=false
 Terminal=false
 Hidden=false
 EOT
-
+fi
 
 
 syve_section "Tweaking the Clock"
