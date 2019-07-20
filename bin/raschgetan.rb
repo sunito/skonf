@@ -22,6 +22,7 @@ end
 
 def dont
   # dont do anything
+  #yield
 end
 
 
@@ -32,13 +33,15 @@ class TSMSMails
 
   def neueste
     alle_dateinamen = Dir[@dir/"*/*"]  # Dir[@dir/"cur/*"] +
-    neueste_datei = alle_dateinamen.sort_by{|dn| dont { print File.mtime(dn); puts " <-- "+dn};   File.mtime(dn)}.last
+    sortierte_dateinamen = alle_dateinamen.sort_by{|dn| dont { print File.mtime(dn); puts " <-- "+dn};   File.mtime(dn)}
+    neueste_datei = sortierte_dateinamen.last
     #p File.mtime(neueste_datei)
     #p neueste_datei
     neueste_datei
   end
 
   def extrahiere text
+    #p text
     #p text.encoding
     d_wd = ['\d', '\w\d']
     dig, an = d_wd.map { |zeichen|  "([#{zeichen}]{6})" }
