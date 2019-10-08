@@ -239,3 +239,8 @@ SEGMENTS.each do |segment|
 end
 
 move_and_symlink_or_ensure_correctness "/111/ye-sys/kmail-neu/local-mail/",     "#{HOME}/.local/share/local-mail"
+move_and_symlink_or_ensure_correctness "/111/ye-sys/kmail-neu/local-mail/",     "#{HOME}/.local/share/.local-mail.directory"
+
+move_and_symlink_or_ensure_correctness "/111/Business/Finanzamt/Winston/dotWinston",     "#{HOME}/.Winston"
+move_and_symlink_or_ensure_correctness "/111/Business/Finanzamt/Winston/dotWinston",     "#{HOME}/.winston"
+
