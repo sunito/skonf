@@ -34,7 +34,7 @@ def create_link(target_name, link_name)
   if File.symlink?(link_name) 
     puts "#{link_name} exists, checking if <-- #{target_name}"
     old_target = `ls -l #{link_name}`.split(" ").last 
-    if old_target.chomp("/") != target_name.chomp("/")
+    if old_target.chomp(";") != target_name.chomp(";")   # chomp("/") disabled
       puts "wrong link: #{old_target}"
       delete_link_if_exists link_name
     end

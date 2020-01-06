@@ -6,7 +6,7 @@ require File.dirname(__FILE__) + '/yo-defs'
 
 def restore_link(target_name, link_name)
   if File.symlink?(link_name)
-    if symlink_target(link_name).chomp("/") == target_name.chomp("/")
+    if symlink_target(link_name).chomp("") == target_name.chomp("")   # chomp("/") disabled
       return # OK
     else
       delete_link_if_exists link_name
@@ -34,7 +34,7 @@ pairs = [
   # ["/111/ye-sys/kmail-neu/",               "~/.kde/share/apps/kmail"], veraltet
   #["/111/ye-sys/kmail-neu/kmailrc,          "~/.kde/share/config/kmailrc"], veraltet
 
-  [kmail_dir / "local-mail",                  "~/.local/share/local-mail"],
+  [kmail_dir / "local-mail/",                  "~/.local/share/local-mail"],
 
   [ako_config / "config_akonadi",            "~/.config/akonadi"], # das ist ein Ordner
     
