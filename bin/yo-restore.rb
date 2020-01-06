@@ -6,7 +6,7 @@ require File.dirname(__FILE__) + '/yo-defs'
 
 def restore_link(target_name, link_name)
   if File.symlink?(link_name)
-    if symlink_target(link_name) == target_name
+    if symlink_target(link_name).chomp("/") == target_name.chomp("/")
       return # OK
     else
       delete_link_if_exists link_name

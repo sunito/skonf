@@ -30,25 +30,11 @@ def puts_and_execute command
   system command
 end  
 
-def delete_link_if_exists file_name
-  if File.symlink? file_name
-    begin
-      puts "Deleting #{file_name}"
-      File.delete file_name 
-    rescue
-      puts $!
-      puts_and_execute "sudo rm #{file_name}"
-    end     
-  else 
-    puts "#{file_name} does not exist"
-  end
-end
-
 def create_link(target_name, link_name)
   if File.symlink?(link_name) 
     puts "#{link_name} exists, checking if <-- #{target_name}"
     old_target = `ls -l #{link_name}`.split(" ").last 
-    if old_target != target_name
+    if old_target.chomp("/") != target_name.chomp("/")
       puts "wrong link: #{old_target}"
       delete_link_if_exists link_name
     end
