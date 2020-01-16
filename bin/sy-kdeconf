@@ -12,7 +12,9 @@ plasma_applets_file="$config_dir"/plasma-org.kde.plasma.desktop-appletsrc
 
 syve_section "Dolphin settings"
 
-kwriteconfig --file $kde_dir/share/apps/dolphin/view_properties/global/.directory --group Dolphin --key ViewMode 1
+kwriteconfig --file $kde_dir/share/apps/dolphin/view_properties/global/.directory --group Dolphin --key ViewMode 1  # veraltet? << 2019Nov
+kwriteconfig --file "$config_dir"/dolphinrc --group General --key  GlobalViewProps false
+
 kwriteconfig --file $kde_dir/share/apps/dolphin/view_properties/global/.directory --group Dolphin --key VisibleRoles CustomizedDetails,Details_text,Details_size,Details_date,Details_permissions,Details_owner
 
 

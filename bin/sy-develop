@@ -108,6 +108,10 @@ exit 0
 ###############################################################
 
 
+syve-section kde-modules
+
+apt_install extra-cmake-modules
+
 syve_section "Ruby via rbenv"
 
 #apt_install rbenv

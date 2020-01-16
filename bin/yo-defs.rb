@@ -48,7 +48,7 @@ def delete_link_if_exists file_name
       puts_and_execute "sudo rm #{file_name}"
     end     
   else 
-    puts "#{file_name} does not exist"
+    puts "#{file_name} does not exist or is not a symlink"
   end
 end
 
