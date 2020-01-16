@@ -183,7 +183,7 @@ if [[ -z "$last_profile" ]] ;then
   fi
 fi
 konsole_profile_file="$konsole_profile_dir/$(basename $last_profile)"
-kwriteconfig --file "$konsole_profile_file" --group General   --key Name $(basename $last_profile .profile)
+kwrit econfig --file "$konsole_profile_file" --group General   --key Name $(basename $last_profile .profile)
 #kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Parent FALLBACK/
 kwriteconfig --file "$konsole_profile_file" --group Scrolling --key HistoryMode 2
 
@@ -254,7 +254,7 @@ fi
 echo
 echo #TODO# SUSE: Interface zu Firewall hinzu und den NFS-Dienst erlauben!!
 echo
-# reciht das?
+# reicht das?
 sudo systemctl enable nfs-server
 sudo service nfs-server start
 
@@ -278,7 +278,7 @@ else
 fi
 
 syve_section "Drucken unter Majaro"
-# 2019-Jun, war nötig für Canaon-Drucker:
+# 2019-Jun, war nötig für Canon-Drucker:
 apt_install manjaro-printer
 
 syve_section "Wichtige Programme installieren"
