@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+
+require "net/http"
 require 'slop'
+
 
 class String
   define_method '/' do |rest|
@@ -59,8 +62,14 @@ username = File.basename(uname_file)
 puts "Text size = #{text.size} characters"
 
 #cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4939877052998&to=#{number}&text=#{text}'"
-cmd = "wget -O - 'https://www.#{domain}/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4915792311751&to=#{number}&text=#{text}'"
-puts cmd
+# wget -O -
+uri = URI(%Q[https://www.#{domain}/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4915792311751&to=#{number}&text=#{text}])
+#uri.query = URI.encode_www_form(username: username, password: password, from: "+4915792311751", to: number, text: text)
+
+#cmd = verbatim_cmd.gsub("'",'\\\\\\'+"'")
+puts uri
+#exit
+
 if false   # opts.dryrun?
   puts "Trockenlauf."
 else
@@ -69,7 +78,11 @@ else
   puts "Wirlich senden?  (Bestätigen mit '#{erwartete_antwort}' (und Enter))"
   antwort=STDIN.gets
   if antwort.chomp == erwartete_antwort
-    system cmd  
+    #erg = Net::HTTP.get(uri)
+    print "Sending... "
+    erg = Net::HTTP.get_response(uri)
+    puts erg
+    puts erg.body
   else
     puts   "nicht gesendet."
   end
