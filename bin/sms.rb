@@ -63,8 +63,8 @@ puts "Text size = #{text.size} characters"
 
 #cmd = "wget -O - 'https://www.nonoh.net/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4939877052998&to=#{number}&text=#{text}'"
 # wget -O -
-uri = URI(%Q[https://www.#{domain}/myaccount/sendsms.php?username=#{username}&password=#{password}&from=+4915792311751&to=#{number}&text=#{text}])
-#uri.query = URI.encode_www_form(username: username, password: password, from: "+4915792311751", to: number, text: text)
+uri = URI(%Q[https://www.#{domain}/myaccount/sendsms.php]) #?username=#{username}&password=#{password}&from=+4915792311751&to=#{number}&text=#{text}])
+uri.query = URI.encode_www_form(username: username, password: password, from: "+4915792311751", to: number, text: text)
 
 #cmd = verbatim_cmd.gsub("'",'\\\\\\'+"'")
 puts uri
