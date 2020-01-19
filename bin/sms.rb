@@ -80,9 +80,9 @@ else
   if antwort.chomp == erwartete_antwort
     #erg = Net::HTTP.get(uri)
     print "Sending... "
-    erg = Net::HTTP.get_response(uri)
+    erg = Net::HTTP.get_print(uri)
     puts erg
-    puts erg.body
+    #puts erg.body
   else
     puts   "nicht gesendet."
   end
