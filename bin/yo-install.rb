@@ -11,7 +11,7 @@ if ARGV.size > 1 or ARGV[0] =~ /-h/
   Usage: yo-install.rb <Hauptordner>
   
   Der Ordner <Hauptordner> wird erstellt, falls nicht vorhanden.
-  Darin wird der Unterordner 122 angelegt (falls nicht vorhanden) und darin
+  Darin wird der Unterordner 100 angelegt (falls nicht vorhanden) und darin
   werden dann einige Dot-Files (bzw. Ordner) gespeichert.
   Außerdem werden sämtliche yay-Segmente auf diesen Ordner gerichtet, falls
   sie noch nicht erstellt wurden.
@@ -96,12 +96,12 @@ end
 
 
 if YAY_SWITCH_DIR != BEST_YAY_SWITCH_DIR 
-  possible_122_link_locations = [
-    "#{BEST_YAY_SWITCH_DIR}/ya122", 
+  possible_100_link_locations = [
+    "#{BEST_YAY_SWITCH_DIR}/ya100", 
     
-    "#{YAY_SWITCH_DIR}/ya122", 
-    "#{YAY_SWITCH_DIR}/122", 
-    "/122"
+    "#{YAY_SWITCH_DIR}/ya100", 
+    "#{YAY_SWITCH_DIR}/100", 
+    "/100"
   ]
 
   if File.exist?(YAH111_LINK)
@@ -124,13 +124,13 @@ if YAY_SWITCH_DIR != BEST_YAY_SWITCH_DIR
   end
   
   
-  ya122_link = possible_122_link_locations.find {|dir| File.exist? dir}
-  if ya122_link
-    folder122 = symlink_target(ya122_link)
+  ya100_link = possible_100_link_locations.find {|dir| File.exist? dir}
+  if ya100_link
+    folder100 = symlink_target(ya100_link)
     # Hier wird zwischen direkten Links und Switch-Links unterschieden
-    # bei ersteren müssen wir den 122-Ordner noch wegnehmen
-    ya122_dir = File.dirname(folder122) if ( folder122 and ya122_link =~ /\/122$/ )
-    possible_122_link_locations.each do |link|
+    # bei ersteren müssen wir den 100-Ordner noch wegnehmen
+    ya100_dir = File.dirname(folder100) if ( folder100 and ya100_link =~ /\/100$/ )
+    possible_100_link_locations.each do |link|
       delete_link_if_exists link
     end    
   end
@@ -148,18 +148,18 @@ create_link YAY_ENTRY_DIR, "#{HOME}/aa"
 create_link YAY_ENTRY_DIR, "/aa"
 
 
-ya122_dir = ARGV[0] || ya122_dir  # robuster machen
-ya122_link = "#{YAY_SWITCH_DIR}/ya122"
+ya100_dir = ARGV[0] || ya100_dir  # robuster machen
+ya100_link = "#{YAY_SWITCH_DIR}/ya100"
 
-if ya122_dir
-  create_dir_unless_exists ya122_dir 
-  #create_link_unless_exists ya122_dir, "/122"  
+if ya100_dir
+  create_dir_unless_exists ya100_dir 
+  #create_link_unless_exists ya100_dir, "/100"  
   # Hier Orts-Änderung einbauen, falls Link schon existiert!
-  create_link_unless_exists ya122_dir, ya122_link
-  create_dir_unless_exists "#{ya122_link}/122"
+  create_link_unless_exists ya100_dir, ya100_link
+  create_dir_unless_exists "#{ya100_link}/100"
 end
 
-ya222_dir = ya122_dir
+ya222_dir = ya100_dir
 ya222_link = "#{YAY_SWITCH_DIR}/ya222"
 if ya222_dir
   create_link_unless_exists ya222_dir, ya222_link
@@ -174,23 +174,23 @@ else
   puts "no symlink creation for 177, because #{ya177_link} does not exist." 
 end
 
-if File.symlink?(ya122_link)
-  puts "Performing ya122 actions"
+if File.symlink?(ya100_link)
+  puts "Performing ya100 actions"
   # this is now maintained solely through git:
-  # move_and_symlink_or_ensure_correctness "#{ya122_link}/122/bin/",                "#{HOME}/bin"
+  # move_and_symlink_or_ensure_correctness "#{ya100_link}/100/bin/",                "#{HOME}/bin"
   
-  create_dir_unless_exists       "#{ya122_link}/122/yc-dot/"
-  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/twinkle/",     "#{HOME}/.twinkle"
-  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
-  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
-  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/yc-dot/linphonerc",   "#{HOME}/.linphonerc"
+  create_dir_unless_exists       "#{ya100_link}/100/yc-dot/"
+  move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/twinkle/",     "#{HOME}/.twinkle"
+  move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
+  move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
+  move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/linphonerc",   "#{HOME}/.linphonerc"
   
-  move_and_symlink_or_ensure_correctness "#{ya122_link}/122/kde-config/",         "#{$kde_dir}/share/config"
+  #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/kde-config/",         "#{$kde_dir}/share/config"
   puts ".............. . . ."
   puts ".............. Think about storing _all_ ~/.configs "
-  #move_and_symlink_or_ensure_correctness "#{ya122_link}/122/config/",         "#{$HOME}/.config"
+  #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/config/",         "#{$HOME}/.config"
 else
-  puts "no symlink creation for 122, because #{ya122_link} does not exist."  
+  puts "no symlink creation for 100, because #{ya100_link} does not exist."  
 end
 
 if File.symlink?(ya222_link)
