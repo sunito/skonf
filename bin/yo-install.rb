@@ -184,6 +184,10 @@ if File.symlink?(ya100_link)
   move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
   move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
   move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/linphonerc",   "#{HOME}/.linphonerc"
+  # 2020Jan,Sven: Symlinks haben überhauptnicht funktioniert bei flatpak-belledonne 
+  #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/linphonerc",   "#{HOME}/.var/app/com.belledonnecommunications.linphone/config/linphone/linphonerc"   # zwei Links auf dieselbe Datei!
+  #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/linphone/",     "#{HOME}/.var/app/com.belledonnecommunications.linphone/config/linphone"   # zwei Links auf dieselbe Datei!
+  #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/belledonne-config/",     "#{HOME}/.var/app/com.belledonnecommunications.linphone/config"   # zwei Links auf dieselbe Datei!
   
   #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/kde-config/",         "#{$kde_dir}/share/config"
   puts ".............. . . ."
