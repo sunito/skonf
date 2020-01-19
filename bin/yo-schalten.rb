@@ -9,7 +9,7 @@ if ARGV.empty?
   puts `ls -l #{YAY_SWITCH_DIR}`.scan(/ ya... .+$/).join("\n")  #.split(" ").last
 else
   if YAY_SCHEME[:multi]
-    update122 ARGV
+    update100 ARGV
     do_multi :switch_to, ARGV
   else
     schalte_auf expandiere_basis_pfad ARGV[0]
