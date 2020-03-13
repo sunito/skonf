@@ -4,7 +4,8 @@
 require 'fileutils'
 require 'time'
 
-MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 120 # 2 Minuten <2019,Mai30>
+MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 135 # 2:15 Minuten <2020,Mar> für Ma erhöht, ist vielleicht gerade noch machbar
+# 120 2 Minuten <2019,Mai30>
 # 1.5 Minuten -- schneller schafft man die nächste nicht. 90 Sek sind eher kurz, 2018Apr von 150 Sek runtergegangen, das war in manchen Fällen zu lang
 TIMEOUT_SEKUNDEN = 9
 # War mal 10, das reicht immer, 8sek hat nicht gereicht f Gls
