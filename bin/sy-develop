@@ -38,7 +38,9 @@ apt_install sublime-text
 
 syve_section "node.js"
 
-apt_install nodejs-common
+apt_install nodejs
+#apt_install nodejs-common
+apt_install yarn
 
 
 apt_install ruby-devel
