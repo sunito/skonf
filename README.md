@@ -20,9 +20,9 @@ Systemverwaltungs-Script-Sammelsurium für die routinemaäßige Konfiguration vo
 
     sudo mkdir /wartung ;sudo chown $USER.users /wartung ;cd /wartung
     
-    git clone git@github.com:sunito/skonf.git ;bash skonf/bin/sy-basiconf
+    git clone git@github.com:sunito/skonf.git ;bash skonf/bin/sy-allg-terminal ;bash skonf/bin/sy-basiconf
     # pushbar, daher die Standardvariante
 
-    git clone https://github.com/sunito/skonf.git ;bash skonf/bin/sy-basiconf
+    git clone https://github.com/sunito/skonf.git ;bash skonf/bin/sy-allg-terminal ;bash skonf/bin/sy-basiconf
     # ohne key
     
