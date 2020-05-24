@@ -97,6 +97,7 @@ if [ -z `ls /etc/apt/sources.list.d |grep virtualbox` ] ;then
 fi
 #apt_install virtualbox-4.3
 apt_install kernel-default-devel #suse
+apt_install linux-latest-virtualbox-host-modules   # nur für Manjaro
 echo eigentlich VirtualBox-5.1-5.1.14_112924_openSUSE132-1.x86_64.rpm
 apt_install virtualbox
 
