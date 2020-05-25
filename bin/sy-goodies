@@ -34,6 +34,7 @@ if [ $has_apt ] ;then
       echo fehlt noch
     fi
 else
+  pacaur -S jitsi
   if true ;then
     echo ecsos         http://download.opensuse.org/repositories/home:/ecsos/openSUSE_Leap_15.0/
     #sudo zypper ar  http://download.opensuse.org/repositories/home:/ecsos/openSUSE_Leap_`lsb_release -rs`/home:ecsos.repo home_ecsos
