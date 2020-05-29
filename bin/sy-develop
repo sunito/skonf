@@ -15,6 +15,7 @@ git config --global user.name "Sven Suska"
 
 syve_section "git-Goodies"
 
+apt_install tk
 apt_install gitk
 
 syve_section "System-Tools"
