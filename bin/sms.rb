@@ -13,13 +13,10 @@ class String
 end
 
 
-opts = Slop.parse! do 
-  banner "Usage: #{$0} [options] <mobile-number> <text-of-sms> "
-
-  #on 'name=', 'Your name'
-  #on 'p', 'password', 'An optional password', argument: :optional'
-  on 'd', 'dryrun', 'Nichts senden, nur so tun, als ob'
-  on 'v', 'verbose', 'Enable verbose mode'
+opts = Slop.parse do |o|
+  o.banner = "Usage: #{$0} [options] <mobile-number> <text-of-sms> "
+  # o.bool '-d', 'dryrun', 'Nichts senden, nur so tun, als ob'
+  # o.bool '-v', 'verbose', 'Enable verbose mode'
 end
 
 
@@ -27,6 +24,7 @@ end
 number, text, rest = ARGV
 
 if text.nil? or rest then
+  # puts opts
   puts "Usage #{File.basename($0)} <mobile-number> <text-of-sms>"
   exit 1
 end
