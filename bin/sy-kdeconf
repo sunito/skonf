@@ -75,7 +75,7 @@ kwriteconfig --file "$config_dir"/kglobalshortcutsrc --group kwin  --key "Switch
 
 syve_section "Touchpad"
 
-touchpad_konf=$HOME/.config/touchpadrc
+touchpad_konf=$HOME/.config/touchpadrc  # nur für alte Systeme <2020Jun, Sv>
 
 kwriteconfig  --file $touchpad_konf  --group parameters  --key HorizTwoFingerScroll true
 kwriteconfig  --file $touchpad_konf  --group parameters  --key InvertHorizScroll true
@@ -90,6 +90,12 @@ tp_gruppe=${tp_gruppe:1}   # erstes Zeichen "[" weg
 tp_gruppe=${tp_gruppe%]}    # "]" am Ende weg 
 echo $tp_gruppe
 kwriteconfig  --file $touchpad_konf  --group "$tp_gruppe"  --key naturalScroll true
+
+# besser, da für alle Touchpads:
+ruby  -ne "system(%Q(kwriteconfig --file $touchpad_konf"' --group #{%q(")+$1+%q(")} --key tapToClick true)) if /\[(.+)\]/' $touchpad_konf
+ruby  -ne "system(%Q(kwriteconfig --file $touchpad_konf"' --group #{%q(")+$1+%q(")} --key naturalScroll true)) if /\[(.+)\]/' $touchpad_konf
+
+exit 17
 
 if false ;then
 mkdir $HOME/.config/autostart/
