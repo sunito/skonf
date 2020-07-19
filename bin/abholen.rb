@@ -7,7 +7,7 @@ antwort = case erg
  when /KEINE FRISCHE/
   "eventuell veraltet"  
  when /GANZ VERALTET/
-  "Nein!! \nKomplett veraltet!"  
+  "     Nein!! \n\nKomplett veraltet!"  
 when /n: /     
   "OK"
 else
