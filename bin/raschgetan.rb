@@ -4,6 +4,7 @@
 require 'fileutils'
 require 'time'
 
+MIN_SEKUNDEN_MAIL_ALS_VOLL_VERALTET = 900 # 15 Minuten
 MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 135 # 2:15 Minuten <2020,Mar> für Ma erhöht, ist vielleicht gerade noch machbar
 # 120 2 Minuten <2019,Mai30>
 # 1.5 Minuten -- schneller schafft man die nächste nicht. 90 Sek sind eher kurz, 2018Apr von 150 Sek runtergegangen, das war in manchen Fällen zu lang
@@ -80,7 +81,8 @@ class TSMSMails
           [true, "Ungewöhnliche#{m}erhalten:\n keine Zeit in der Mail gefunden!! (#{wc})"]
         else
           erfolg =  (Time.now - zeit < MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET)
-          [ erfolg, (erfolg ? '' : "KEINE NEUE#{m}\n\n  Alte ") +
+          voll_alt =  (Time.now - zeit > MIN_SEKUNDEN_MAIL_ALS_VOLL_VERALTET)
+          [ erfolg, (erfolg ? '' : (voll_alt ?"NUR GANZ VERALTETE":"KEINE FRISCHE")+m+"\n\n  Alte ") +
             "#{wc}      Zeit: #{zeit.strftime('%b-%d. %T')}"
           ]
         end

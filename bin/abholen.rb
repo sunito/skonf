@@ -4,8 +4,10 @@
 erg=`/wartung/skonf/bin/raschgetan.rb`
 
 antwort = case erg
- when /KEINE NEUE/
+ when /KEINE FRISCHE/
   "eventuell veraltet"  
+ when /GANZ VERALTET/
+  "Nein!! \nKomplett veraltet!"  
 when /n: /     
   "OK"
 else
