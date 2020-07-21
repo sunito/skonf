@@ -40,10 +40,10 @@ class TSMSMails
   def neueste
     alle_dateinamen = Dir[@dir/"*/*"]  # Dir[@dir/"cur/*"] +
     sortierte_dateinamen = alle_dateinamen.sort_by{|dn| dont { print File.mtime(dn); puts " <-- "+dn};   File.mtime(dn)}
-    neueste_datei = sortierte_dateinamen.last
+    neueste_dateien = sortierte_dateinamen.last(3)
     #p File.mtime(neueste_datei)
     #p neueste_datei
-    neueste_datei
+    neueste_dateien.reverse
   end
 
   def extrahiere text
@@ -69,29 +69,38 @@ class TSMSMails
   end
 
   def status
-    neu_text = File.read neueste, encoding: 'utf-8'
+    erstmalig = true
+    fehler_nachricht = neueste.map { |aktueller_dateiname|
+      neu_text = File.read aktueller_dateiname, encoding: 'utf-8'
     w, c = " T", extrahiere(neu_text)
     zeit_str = neu_text.scan(/^Date: (.+)$/).first.first
     zeit = Time.parse(zeit_str) if zeit_str
     w += 'a'; m = "#{w}n-Mail "
-    if c
+      erg = if c
       if c.empty? # erster Ansatz zur Erkennung leerer SMS-Mails
-         [false, "FEHLER!! \n Die SMS kam leer an.\n Bitte NEUE#{w}n senden lassen!"]
+          if erstmalig                     
+            return [false, "FEHLER!! \n Die SMS kam leer an.\n Bitte NEUE#{w}n senden lassen!"]
+          end
       else
         wc = "#{w}n: #{c}"
         if zeit.nil?
-          [true, "Ungewöhnliche#{m}erhalten:\n keine Zeit in der Mail gefunden!! (#{wc})"]
+            [0, "Ungewöhnliche#{m}erhalten:\n keine Zeit in der Mail gefunden!! (#{wc})"]
         else
-          erfolg =  (Time.now - zeit < MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET)
-          voll_alt =  (Time.now - zeit > MIN_SEKUNDEN_MAIL_ALS_VOLL_VERALTET)
-          [ erfolg, (erfolg ? '' : (voll_alt ?"NUR GANZ VERALTETE":"KEINE FRISCHE")+m+"\n\n  Alte ") +
-            "#{wc}      Zeit: #{zeit.strftime('%b-%d. %T')}"
-          ]
+            erg = "#{wc}      Zeit: #{zeit.strftime('%b-%d. %T')}"
+            zeit_diff = Time.now - zeit
+            erfolg =  ( zeit_diff < MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET)
+            return [true, erg] if erfolg                
+            zualt =  (zeit_diff > MIN_SEKUNDEN_MAIL_ALS_VOLL_VERALTET)
+            [zeit_diff, (zualt ?"NUR GANZ VERALTETE":"KEINE FRISCHE") + m + "\n\n  " + (zualt ?"Mit Sicherheit":"Eventuell")+" veraltete" + erg ]
         end
       end
     else
-      [false, "Keine aktuelle#{m}gefunden"]
+      [999999, "Keine aktuelle#{m}gefunden"]
     end
+      erstmalig = false
+      erg
+    }.sort.first.last
+    [false, fehler_nachricht]
   end
 
   SCRIPT_DIR = File.dirname(__FILE__)
