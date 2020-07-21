@@ -35,4 +35,4 @@ sudo useradd --uid 1028 -g users --create-home julian;sudo chfn -f "Julian Suska
 sudo useradd --uid 12345 -m -s /bin/bash Gast;sudo chfn -f "Gast-Benutzer" Gast
 sudo useradd --uid 12345 -m -s /bin/bash aaa_gast;sudo chfn -f "Gast-Nutzer" aaa_gast
 
-sudo useradd --uid 1011 -g users -m jan ;sudo chfn -f "Johannes" jan ;sudo gpasswd -a jan wheel
+#sudo useradd --uid 101_ -g users -m jan ;sudo chfn -f "Johannes" jan ;sudo gpasswd -a jan wheel
