@@ -56,7 +56,14 @@ apt_install gstreamer1.0-libav
 apt_install gstreamer1.0-fluendo-mp3
 
 
+syve_section "video and udio editing"
+
+apt_install shotcut
+apt_install kdenlive
+
 apt_install mp3splt-gtk
+
+syve_section "Abspielen von Bezahlfilmen"
 
 apt_install chromium-widevinecdm-plugin   # z.B. für Amazon-Prime
 
