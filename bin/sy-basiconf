@@ -220,6 +220,9 @@ apt_install base-devel
 #apt_install yaourt
 apt_install pacaur
 
+# <2020Jul> evtl Probleme, falls kein KDE installiert --> evtl zu sy-kdeconf verschieben:
+apt_install kdialog # bei Manjaro komischerweise nicht installiert
+
 # Wichtige graphische Tools
 
 if [[ -z `zypper lr |grep "dmacvicar"` ]] ;then
