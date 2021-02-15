@@ -121,7 +121,7 @@ end
 
 
 [
-  "/111/ye-sys/kmail-neu/local-mail/.e-EingangPrio.directory/e-Anrufe/",
+  "/111/ye-sys/kmail-neu/local-mail/.e--e--Entwicklung.directory/Anrufe--e--/",
   "#{ENV['HOME']}/.local/share/local-mail/inbox/"
 ].find do |dirname|
   if File.exist? dirname
