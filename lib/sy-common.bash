@@ -38,6 +38,22 @@ function apt_install {
   fi
 }
 
+function syve_user {
+  sudo echo
+  echo Adding $*
+  logger SyveAdding $*
+  u=$1
+  id=$2
+  fn=$3
+  sudo useradd --uid $id -g users --create-home $u 
+  sudo chfn -f "$fn" $u 
+  sudo usermod -a -G wheel $u 
+  sudo usermod -a -G sudo $u
+  if [ $has_apt ] ;then
+    echo
+  fi
+}
+
 # todo: verwende: kde4-config --localprefix
 kde_dir=$HOME/.kde4
 if [[ -f $kde_dir/share/config//kwinrc ]] ;then
