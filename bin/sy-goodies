@@ -4,6 +4,10 @@ own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
 
+apt_repo http://download.opensuse.org/repositories/mozilla
+apt_install firefox
+apt_install MozillaFirefox
+
 apt_install gnome-keyring
 
 apt_install snapd
