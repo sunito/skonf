@@ -42,7 +42,7 @@ class TSMSMails
     alle_dateinamen = Dir[@dir/"*/*"]  # Dir[@dir/"cur/*"] +
     sortierte_dateinamen = alle_dateinamen.sort_by{|dn| dont { print File.mtime(dn); puts " <-- "+dn};   File.mtime(dn)}
     neueste_dateien = sortierte_dateinamen.last(3)
-    #p File.mtime(neueste_datei)
+    #neueste_dateien.each do |nd| p File.mtime(nd) end
     #p neueste_datei
     neueste_dateien.reverse
   end
@@ -109,7 +109,8 @@ class TSMSMails
     anf_zeit = Time.now
     text = nil
     while Time.now - anf_zeit <= wartedauer do
-      `#{SCRIPT_DIR}/kmail-check`
+      #`#{SCRIPT_DIR}/kmail-check`
+      File.popen "#{SCRIPT_DIR}/kmail-check"  # Neuen Prozess starten, nicht auf Abschluss warten
       erfolg, text = status
       break text if erfolg
       sleep 1.4
