@@ -28,6 +28,11 @@ eot
     sudo mkdir /haupt
   fi
   
+  syve_section "FA-Zeugs"
+  
+  apt_install lib32-libldap  # Für Elster via Wine
+  apt_install gtk2           # Für Winston
+  
   ruby <<eoc
     menu_entries = []
     Dir["$HOME/.wine/drive_c/Programme/WISO/*/wiso2*.exe"].each do |exe_path|

@@ -5,7 +5,8 @@ require 'fileutils'
 require 'time'
 
 MIN_SEKUNDEN_MAIL_ALS_VOLL_VERALTET = 900 # 15 Minuten
-MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 105 # 1:45 min <2020Jul> Jetzt niedriger OK, mit dem voll_alt-Status
+MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET = 70 # 1:10 (1:24 Abstand ist real schon passiert) vielleicht ginge auch noch 70 =^= 1:20 <2020Ag> 
+# 1:45 min <2020Jul> Jetzt niedriger OK, mit dem voll_alt-Status
 # 135 2:15 Minuten <2020,Mar> für Ma erhöht, ist vielleicht gerade noch machbar
 # 120 2 Minuten <2019,Mai30>
 # 1.5 Minuten -- schneller schafft man die nächste nicht. 90 Sek sind eher kurz, 2018Apr von 150 Sek runtergegangen, das war in manchen Fällen zu lang
@@ -41,7 +42,7 @@ class TSMSMails
     alle_dateinamen = Dir[@dir/"*/*"]  # Dir[@dir/"cur/*"] +
     sortierte_dateinamen = alle_dateinamen.sort_by{|dn| dont { print File.mtime(dn); puts " <-- "+dn};   File.mtime(dn)}
     neueste_dateien = sortierte_dateinamen.last(3)
-    #p File.mtime(neueste_datei)
+    #neueste_dateien.each do |nd| p File.mtime(nd) end
     #p neueste_datei
     neueste_dateien.reverse
   end
@@ -108,7 +109,8 @@ class TSMSMails
     anf_zeit = Time.now
     text = nil
     while Time.now - anf_zeit <= wartedauer do
-      `#{SCRIPT_DIR}/kmail-check`
+      #`#{SCRIPT_DIR}/kmail-check`
+      File.popen "#{SCRIPT_DIR}/kmail-check"  # Neuen Prozess starten, nicht auf Abschluss warten
       erfolg, text = status
       break text if erfolg
       sleep 1.4
@@ -120,7 +122,7 @@ end
 
 
 [
-  "/111/ye-sys/kmail-neu/local-mail/.e-EingangPrio.directory/e-Anrufe/",
+  "/111/ye-sys/kmail-neu/local-mail/.e--e--Entwicklung.directory/Anrufe--e--/",
   "#{ENV['HOME']}/.local/share/local-mail/inbox/"
 ].find do |dirname|
   if File.exist? dirname

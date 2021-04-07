@@ -71,7 +71,7 @@ if [ ] ;then su $USER -c groups ;fi
 #for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip vboxusers ;do sudo addgroup $USER $group ;done
 #for group in sudo adm syslog systemd-journal plugdev lpadmin cdrom dialout vboxusers ;do sudo usermod -a -G $group $USER ;done
 # for Manjaro: cups sys lp
-for group in sudo adm syslog systemd-journal plugdev lpadmin cdrom dialout vboxusers cups sys lp ;do sudo usermod -a -G $group $USER ;done
+for group in sudo adm syslog systemd-journal plugdev lpadmin cdrom dialout vboxusers cups sys audio lp ;do sudo usermod -a -G $group $USER ;done
 # deaktiviert: dip scanner sambashare 
 
 dat_partition=`df |grep dat |cut -d" " -f1`
@@ -219,6 +219,9 @@ apt_install jovie
 apt_install base-devel 
 #apt_install yaourt
 apt_install pacaur
+
+# <2020Jul> evtl Probleme, falls kein KDE installiert --> evtl zu sy-kdeconf verschieben:
+apt_install kdialog # bei Manjaro komischerweise nicht installiert
 
 # Wichtige graphische Tools
 
