@@ -5,6 +5,7 @@ source $(dirname $own_folder)/lib/sy-common.bash
 
 
 apt_repo http://download.opensuse.org/repositories/mozilla
+sudo zypper dup --allow-vendor-change --from mozilla
 apt_install firefox
 apt_install MozillaFirefox
 
