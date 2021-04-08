@@ -197,6 +197,7 @@ apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pa
 apt_install cups-pdf
 
 apt_install simple-scan
+apt_repo https://download.opensuse.org/repositories/Printing
 
 apt_install transmission-qt # suse
 
