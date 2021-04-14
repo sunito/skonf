@@ -9,7 +9,9 @@ sudo zypper dup --allow-vendor-change --from mozilla
 apt_install firefox
 apt_install MozillaFirefox
 
-apt_install brave
+sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/x86_64/ brave-browser
+apt_install brave-browser
 
 apt_install gnome-keyring
 
@@ -54,7 +56,12 @@ fi
 
 
 
-apt_install skype
+#apt_repo https://repo.skype.com/rpm/stable/skype-stable.repo skype-stable
+sudo zypper addrepo  --gpgcheck-allow-unsigned  https://repo.skype.com/rpm/stable/skype-stable.repo
+apt_install skypeforlinux # suse
+apt_install skype  # sonstige?
+
+
 
 if [ $USER != sunito ] ;then
   phonestart_deactivated=true
@@ -215,8 +222,8 @@ if [ -z `ls /etc/apt/sources.list.d |grep retroshare` ]
 #sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D8D05E222E10C9E3
 else
   if [ -z `zypper lr |grep home_AsamK_RetroShare` ] ;then
-    sudo zypper addrepo http://download.opensuse.org/repositories/home:AsamK:RetroShare/openSUSE_Leap_`lsb_release -rs`/home:AsamK:RetroShare.repo
-    sudo zypper refresh
+    #sudo zypper addrepo http://download.opensuse.org/repositories/home:AsamK:RetroShare/openSUSE_Leap_`lsb_release -rs`/home:AsamK:RetroShare.repo
+    echo deakt sudo zypper refresh
   fi
 fi
 apt_install retroshare06

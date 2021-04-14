@@ -90,17 +90,23 @@ function apt_repo {
   if [ $has_apt ] ;then
     repourl=$main_repourl
   else
-    main_repourl=${main_repourl%/}/  # always one slash at the end
+    repourl=${main_repourl%/}/  # always one slash at the end
     release_descr=$(lsb_release -ds)
     echo $release_descr
     release_id=${release_descr// /_}   # replace all (that's what the second slash is for) spaces by underscore
-    repourl=$main_repourl${release_id//\"/}  # remove all (that's what the second slash is for) quotes
+    
+    # Testen, ob die URL auf ".repo" endet und dann wohl vollständig ist:
+    echo x${main_repourl: -5}
+    if [ x${main_repourl: -5} == x.repo ] ;then
+      repourl=$main_repourl 
+      basenam=""
+    else
+      repourl=$repourl${release_id//\"/}  # remove all (that's what the second slash is for) quotes
+    fi
   fi
 
 
-  if [ $has_apt ] ;then
-    echo NOT Repo basenam=$basenam repourl=$repourl
-  else
+  if [ $has_zyp ] ;then
     echo Repo basenam=$basenam repourl=$repourl
     logger SyveRepo basenam=$basenam args="$*"
     if [[ -z `zypper lr |grep $basenam` ]] ;then
@@ -109,6 +115,8 @@ function apt_repo {
       sudo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"  # Suse erlaubt vertrauen von Schlüsseln nur im interaktiven Modus
       sudo zypper refresh
     fi
+  else
+    echo Ignoriere repo, da kein suse-System. basenam=$basenam repourl=$repourl
   fi
 }
 
@@ -138,6 +146,6 @@ function apt_ppa {
       sudo apt-get update
     fi
   else
-    echo NOT Repo basenam=$basenam repourl=$repourl
+    echo Ignoriere ppa, da kein deb-System. basenam=$basenam repourl=$repourl
   fi
 }
