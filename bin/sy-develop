@@ -33,6 +33,11 @@ if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
 apt_install akonadiconsole
 fi
 
+
+# doch nicht, die opensuse-Leap-Version ist zu alt <2021-Apr, Sv>
+#syve_section "Julia"
+#apt_install julia 
+
 syve_section "SublimeText"
 
 sudo rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
