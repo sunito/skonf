@@ -9,6 +9,8 @@ sudo zypper dup --allow-vendor-change --from mozilla
 apt_install firefox
 apt_install MozillaFirefox
 
+apt_install brave
+
 apt_install gnome-keyring
 
 apt_install snapd
