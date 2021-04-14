@@ -105,7 +105,8 @@ function apt_repo {
     logger SyveRepo basenam=$basenam args="$*"
     if [[ -z `zypper lr |grep $basenam` ]] ;then
       echo adding $repourl
-      sudo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"
+      echo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"
+      sudo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"  # Suse erlaubt vertrauen von Schlüsseln nur im interaktiven Modus
       sudo zypper refresh
     fi
   fi

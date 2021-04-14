@@ -341,23 +341,14 @@ syve_section "Ruby für Qt"
 # Svens Apps, dafür Ruby mit KDE-Bindings installieren:
 apt_install ruby-dev #debian
 apt_install ruby-devel #suse
-apt_install korundum4  # 2013-Aug: Funktioniert nicht mehr für Ruby 1.9, also
 apt_install g++
-apt_install libqt4-dev
-apt_install libqt4-opengl-dev            # würde vielleicht das obige Paket (libqt4-dev) eh mitziehen
 apt_install cmake   # für Compilieren von qtbindings gebraucht
-#sudo apt-get --yes install cmake                       # wahrscheinlich auch schon in libqt4-dev enthalten
 
 if [ -z "`gem list |grep qtbindings`" ] ;then
 sudo gem install qtbindings 
 fi
 sudo gem install slop
-gem install slop -v 3.5
 
-if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
-  # Nur wenn schon akonadi installiert
-  apt_install akonadiconsole
-fi
 
 sudo apt-get dist-upgrade 
 

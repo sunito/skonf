@@ -27,12 +27,16 @@ sudo sed -i -r -e 's/^(multiversion.kernels =).*$/\1 latest,latest-1,latest-2,la
 apt_install gcc-c++
 apt_install trash-cli
 apt_install bonnie++  # disk benchmark
+
+if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
+  # Nur wenn schon akonadi installiert
 apt_install akonadiconsole
+fi
 
 syve_section "SublimeText"
 
 sudo rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
-sudo zypper addrepo -g -f https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+apt_rpm_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
 #sudo zypper addrepo -g -f https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo
 apt_install sublime-text
 
@@ -89,12 +93,12 @@ EOT
 
 syve_section IDEs
 
-sudo zypper addrepo https://download.opensuse.org/repositories/home:/Herbster0815/openSUSE_Leap_15.0/home:Herbster0815.repo
-sudo zypper addrepo https://download.opensuse.org/repositories/home:/smarty12/openSUSE_Leap_15.0/home:smarty12.repo
+apt_repo https://download.opensuse.org/repositories/home:/Herbster0815
+apt_repo https://download.opensuse.org/repositories/home:/smarty12
 
 
-syve_section rust
-sudo zypper addrepo https://download.opensuse.org/repositories/home:/flacco:/ff/openSUSE_Leap_15.0/home:flacco:ff.repo
+#syve_section rust
+#apt_repo https://download.opensuse.org/repositories/home:/flacco:/ff
 apt_install rust
 
 syve_section "Tools for Low-Level Tasks"
