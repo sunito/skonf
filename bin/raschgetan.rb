@@ -73,31 +73,32 @@ class TSMSMails
     erstmalig = true
     fehler_nachricht = neueste.map { |aktueller_dateiname|
       neu_text = File.read aktueller_dateiname, encoding: 'utf-8'
-    w, c = " T", extrahiere(neu_text)
-    zeit_str = neu_text.scan(/^Date: (.+)$/).first.first
-    zeit = Time.parse(zeit_str) if zeit_str
-    w += 'a'; m = "#{w}n-Mail "
+      w, c = " T", extrahiere(neu_text)
+      zeit_str = neu_text.scan(/^Date: (.+)$/).first.first
+      zeit = Time.parse(zeit_str) if zeit_str
+      w += 'a'; m = "#{w}n-Mail "
       erg = if c
-      if c.empty? # erster Ansatz zur Erkennung leerer SMS-Mails
+        if c.empty? # erster Ansatz zur Erkennung leerer SMS-Mails
           if erstmalig                     
             return [false, "FEHLER!! \n Die SMS kam leer an.\n Bitte NEUE#{w}n senden lassen!"]
+            nil
           end
-      else
-        wc = "#{w}n: #{c}"
-        if zeit.nil?
-            [0, "Ungewöhnliche#{m}erhalten:\n keine Zeit in der Mail gefunden!! (#{wc})"]
         else
+          wc = "#{w}n: #{c}"
+          if zeit.nil?
+              [0, "Ungewöhnliche#{m}erhalten:\n keine Zeit in der Mail gefunden!! (#{wc})"]
+          else
             erg = "#{wc}      Zeit: #{zeit.strftime('%b-%d. %T')}"
             zeit_diff = Time.now - zeit
             erfolg =  ( zeit_diff < MAX_SEKUNDEN_MAIL_NOCH_ALS_NEU_GEWERTET)
             return [true, erg] if erfolg                
             zualt =  (zeit_diff > MIN_SEKUNDEN_MAIL_ALS_VOLL_VERALTET)
             [zeit_diff, (zualt ?"NUR GANZ VERALTETE":"KEINE FRISCHE") + m + "\n\n  " + (zualt ?"Mit Sicherheit":"Eventuell")+" veraltete" + erg ]
+          end
         end
+      else
+        [999999, "Keine aktuelle#{m}gefunden"]
       end
-    else
-      [999999, "Keine aktuelle#{m}gefunden"]
-    end
       erstmalig = false
       erg
     }.sort.first.last
