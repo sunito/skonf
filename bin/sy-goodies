@@ -15,14 +15,23 @@ apt_install brave-browser
 
 apt_install gnome-keyring
 
+#sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy
+apt_repo https://download.opensuse.org/repositories/system:/snappy/
+sudo zypper --gpg-auto-import-keys refresh
 apt_install snapd
 sudo systemctl enable --now snapd.socket      # nur für Manjaro?
+ ##### # temporär deaktiviert: <2021-Apr, Sv>
 sudo ln -s /var/lib/snapd/snap /snap             # symlink für die "classic"-Snaps
+
+sudo snap install wire
+#apt_install wire-desktop
+
+
 
 syve_section ""
 #apt_repo https://download.opensuse.org/repositories/home:glebr
 #apt_repo https://download.opensuse.org/repositories/Education
-apt_install wire-desktop
+
 sudo snap install telegram-desktop
 
 
@@ -55,6 +64,9 @@ else
 fi
 
 
+syve_section "zoom"
+sudo rpm --import https://zoom.us/linux/download/pubkey
+sudo zypper install https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
 
 #apt_repo https://repo.skype.com/rpm/stable/skype-stable.repo skype-stable
 sudo zypper addrepo  --gpgcheck-allow-unsigned  https://repo.skype.com/rpm/stable/skype-stable.repo
