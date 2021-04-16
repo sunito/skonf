@@ -66,9 +66,10 @@ fi
 
 syve_section "zoom"
 sudo rpm --import https://zoom.us/linux/download/pubkey
-sudo zypper install https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
+sudo zypper install -y https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
 
 #apt_repo https://repo.skype.com/rpm/stable/skype-stable.repo skype-stable
+
 sudo zypper addrepo  --gpgcheck-allow-unsigned  https://repo.skype.com/rpm/stable/skype-stable.repo
 apt_install skypeforlinux # suse
 apt_install skype  # sonstige?

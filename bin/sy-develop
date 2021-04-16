@@ -38,7 +38,14 @@ fi
 #syve_section "Julia"
 #apt_install julia 
 
-syve_section "SublimeText"
+
+syve_section "MS Teams"
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo zypper ar https://packages.microsoft.com/yumrepos/ms-teams/ ms-teams
+sudo zypper refresh
+apt_install teams
+
+
 
 sudo rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
 apt_rpm_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
