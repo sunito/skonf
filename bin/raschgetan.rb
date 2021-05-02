@@ -59,7 +59,7 @@ class TSMSMails
       /#{ap}[aoe]s[ty]b()/,           # Pb leer
       / lautet ([\d]{6}),/,   # GLS Standard, funktioniert auch f Dauauftr
       /\+GLS #{f}()/,            # gls leer
-      /#{f} #{an}/,     # sk und 3ds (mc seco)
+      /#{f}:? #{an}/,     # sk und 3ds (mc seco)
       /Hier ist die #{f}.+hr: #{dig}/ # Standarding
     ].find do |re|
       if re =~ text
