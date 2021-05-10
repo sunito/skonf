@@ -98,6 +98,8 @@ fi
 
 syve_section "Essentielle Programme"
 
+apt_install davfs2
+
 if [[ -z `grep ".bashrc" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
   # `date`,  Sven Für Manjaro damit auch für ssh-Logins .bashrc gelesen wird
   if [ -f ~/.bashrc ]; then
@@ -118,6 +120,7 @@ fi
 
 # Multiple Move
 apt_install mmv
+
 apt_install screen
 
 # Entwicklung
