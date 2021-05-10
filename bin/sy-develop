@@ -108,8 +108,9 @@ EOT
 
 syve_section IDEs
 
-apt_repo https://download.opensuse.org/repositories/home:/Herbster0815
-apt_repo https://download.opensuse.org/repositories/home:/smarty12
+# <2021-Mai, Sv> Wozu war das?
+#apt_repo https://download.opensuse.org/repositories/home:/Herbster0815
+#apt_repo https://download.opensuse.org/repositories/home:/smarty12
 
 
 #syve_section rust
