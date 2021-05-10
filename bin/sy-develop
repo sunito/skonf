@@ -28,6 +28,7 @@ apt_install gcc-c++
 apt_install trash-cli
 apt_install bonnie++  # disk benchmark
 
+
 if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
   # Nur wenn schon akonadi installiert
 apt_install akonadiconsole
@@ -73,14 +74,16 @@ if false ;then
 11101  sudo zypper in qxmledit
 fi
 
+syve_section "Datenbank-Tools"
 syve_section "Sqlite"
 
 apt_install sqlite3
 apt_install libsqlite3-dev     # deb
 apt_install sqlite3-devel      # rpm
 apt_install ruby-sqlite3
+apt_install sqlitebrowser
 
-syve_section Java
+syve_section "Java"
 
 apt_install jdk8-openjdk
 apt_install java-openjfx
