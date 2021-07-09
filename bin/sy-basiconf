@@ -71,7 +71,7 @@ if [ ] ;then su $USER -c groups ;fi
 #for group in sudo adm syslog plugdev lpadmin scanner cdrom sambashare dialout dip vboxusers ;do sudo addgroup $USER $group ;done
 #for group in sudo adm syslog systemd-journal plugdev lpadmin cdrom dialout vboxusers ;do sudo usermod -a -G $group $USER ;done
 # for Manjaro: cups sys lp
-for group in sudo adm syslog systemd-journal plugdev lpadmin cdrom dialout vboxusers cups sys audio lp ;do sudo usermod -a -G $group $USER ;done
+for group in sudo adm davfs2 syslog systemd-journal plugdev lpadmin cdrom dialout vboxusers cups sys audio lp ;do sudo usermod -a -G $group $USER ;done
 # deaktiviert: dip scanner sambashare 
 
 dat_partition=`df |grep dat |cut -d" " -f1`
