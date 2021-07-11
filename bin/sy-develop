@@ -49,7 +49,9 @@ apt_install teams
 
 
 sudo rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
-apt_rpm_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+# unklar, was apt_rpm_repo tut  <2021-Jul, Sven>
+#apt_rpm_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+apt_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
 #sudo zypper addrepo -g -f https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo
 apt_install sublime-text
 
