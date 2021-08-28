@@ -21,7 +21,7 @@ has_apt=$(which apt-get)
 
 function apt_install {
   echo
-  echo Installing $*
+  echo Fallback-Installing $*
   logger SyveInstalling $*
   if [ $has_apt ] ;then
     sudo apt-get --yes install $*
@@ -114,6 +114,7 @@ syve_section "Einfachklick"
 
 kwriteconfig --file $kde_dir/share/config/kdeglobals --group KDE --key SingleClick true
 
+if [ "" ] ;then  # veraltet <2021-Aug,Sv>
 syve_section "Logitech-Trackball-Unterstützung"
 
 sudo mkdir /opt/syve
@@ -147,18 +148,21 @@ Terminal=false
 Type=Application
 X-KDE-SubstituteUID=false
 eot
+fi # [ "" ] ;then  #Deakitvierung wegen veraltet <2021-Aug,Sv>
 
 syve_section "Netzwerk"
 
-# Wir brauchen NFS
-apt_install nfs-kernel-server 
-
 apt_install nmap 
-apt_install ssh 
+
+apt_install -pac -deb ssh 
 sudo systemctl enable sshd.service
 sudo service sshd start
 
 apt_install curl
+
+syve_section "NFS"
+
+apt_install nfs-kernel-server 
 
 # Exportieren der Dat-Partition:
 apt_install nfs-kernel-server # (falls nicht oben schon erledigt)
@@ -168,7 +172,7 @@ else
   echo "/dat war schon in /etc/exports"
 fi
 if [[ -z `grep -E "^/home" /etc/exports` ]] ;then
-  echo '/home *(rw,sync,no_subtree_check)'|sudo tee -a /etc/exports
+  echo '/home *(ro,sync,no_subtree_check)'|sudo tee -a /etc/exports
 else
   echo "/home war schon in /etc/exports"
 fi
@@ -185,9 +189,10 @@ apt_install bridge-utils
 
 
 syve_section "Windows File systems"
-apt_install exfat-utils
+apt_install -pac exfat-utils
 
 
+if [ "" ] ;then  # veraltet <2021-Aug,Sv>
 # "NTFS workaround"
 
 # 2016-Jul, Sven: taken from http://askubuntu.com/questions/86086/fsck-cant-find-fsck-ntfs
@@ -197,28 +202,29 @@ if [[ ! -e  /sbin/fsck.ntfs ]] ;then
 else
   echo "fsck.ntfs existiert bereits"
 fi
+fi # [ "" ] # Deaktivierung
 
-syve_section "Drucken unter Majaro"
+
 # 2019-Jun, war nötig für Canon-Drucker:
-apt_install manjaro-printer
+apt_install -pac manjaro-printer   # "Drucken unter Majaro"
 
 syve_section "Wichtige Programme installieren"
 
 # Für die Rechtschreibprüfung in Libreoffice:
-apt_install hunspell-de-de # ubuntu
-apt_install myspell-de_DE  # opensuse
+apt_install -deb hunspell-de-de # ubuntu
+apt_install -zyp myspell-de_DE  # opensuse
 
 # already installed:
 #apt_install procps
 # Sound auf Konsole
-apt_install beep
+#apt_install beep
 apt_install sox 
-apt_install jovie
+#apt_install jovie
 
 # Manjaro: AUR-Tool
-apt_install base-devel 
+apt_install -pac base-devel 
 #apt_install yaourt
-apt_install pacaur
+apt_install -pac pacaur
 
 # <2020Jul> evtl Probleme, falls kein KDE installiert --> evtl zu sy-kdeconf verschieben:
 apt_install kdialog # bei Manjaro komischerweise nicht installiert

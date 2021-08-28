@@ -26,16 +26,42 @@ echo zyp:$has_zyp
 
 function apt_install {
   sudo echo
-  echo Installing $*
-  logger SyveInstalling $*
-  if [ $has_apt ] ;then
-    sudo apt-get --yes install $*
-  elif [ $has_pac ] ;then
-    sudo pacman --sync --needed --noconfirm $*
+  
+
+  opt=$1
+  if [ ${opt:0:1} == "-" ] ;then   # dann ist es wirklich eine Optionsangabe
+    #@=("$($@:1}")
+    shift
+    opt=${opt:1:-1}
+    echo -n "For: $opt " 
   else
-    #sudo zypper -n install $*
-    sudo zypper install -y $*
+    opt="all"
   fi
+  
+  logger SyveInstalling $* for $opt 
+
+  cmd="echo illegale Option  bei: "
+  if [ $has_apt ] ;then
+    if [[ $opt == "all"  ||  $opt == "deb" ]] ;then 
+      cmd="apt-get --yes install"
+    fi
+  elif [ $has_pac ] ;then
+    if [[ $opt == "all"  || $opt != "pac" ]] ;then
+      cmd="pacman --sync --needed --noconfirm"
+    fi
+  else
+    if [[ $opt == "all"  ||  $opt == "zyp" ]] ;then 
+      #sudo zypper -n install $*
+      cmd="zypper install -y"
+    fi
+  fi
+  
+  echo
+  echo installing $*
+  echo $cmd $*
+    
+  sudo $cmd $*
+  
 }
 
 function syve_user {
