@@ -1,0 +1,24 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+source $(dirname $own_folder)/lib/sy-common.bash
+
+
+syve_section "Office"
+
+apt_install libreoffice
+
+#apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pages"
+apt_install cups-pdf
+
+apt_install simple-scan
+apt_repo https://download.opensuse.org/repositories/Printing
+
+
+echo todo: allgemeiner, andere Stelle im Script
+#wget https://code-industry.net/public/master-pdf-editor-5.3.02_qt5.x86_64.rpm
+apt_install master-pdf-editor-5.3.02_qt5.x86_64.rpm
+
+
+syve_section "OCR"
+apt_install tesseract-ocr-traineddata-german

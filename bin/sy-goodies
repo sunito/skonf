@@ -9,6 +9,7 @@ syve_section "Snap -- Anfang"
 apt_repo https://download.opensuse.org/repositories/system:/snappy/
 sudo zypper --gpg-auto-import-keys refresh
 apt_install snapd
+sudo systemctl enable --now snapd.socket      # nur für Manjaro? <2021-Anfang,Sv>  ; scheint gei Suse auch zu funktionieren <2021-Aug,Sv>
 
 
 apt_repo http://download.opensuse.org/repositories/mozilla
@@ -23,9 +24,10 @@ apt_install brave-browser
 apt_install gnome-keyring
 
 
-syve_section "Snap -Teil 2"
+
+
+syve_section "Snap -Teil 2:  Messenger"
 #sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy
-sudo systemctl enable --now snapd.socket      # nur für Manjaro?
  ##### # temporär deaktiviert: <2021-Apr, Sv>
 sudo ln -s /var/lib/snapd/snap /snap             # symlink für die "classic"-Snaps
 
@@ -39,23 +41,6 @@ syve_section ""
 #apt_repo https://download.opensuse.org/repositories/Education
 
 sudo snap install telegram-desktop
-
-
-syve_section "Office"
-
-apt_install libreoffice
-
-#apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pages"
-apt_install cups-pdf
-
-apt_install simple-scan
-apt_repo https://download.opensuse.org/repositories/Printing
-
-
-echo todo: allgemeiner, andere Stelle im Script
-#wget https://code-industry.net/public/master-pdf-editor-5.3.02_qt5.x86_64.rpm
-apt_install master-pdf-editor-5.3.02_qt5.x86_64.rpm
-
 
 
 syve_section "Telefonie"
