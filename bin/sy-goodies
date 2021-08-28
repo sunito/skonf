@@ -63,9 +63,10 @@ fi
 
 
 syve_section "zoom"
+if [[ -z $(which zoom) ]] ;then
 sudo rpm --import https://zoom.us/linux/download/pubkey
 sudo zypper install -y https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
-
+fi
 #apt_repo https://repo.skype.com/rpm/stable/skype-stable.repo skype-stable
 
 sudo zypper addrepo  --gpgcheck-allow-unsigned  https://repo.skype.com/rpm/stable/skype-stable.repo
