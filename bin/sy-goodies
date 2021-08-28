@@ -3,6 +3,7 @@
 own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
+# snap, Messenger, Zoom, Mail, Office, Browser
 
 apt_repo http://download.opensuse.org/repositories/mozilla
 sudo zypper dup --allow-vendor-change --from mozilla
@@ -38,6 +39,13 @@ sudo snap install telegram-desktop
 syve_section "Office"
 
 apt_install libreoffice
+
+#apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pages"
+apt_install cups-pdf
+
+apt_install simple-scan
+apt_repo https://download.opensuse.org/repositories/Printing
+
 
 echo todo: allgemeiner, andere Stelle im Script
 #wget https://code-industry.net/public/master-pdf-editor-5.3.02_qt5.x86_64.rpm
@@ -124,15 +132,7 @@ fi
 
 apt_install kdiff3
 
-apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pages"
-apt_install cups-pdf
-
-apt_install simple-scan
-apt_repo https://download.opensuse.org/repositories/Printing
-
 apt_install transmission-qt # suse
-
-apt_install scribus
 
 if [ -z `which zypper` ] ;then # suse
 if [ -z `ls /etc/apt/sources.list.d |grep retroshare` ]
