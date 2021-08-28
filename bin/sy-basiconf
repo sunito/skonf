@@ -229,11 +229,11 @@ apt_install kdialog # bei Manjaro komischerweise nicht installiert
 
 # Wichtige graphische Tools
 
-if [ 0 ] ;then # funktioniert zumindest bei ^5.3 nicht (2021-Juni)
+if [ "" ] ;then # funktioniert zumindest bei ^5.3 nicht (2021-Juni)
 if [[ -z `zypper lr |grep "dmacvicar"` ]] ;then
   # funktioniert nicht mehr <2021Aug>
-  #sudo zypper addrepo http://download.opensuse.org/repositories/home:/dmacvicar/openSUSE_Leap_`lsb_release -rs`/ dmacvicar_qdirstat
-  #sudo zypper refresh
+  sudo zypper addrepo http://download.opensuse.org/repositories/home:/dmacvicar/openSUSE_Leap_`lsb_release -rs`/ dmacvicar_qdirstat
+  sudo zypper refresh
 fi
 fi
 
