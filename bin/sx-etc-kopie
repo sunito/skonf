@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+quelldir=/kroot/etc
+
+
+for ort in NetworkManager/system-connections/ ssh/sshd_config davfs2/secrets ;do
+  echo 
+  echo $quelldir/  $ort "--------------------------------------------"
+  sudo rsync -av --update "$quelldir/$ort" /etc/"$ort"
+done
+
