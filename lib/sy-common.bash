@@ -2,7 +2,8 @@
 
 function syve_section {
   echo
-  echo "    ######  $*  #####    "
+  echo
+  echo "    ############  $*  ############    "
   echo
   logger syve_section $*
 }
@@ -32,21 +33,21 @@ function apt_install {
   if [ ${opt:0:1} == "-" ] ;then   # dann ist es wirklich eine Optionsangabe
     #@=("$($@:1}")
     shift
-    opt=${opt:1:-1}
+    opt=${opt:1}
     echo -n "For: $opt " 
   else
     opt="all"
   fi
   
-  logger SyveInstalling $* for $opt 
+  logger "SyveInstalling $* for $opt"
 
-  cmd="echo illegale Option  bei: "
+  cmd="echo Ignoriert: "
   if [ $has_apt ] ;then
     if [[ $opt == "all"  ||  $opt == "deb" ]] ;then 
       cmd="apt-get --yes install"
     fi
   elif [ $has_pac ] ;then
-    if [[ $opt == "all"  || $opt != "pac" ]] ;then
+    if [[ $opt == "all"  || $opt == "pac" ]] ;then
       cmd="pacman --sync --needed --noconfirm"
     fi
   else
@@ -56,12 +57,13 @@ function apt_install {
     fi
   fi
   
-  echo
-  echo installing $*
-  echo $cmd $*
+  if [[ ! $cmd =~ echo.* ]] ;then
+    echo
+    echo installing $*
+    echo $cmd $*
     
-  sudo $cmd $*
-  
+    sudo $cmd $*
+  fi
 }
 
 function syve_user {
