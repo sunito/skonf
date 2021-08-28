@@ -7,3 +7,6 @@ apt_install partclone
 
 apt_install OpenIPMI
 apt_install ipmitool
+
+apt_install bridge-utils
+

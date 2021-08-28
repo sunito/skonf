@@ -184,8 +184,6 @@ sudo systemctl enable nfs-server
 sudo service nfs-server start
 
 
-apt_install bridge-utils
-
 
 
 syve_section "Windows File systems"
