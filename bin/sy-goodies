@@ -42,6 +42,8 @@ syve_section ""
 
 sudo snap install telegram-desktop
 
+apt_install discord
+
 
 syve_section "Telefonie"
 
