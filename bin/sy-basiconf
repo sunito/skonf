@@ -184,6 +184,18 @@ sudo systemctl enable nfs-server
 sudo service nfs-server start
 
 
+syve_section "ULimits for open files"
+
+for type in soft hard ;do
+  ulimit_string="$type nofile 500777"
+  filenam=/etc/security/limits.conf
+  if [[ -z `grep "$ulimit_string" "$filenam"` ]] ;then
+    echo "* $ulimit_string        # skonf `date +%F`" |sudo tee -a "$filenam"
+  else
+    echo schon vorhanden: $ulimit_string
+  fi
+done
+
 
 
 syve_section "Windows File systems"
