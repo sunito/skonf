@@ -1,8 +1,8 @@
 #!/bin/bash
 
-pushd $(pathname $0)
+pushd $(dirname $0)
 pwd
-for skript in ls sy-* ;do
+for skript in `ls sy-*` ;do
   echo 
   echo 
   echo "#################################"
