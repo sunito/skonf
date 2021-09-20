@@ -22,6 +22,8 @@ apt_install linux-latest-virtualbox-host-modules   # nur für Manjaro
 echo eigentlich VirtualBox-5.1-5.1.14_112924_openSUSE132-1.x86_64.rpm
 apt_install virtualbox
 
+sudo usermod -a -G vboxusers $USER
+
 apt_install xdotool   # für das vm-launch-Script
 
 if [[ $USER = "brunhild" ]] ;then
