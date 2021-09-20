@@ -22,3 +22,4 @@ apt_install master-pdf-editor-5.3.02_qt5.x86_64.rpm
 
 syve_section "OCR"
 apt_install tesseract-ocr-traineddata-german
+

@@ -4,25 +4,22 @@ own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
 
-
 syve_section "FreePlane MindMapping"
 
-#apt_repo https://download.opensuse.org/repositories/Office
-# echo "TODO"
-# statt dessen einfach
+apt_repo https://download.opensuse.org/repositories/Office
 apt_install freeplane
+
+# echo "TODO"
+
 if false ;then
 11093  mv /aa/177/Downloads/freeplane-1.5.13/ /opt/freeplane/
 11096  sudo update-alternatives --install /usr/local/bin/freeplane freeplane /opt/freeplane/freeplane-1.5.13/freeplane.sh 33
 fi
-apt_install qxmledit
+
 
 syve_section "Lern-Programme"
 
 apt_install marble-kde
-
-syve_section "Mind-Mapping"
-
 
 apt_install scribus
 

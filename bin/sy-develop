@@ -98,7 +98,7 @@ X-KDE-Username=
 EOT
 
 
-syve_section IDEs
+syve_section "IDEs"
 
 # <2021-Mai, Sv> Wozu war das?
 #apt_repo https://download.opensuse.org/repositories/home:/Herbster0815
@@ -113,9 +113,14 @@ syve_section "Tools for Low-Level Tasks"
 apt_install unetbootin
 apt_install extlinux
 
+
+syve_section "Sonstigese"
+
 apt_rpm_repo https://bintray.com/resin-io/redhat/rpm bintray-resin-io-redhat.repo
 apt_install etcher-electron
 
+
+apt_install qxmledit
 
 exit 0
 ###############################################################
@@ -123,7 +128,7 @@ exit 0
 ###############################################################
 
 
-syve-section kde-modules
+syve-section "kde-modules"
 
 apt_install extra-cmake-modules
 
