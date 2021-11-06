@@ -5,6 +5,9 @@ source $(dirname $own_folder)/lib/sy-common.bash
 
 # snap, Messenger, Zoom, Mail, Office, Browser
 
+syve_section "Gimp"
+apt_install gimp
+
 syve_section "Snap -- Anfang"
 apt_repo https://download.opensuse.org/repositories/system:/snappy/
 sudo zypper --gpg-auto-import-keys refresh
