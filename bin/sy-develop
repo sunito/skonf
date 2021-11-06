@@ -3,6 +3,12 @@
 own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
+syve_section "julia"
+echo "aktuelle Verion (2021-Sept) funktioniert nicht !!!!!!!"
+echo apt_repo https://download.opensuse.org/repositories/home:/so_it_team
+echo apt_install julia
+echo
+
 syve_section "git-Defaults"
 
 git config --global credential.helper cache
