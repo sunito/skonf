@@ -35,8 +35,10 @@ apt_install trash-cli
 apt_install bonnie++  # disk benchmark
 
 
-if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
+#if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
   # Nur wenn schon akonadi installiert
+# ToDo: eigentlich sollte hier die Abfrage für zypper stehen, aber $USER ist einfacher
+if [[ $USER = sunito ]] ;then
 apt_install akonadiconsole
 fi
 
