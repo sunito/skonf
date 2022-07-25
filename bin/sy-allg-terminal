@@ -123,6 +123,8 @@ apt_install mmv
 
 apt_install screen
 
+apt_install unrar
+
 syve_section "Entwicklung"
 
 apt_install git 
