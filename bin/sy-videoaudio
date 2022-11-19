@@ -82,5 +82,3 @@ apt_install chromium-widevinecdm-plugin   # z.B. für Amazon-Prime
 # sudo apt-get update >/dev/null
 # apt_install simplescreenrecorder
 
-syve_section "OCR"
-apt_install tesseract-ocr-traineddata-german

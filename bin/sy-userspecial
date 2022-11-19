@@ -488,6 +488,12 @@ fi # if [ $USER = "hans" ] ;then
 
 
 if [ $USER = "sunito" ] ;then
+
+  syve_section "SealOne installieren"
+  # noch sehr primitiv!!! <2021-Sep, Sv>
+  wget https://seal-one.com/SOInstLin.sh && sh SOInstLin.sh
+
+
 cat >$HOME/.config/autostart/transmission-slowstart.desktop <<EOT
 [Desktop Entry]
 Exec=sleep 304 ;transmission-qt

@@ -3,6 +3,12 @@
 own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
+syve_section "julia"
+echo "aktuelle Verion (2021-Sept) funktioniert nicht !!!!!!!"
+echo apt_repo https://download.opensuse.org/repositories/home:/so_it_team
+echo apt_install julia
+echo
+
 syve_section "git-Defaults"
 
 git config --global credential.helper cache
@@ -29,8 +35,10 @@ apt_install trash-cli
 apt_install bonnie++  # disk benchmark
 
 
-if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
+#if [[ ! -z `dpkg -l 'akonadi*'| grep "ii  akona"` ]] ;then
   # Nur wenn schon akonadi installiert
+# ToDo: eigentlich sollte hier die Abfrage für zypper stehen, aber $USER ist einfacher
+if [[ $USER = sunito ]] ;then
 apt_install akonadiconsole
 fi
 
@@ -49,7 +57,9 @@ apt_install teams
 
 
 sudo rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
-apt_rpm_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+# unklar, was apt_rpm_repo tut  <2021-Jul, Sven>
+#apt_rpm_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+apt_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
 #sudo zypper addrepo -g -f https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo
 apt_install sublime-text
 
@@ -63,16 +73,6 @@ apt_install yarn
 
 apt_install ruby-devel
 
-syve_section "FreePlane MindMapping"
-
-# echo "TODO"
-# statt dessen einfach
-apt_install freeplane
-if false ;then
-11093  mv /aa/177/Downloads/freeplane-1.5.13/ /opt/freeplane/
-11096  sudo update-alternatives --install /usr/local/bin/freeplane freeplane /opt/freeplane/freeplane-1.5.13/freeplane.sh 33
-11101  sudo zypper in qxmledit
-fi
 
 syve_section "Datenbank-Tools"
 syve_section "Sqlite"
@@ -106,7 +106,7 @@ X-KDE-Username=
 EOT
 
 
-syve_section IDEs
+syve_section "IDEs"
 
 # <2021-Mai, Sv> Wozu war das?
 #apt_repo https://download.opensuse.org/repositories/home:/Herbster0815
@@ -121,9 +121,14 @@ syve_section "Tools for Low-Level Tasks"
 apt_install unetbootin
 apt_install extlinux
 
+
+syve_section "Sonstigese"
+
 apt_rpm_repo https://bintray.com/resin-io/redhat/rpm bintray-resin-io-redhat.repo
 apt_install etcher-electron
 
+
+apt_install qxmledit
 
 exit 0
 ###############################################################
@@ -131,7 +136,7 @@ exit 0
 ###############################################################
 
 
-syve-section kde-modules
+syve-section "kde-modules"
 
 apt_install extra-cmake-modules
 

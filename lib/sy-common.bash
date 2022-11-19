@@ -2,7 +2,8 @@
 
 function syve_section {
   echo
-  echo "    ######  $*  #####    "
+  echo
+  echo "    ############  $*  ############    "
   echo
   logger syve_section $*
 }
@@ -26,15 +27,42 @@ echo zyp:$has_zyp
 
 function apt_install {
   sudo echo
-  echo Installing $*
-  logger SyveInstalling $*
-  if [ $has_apt ] ;then
-    sudo apt-get --yes install $*
-  elif [ $has_pac ] ;then
-    sudo pacman --sync --needed --noconfirm $*
+  
+
+  opt=$1
+  if [ ${opt:0:1} == "-" ] ;then   # dann ist es wirklich eine Optionsangabe
+    #@=("$($@:1}")
+    shift
+    opt=${opt:1}
+    echo -n "For: $opt " 
   else
-    #sudo zypper -n install $*
-    sudo zypper install -y $*
+    opt="all"
+  fi
+  
+  logger "SyveInstalling $* for $opt"
+
+  cmd="echo Ignoriert: "
+  if [ $has_apt ] ;then
+    if [[ $opt == "all"  ||  $opt == "deb" ]] ;then 
+      cmd="apt-get --yes install"
+    fi
+  elif [ $has_pac ] ;then
+    if [[ $opt == "all"  || $opt == "pac" ]] ;then
+      cmd="pacman --sync --needed --noconfirm"
+    fi
+  else
+    if [[ $opt == "all"  ||  $opt == "zyp" ]] ;then 
+      #sudo zypper -n install $*
+      cmd="zypper install -y"
+    fi
+  fi
+  
+  if [[ ! $cmd =~ echo.* ]] ;then
+    echo
+    echo installing $*
+    echo $cmd $*
+    
+    sudo $cmd $*
   fi
 }
 
@@ -64,13 +92,16 @@ fi
 
 config_dir="$HOME/.config"
 
+# Was macht diese Funktion? <2021-Jul, Sv>
 function apt_rpm_repo {
   url=$1
   basenam=$2
   if [ x$basenam == x ] ;then
-    basenam=$($url/http*:/)
-    basenam=$($basenam/\//_)
-    basenam=$($basenam/__/_)
+  # hat das jemals funktioniert? <2021-Jul, Sven>
+  #  basenam=$($url/http*:/)
+    basenam=${url/http*:/}
+    basenam=${basenam//\//_}
+    basenam=${basenam//__/_}
   fi
   if [ $has_zyp ] ;then
     repo_filenam=/etc/zypp/repos.d/$basenam
@@ -87,30 +118,37 @@ function apt_repo {
   if [ x$basenam == x ] ;then
     basenam=$(basename $main_repourl)
   fi
-  if [ $has_apt ] ;then
-    repourl=$main_repourl
-  else
+#   if [ $has_apt ] ;then
+#     repourl=$main_repourl
+#   else
     repourl=${main_repourl%/}/  # always one slash at the end
     release_descr=$(lsb_release -ds)
     echo $release_descr
     release_id=${release_descr// /_}   # replace all (that's what the second slash is for) spaces by underscore
     
+  if [[ ! -z `zypper lr -u |grep $repourl` ]] ;then return
+  fi
+  
     # Testen, ob die URL auf ".repo" endet und dann wohl vollständig ist:
-    echo x${main_repourl: -5}
+    #echo x${main_repourl: -5}
     if [ x${main_repourl: -5} == x.repo ] ;then
       repourl=$main_repourl 
       basenam=""
     else
       repourl=$repourl${release_id//\"/}  # remove all (that's what the second slash is for) quotes
     fi
-  fi
+#  fi
 
 
   if [ $has_zyp ] ;then
     echo Repo basenam=$basenam repourl=$repourl
     logger SyveRepo basenam=$basenam args="$*"
-    if [[ -z `zypper lr |grep $basenam` ]] ;then
+    # Der Test erfolgt jetzt oben  <2021-Jul, Sven>
+    #if [[ -z `zypper lr -u |grep $repourl` ]] ;then
       echo adding $repourl
+    if [ x$basenam == x ] ;then # wir müssen das hier leider unterscheiden ("$basenam" würde im else-Pfad als anwesendes, aber leeres zweites Argument ausgewertet werden)
+      sudo zypper addrepo --gpgcheck-allow-unsigned "$repourl"   # Suse erlaubt das Vertrauen von Schlüsseln nur im interaktiven Modus
+    else
       echo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"
       sudo zypper addrepo --gpgcheck-allow-unsigned "$repourl" "$basenam"  # Suse erlaubt vertrauen von Schlüsseln nur im interaktiven Modus
       sudo zypper refresh

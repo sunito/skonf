@@ -3,11 +3,24 @@
 own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
+# snap, Messenger, Zoom, Mail, Office, Browser
 
+syve_section "Gimp"
+apt_install gimp
+
+syve_section "Snap -- Anfang"
+apt_repo https://download.opensuse.org/repositories/system:/snappy/
+sudo zypper --gpg-auto-import-keys refresh
+apt_install snapd
+sudo systemctl enable --now snapd.socket      # nur für Manjaro? <2021-Anfang,Sv>  ; scheint gei Suse auch zu funktionieren <2021-Aug,Sv>
+
+
+if [[ $USER != "sabine" ]] ;then
 apt_repo http://download.opensuse.org/repositories/mozilla
 sudo zypper dup --allow-vendor-change --from mozilla
 apt_install firefox
 apt_install MozillaFirefox
+fi
 
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/x86_64/ brave-browser
@@ -15,11 +28,11 @@ apt_install brave-browser
 
 apt_install gnome-keyring
 
+
+
+
+syve_section "Snap -Teil 2:  Messenger"
 #sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy
-apt_repo https://download.opensuse.org/repositories/system:/snappy/
-sudo zypper --gpg-auto-import-keys refresh
-apt_install snapd
-sudo systemctl enable --now snapd.socket      # nur für Manjaro?
  ##### # temporär deaktiviert: <2021-Apr, Sv>
 sudo ln -s /var/lib/snapd/snap /snap             # symlink für die "classic"-Snaps
 
@@ -34,15 +47,7 @@ syve_section ""
 
 sudo snap install telegram-desktop
 
-
-syve_section "Office"
-
-apt_install libreoffice
-
-echo todo: allgemeiner, andere Stelle im Script
-#wget https://code-industry.net/public/master-pdf-editor-5.3.02_qt5.x86_64.rpm
-apt_install master-pdf-editor-5.3.02_qt5.x86_64.rpm
-
+apt_install discord
 
 
 syve_section "Telefonie"
@@ -65,9 +70,10 @@ fi
 
 
 syve_section "zoom"
+if [[ -z $(which zoom) ]] ;then
 sudo rpm --import https://zoom.us/linux/download/pubkey
 sudo zypper install -y https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
-
+fi
 #apt_repo https://repo.skype.com/rpm/stable/skype-stable.repo skype-stable
 
 sudo zypper addrepo  --gpgcheck-allow-unsigned  https://repo.skype.com/rpm/stable/skype-stable.repo
@@ -111,97 +117,6 @@ case $USER in
     ;;
 esac
 
-syve_section "Unterstützung für Windows-Programme installieren"
-
-# Virtuelle Umgebungen
-
-#if [[ -z `dpkg -l virtualbox| grep "ii  virt"` ]] ;then
-if [ -z `ls /etc/apt/sources.list.d |grep virtualbox` ] ;then
-  #wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc | sudo apt-key add -
-  echo "### Achtung! nicht-trusty XXX fest verdrahtet!!! ###"
-  # sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian trusty non-free contrib" > /etc/apt/sources.list.d/virtualbox.org.list'
-  # bringt nix
-  # sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian xenial non-free contrib" > /etc/apt/sources.list.d/virtualbox.org.list'
-  # sudo apt-get update >/dev/null
-fi
-#apt_install virtualbox-4.3
-apt_install kernel-default-devel #suse
-apt_install linux-latest-virtualbox-host-modules   # nur für Manjaro
-echo eigentlich VirtualBox-5.1-5.1.14_112924_openSUSE132-1.x86_64.rpm
-apt_install virtualbox
-
-apt_install xdotool   # für das vm-launch-Script
-
-if [[ $USER = "brunhild" ]] ;then
-cat <<eot >.local/share/applications/emWave.desktop
-[Desktop Entry]
-Comment[de_DE]=by HeartMath
-Comment=by HeartMath
-Exec=~/bin/vmanage/bin/vm-launch-emwave "C:\\\\Programme\\\\HeartMath\\\\emWave\\\\emwavepc.exe"
-GenericName[de_DE]=emWave Pro
-GenericName=emWave Pro
-Icon=/dat/w4a1/emwv.png
-MimeType=
-Name=emWave
-NoDisplay=false
-Path=
-StartupNotify=false
-Terminal=false
-TerminalOptions=
-Type=Application
-X-DBUS-ServiceName=
-X-DBUS-StartupType=
-X-KDE-SubstituteUID=false
-X-KDE-Username=
-eot
-fi
-
-syve_section Wine-Emulator
-# todo: Verlagern aller Emulatoren in eigene Datei
-
-    sudo zypper addrepo http://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Leap_`lsb_release -rs`/Emulators:Wine.repo
-    sudo zypper refresh
-    
-apt_install wine
-apt_install winetricks
-
-# Wir wollwn die neueste Version von PoL:
-if [ -z `ls /etc/apt/sources.list.d |grep playonlinux` ]
-then
-  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E0F72778C4676186
-  sudo wget http://deb.playonlinux.com/playonlinux_trusty.list -O /etc/apt/sources.list.d/playonlinux.list
-  sudo apt-get update >/dev/null
-fi
-apt_install xterm playonlinux
-
-apt_install ttf-mscorefonts-installer
-
-apt_install winbind # needed for Office2010
-# wine 1.5.2, gecko 2.40, mono-4.5.6, msxml6
-
-if false ;then
-  TODO ToDo ----
-cat ./.local/share/applications/cxstart.desktop
-[Desktop Entry]
-Comment[de_DE]=
-Comment=
-Exec=/opt/cxoffice/bin/cxstart  --bottle gia1  --workdir  "%d" "%f"
-GenericName[de_DE]=Im eigenen Verzeichnis
-GenericName=Im eigenen Verzeichnis
-MimeType=application/x-ms-dos-executable;
-Name[de_DE]=cxstart
-Name=cxstart
-NoDisplay=true
-Path=
-StartupNotify=true
-Terminal=false
-TerminalOptions=
-Type=Application
-X-DBUS-ServiceName=
-X-DBUS-StartupType=
-X-KDE-SubstituteUID=false
-X-KDE-Username=
-fi
 
 syve_section "Weitere Software installieren"
 
@@ -215,15 +130,7 @@ fi
 
 apt_install kdiff3
 
-apt_install qpdfview # 2014:Aug: because okular 0.19 is buggy (printing blank pages"
-apt_install cups-pdf
-
-apt_install simple-scan
-apt_repo https://download.opensuse.org/repositories/Printing
-
 apt_install transmission-qt # suse
-
-apt_install scribus
 
 if [ -z `which zypper` ] ;then # suse
 if [ -z `ls /etc/apt/sources.list.d |grep retroshare` ]
@@ -305,6 +212,13 @@ eot
 apt_install kteatime
 
 syve_section "Weitere Browser"
+
+if [ -z `which vivaldi` ] ;then 
+  sudo zypper addrepo https://repo.vivaldi.com/archive/vivaldi-suse.repo
+  sudo rpm --import https://repo.vivaldi.com/archive/linux_signing_key.pub
+  sudo zypper refresh
+  apt_install vivaldi-stable
+fi
 
 apt_install chromium-browser
 apt_install opera

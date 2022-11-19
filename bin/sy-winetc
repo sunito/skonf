@@ -1,0 +1,98 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+source $(dirname $own_folder)/lib/sy-common.bash
+
+syve_section "Unterstützung für Windows-Programme installieren"
+
+# Virtuelle Umgebungen
+
+#if [[ -z `dpkg -l virtualbox| grep "ii  virt"` ]] ;then
+if [ -z `ls /etc/apt/sources.list.d |grep virtualbox` ] ;then
+  #wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc | sudo apt-key add -
+  echo "### Achtung! nicht-trusty XXX fest verdrahtet!!! ###"
+  # sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian trusty non-free contrib" > /etc/apt/sources.list.d/virtualbox.org.list'
+  # bringt nix
+  # sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian xenial non-free contrib" > /etc/apt/sources.list.d/virtualbox.org.list'
+  # sudo apt-get update >/dev/null
+fi
+#apt_install virtualbox-4.3
+apt_install kernel-default-devel #suse
+apt_install linux-latest-virtualbox-host-modules   # nur für Manjaro
+echo eigentlich VirtualBox-5.1-5.1.14_112924_openSUSE132-1.x86_64.rpm
+apt_install virtualbox
+
+sudo usermod -a -G vboxusers $USER
+
+apt_install xdotool   # für das vm-launch-Script
+
+if [[ $USER = "brunhild" ]] ;then
+cat <<eot >.local/share/applications/emWave.desktop
+[Desktop Entry]
+Comment[de_DE]=by HeartMath
+Comment=by HeartMath
+Exec=~/bin/vmanage/bin/vm-launch-emwave "C:\\\\Programme\\\\HeartMath\\\\emWave\\\\emwavepc.exe"
+GenericName[de_DE]=emWave Pro
+GenericName=emWave Pro
+Icon=/dat/w4a1/emwv.png
+MimeType=
+Name=emWave
+NoDisplay=false
+Path=
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+eot
+fi
+
+syve_section Wine-Emulator
+# todo: Verlagern aller Emulatoren in eigene Datei
+
+    sudo zypper addrepo http://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Leap_`lsb_release -rs`/Emulators:Wine.repo
+    sudo zypper refresh
+    
+apt_install wine
+apt_install winetricks
+
+# Wir wollwn die neueste Version von PoL:
+if [ -z `ls /etc/apt/sources.list.d |grep playonlinux` ]
+then
+  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E0F72778C4676186
+  sudo wget http://deb.playonlinux.com/playonlinux_trusty.list -O /etc/apt/sources.list.d/playonlinux.list
+  sudo apt-get update >/dev/null
+fi
+apt_install xterm playonlinux
+
+apt_install ttf-mscorefonts-installer
+
+apt_install winbind # needed for Office2010
+# wine 1.5.2, gecko 2.40, mono-4.5.6, msxml6
+
+if false ;then
+  TODO ToDo ----
+cat ./.local/share/applications/cxstart.desktop
+[Desktop Entry]
+Comment[de_DE]=
+Comment=
+Exec=/opt/cxoffice/bin/cxstart  --bottle gia1  --workdir  "%d" "%f"
+GenericName[de_DE]=Im eigenen Verzeichnis
+GenericName=Im eigenen Verzeichnis
+MimeType=application/x-ms-dos-executable;
+Name[de_DE]=cxstart
+Name=cxstart
+NoDisplay=true
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+fi

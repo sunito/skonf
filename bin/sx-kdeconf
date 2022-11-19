@@ -95,6 +95,11 @@ kwriteconfig  --file $touchpad_konf  --group "$tp_gruppe"  --key naturalScroll t
 ruby  -ne "system(%Q(kwriteconfig --file $touchpad_konf"' --group #{%q(")+$1+%q(")} --key tapToClick true)) if /\[(.+)\]/' $touchpad_konf
 ruby  -ne "system(%Q(kwriteconfig --file $touchpad_konf"' --group #{%q(")+$1+%q(")} --key naturalScroll true)) if /\[(.+)\]/' $touchpad_konf
 
+syve_section "Packages"
+
+apt_install digikam
+
+
 exit 17
 
 if false ;then
@@ -122,12 +127,11 @@ sed -i -r -e 's/^(holidaysRegions *)=.*$/\1=de_de/' "$plasma_applets_file"
 
 syve_section "Packages"
 
-apt_install kde-service-menu-fuseiso
-apt_install kdeplasma-addons
-apt_install kubuntu-restricted-extras
-apt_install digikam
-#apt_install xscreensaver-data xscreensaver-gl-extra xscreensaver-gl xscreensaver-screensaver-bsod libjpeg-progs 
 apt_install kscreensaver
+apt_install kde-service-menu-fuseiso
+apt_install kubuntu-restricted-extras
+#apt_install xscreensaver-data xscreensaver-gl-extra xscreensaver-gl xscreensaver-screensaver-bsod libjpeg-progs 
+apt_install kdeplasma-addons
 
 # To be moved Further up, placed near exit temporarily
 # According to the diff further down (behind exit):

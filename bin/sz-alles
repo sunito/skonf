@@ -1,0 +1,15 @@
+#!/bin/bash
+
+pushd $(dirname $0)
+pwd
+for skript in `ls sy-*` ;do
+  echo 
+  echo 
+  echo "#################################"
+  echo "Ausführen von: $skript" 
+  ./$skript
+done
+
+./sy-kdeconf
+
+popd
