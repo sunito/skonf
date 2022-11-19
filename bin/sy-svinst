@@ -16,6 +16,7 @@ sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild ;sudo chfn -
 
 sudo adduser --uid 1007 --ingroup users --add_extra_groups claudia ;sudo chfn -f "Claudia" claudia ;sudo addgroup claudia sudo
 source /wartung/skonf/lib/sy-common.bash ;syve_user radio1 1008 "Nur für Erwachsene"
+source /wartung/skonf/lib/sy-common.bash ;syve_user paul 1017 "Paul"
 
 sudo adduser --uid 1008 --ingroup users --add_extra_groups hans ;sudo chfn -f "Johannes" hans ;sudo addgroup hans sudo
 sudo useradd --uid 1008 -g users --create-home hans ;sudo chfn -f "Johannes" hans
