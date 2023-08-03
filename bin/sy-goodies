@@ -213,6 +213,13 @@ apt_install kteatime
 
 syve_section "Weitere Browser"
 
+if [ -z `which vivaldi` ] ;then 
+  sudo zypper addrepo https://repo.vivaldi.com/archive/vivaldi-suse.repo
+  sudo rpm --import https://repo.vivaldi.com/archive/linux_signing_key.pub
+  sudo zypper refresh
+  apt_install vivaldi-stable
+fi
+
 apt_install chromium-browser
 apt_install opera
 apt_install rekonq

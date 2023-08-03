@@ -123,6 +123,7 @@ end
 
 
 [
+  "/111/ye-sys/kmail-neu/local-mail/.e--e--Entwicklung.directory/Anrufe--t--/", # neu m7 
   "/111/ye-sys/kmail-neu/local-mail/.e--e--Entwicklung.directory/Anrufe--e--/",
   "/111/ye-sys/kmail-neu/local-mail/.f-AssistentInbox.directory/.eshopDienst.directory/.MailVonAssistent.directory/.Posteingang.directory/SMS/",
   "#{ENV['HOME']}/.local/share/local-mail/inbox/"

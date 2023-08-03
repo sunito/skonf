@@ -204,11 +204,6 @@ if File.symlink?(ya222_link)
   # Die folgende Verlinkung würde den Akonadi-Server lahmlegen
   # move_and_symlink_or_ensure_correctness "#{ya322_link}/322/loc-sh-akonadi/",     "#{HOME}/.local/share/akonadi"
 
-  # 2017-Jul-10, Suse43.2 auf 480G SSD, Sven: Nicht mehr n
-  #move_and_symlink_or_ensure_correctness "#{ya222_link}/222/data-baloo/",         "#{HOME}/.local/share/baloo" do
-  #  "balooctl stop"   # erstmal nur als Idee, funktioniert noch nicht
-  #end
-  
   create_dir_unless_exists       "#{$kde_dir}/share/config-local"  
   Dir["#{$kde_dir}/share/config/plasm*"].each do |komplett_name|
     puts "plasma: " + komplett_name
@@ -234,3 +229,8 @@ move_and_symlink_or_ensure_correctness "/111/ye-sys/kmail-neu/local-mail/",     
 move_and_symlink_or_ensure_correctness "/111/Business/Finanzamt/Winston/dotWinston",     "#{HOME}/.Winston"
 move_and_symlink_or_ensure_correctness "/111/Business/Finanzamt/Winston/dotWinston",     "#{HOME}/.winston"
 
+  # 2017-Jul-10, Suse43.2 auf 480G SSD, Sven: Nicht mehr nötig
+move_and_symlink_or_ensure_correctness "/aa/322/local_share/baloo",         "#{HOME}/.local/share/baloo" do
+  balooctl disable   # erstmal nur als Idee, funktioniert noch nicht
+end
+  
