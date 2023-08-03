@@ -26,6 +26,7 @@ sudo adduser --uid 1011 --ingroup users --add_extra_groups sylvia ;sudo chfn -f 
 
 sudo adduser --uid 1011 --ingroup users --add_extra_groups assistent ;sudo chfn -f "Sabrina" assistent ;sudo addgroup assistent sudo
 sudo useradd --uid 1011 -g users -m assistent ;sudo chfn -f "Sabrina" assistent ;sudo gpasswd -a assistent wheel
+source /wartung/skonf/lib/sy-common.bash ;syve_user assistent 1011 "Sabrina"
 
 sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland ;sudo chfn -f "Hof Urstromland" hof-urstromland
 
