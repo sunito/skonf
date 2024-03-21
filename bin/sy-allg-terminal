@@ -40,18 +40,19 @@ syve_section "Mehr Komfort in der Shell"
 # .bashrc erweitert (Uhrzeit + History wird sofort und mit Ausführungszeit gespeichert und die Kapazität erhöht)
 if [[ -z `grep "'history -a" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
-# Sven: Zeit im Prompt:
+# Sunito: Zeit im Prompt:
 PS1="\D{%b%e} \t "$PS1 
   
-  # `date`, Sven: History wird hierdurch mit Zeitstempel gespeichert:
+  # `date`, Sunito: History wird hierdurch mit Zeitstempel gespeichert:
   export HISTTIMEFORMAT='%F %T '
   # dadurch brauchen wir keine manuelles Anhängen des Datums mehr, also die anstatt der folgenden beiden Varianten reicht 'history -a'
   #export PROMPT_COMMAND='history -a; truncate -s-`tail -1 $HOME/.bash_history|ruby -ne "print 1+(\\$_.slice(/([ \t]*# *[-\d\t: ]{0,19})+/).size rescue 0)"` $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
 # einfache Variante: export PROMPT_COMMAND='history -a; truncate -s-1 $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
-  export PROMPT_COMMAND='history -a'
 
   # History-Speicherung sofort nach jedem Kommando:
-  shopt -s histappend
+export PROMPT_COMMAND='history -a'
+
+shopt -s histappend
   
 export HISTSIZE=9999
 export HISTFILESIZE=22000
@@ -69,9 +70,9 @@ skonf_oldpfad=/wartung/$skonfbin_teil/oldbin
 #if [[ -z `grep $skonfbin_teil $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 if [[ -z `grep $skonf_oldpfad $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<EOT
 
-    # `date`, Sven: skonf mit im PATH
+  # `date`, Sunito: skonf mit im PATH
     PATH=\$PATH:$skonf_pfad
-    PATH=\$PATH:$skonf_oldpfad
+PATH=\$PATH:$skonf_oldpfad
 EOT
 else
   echo "Hinzufügen vom '$skonf_pfad' zum PATH  war schon in .bashrc"
@@ -84,36 +85,40 @@ fi
 
 if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
-   # `date`, Sven: Nicht versehentlich Konsolen schließen:
+  # `date`, Sunito: Nicht versehentlich Konsolen schließen:
    export IGNOREEOF=3
 EOT
 fi
 
 #if [[ -z `grep "LS_OPTIONS" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
-   # Sven: farbige ls-Ausgabe (2017-Okt: funktioniert nicht):
+  # Sunito: farbige ls-Ausgabe (2017-Okt: funktioniert nicht):
    #export LS_OPTIONS=-N --color=tty -T 0
 #EOT
 #fi
+
+
+
+if [[ -z `grep ".bashrc" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
+  # `date`,  Sunito: Für Manjaro, damit auch für ssh-Logins .bashrc gelesen wird
+if [ -f ~/.bashrc ]; then
+      . ~/.bashrc
+fi
+EOT
+fi
 
 syve_section "Essentielle Programme"
 
 apt_install davfs2
 
-if [[ -z `grep ".bashrc" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
-  # `date`,  Sven Für Manjaro damit auch für ssh-Logins .bashrc gelesen wird
-  if [ -f ~/.bashrc ]; then
-        . ~/.bashrc
-  fi
-EOT
-fi
+apt_install vim
 if [[ -z `grep "EDITOR" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
-   # `date`,  Sven
+   # `date`,  Sunito:
    export EDITOR=vim
 EOT
 fi
 if [[ -z `grep "VISUAL" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
-   # `date`,  Sven
+   # `date`,  Sunito:
    export VISUAL=vim
 EOT
 fi
@@ -125,10 +130,10 @@ apt_install screen
 
 apt_install unrar
 
+
 syve_section "Entwicklung"
 
 apt_install git 
-apt_install vim
 apt_install nano # J ;) 
 apt_install ruby
 
