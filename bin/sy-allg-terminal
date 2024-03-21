@@ -44,7 +44,7 @@ if [[ -z `grep "'history -a" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 PS1="\D{%b%e} \t "$PS1 
   
   # `date`, Sunito: History wird hierdurch mit Zeitstempel gespeichert:
-  export HISTTIMEFORMAT='%F %T '
+export HISTTIMEFORMAT='%F %T '
   # dadurch brauchen wir keine manuelles Anhängen des Datums mehr, also die anstatt der folgenden beiden Varianten reicht 'history -a'
   #export PROMPT_COMMAND='history -a; truncate -s-`tail -1 $HOME/.bash_history|ruby -ne "print 1+(\\$_.slice(/([ \t]*# *[-\d\t: ]{0,19})+/).size rescue 0)"` $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
 # einfache Variante: export PROMPT_COMMAND='history -a; truncate -s-1 $HOME/.bash_history; date +" %t%t# %F %X" >>$HOME/.bash_history'
@@ -71,7 +71,7 @@ skonf_oldpfad=/wartung/$skonfbin_teil/oldbin
 if [[ -z `grep $skonf_oldpfad $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<EOT
 
   # `date`, Sunito: skonf mit im PATH
-    PATH=\$PATH:$skonf_pfad
+PATH=\$PATH:$skonf_pfad
 PATH=\$PATH:$skonf_oldpfad
 EOT
 else
@@ -86,7 +86,7 @@ fi
 if [[ -z `grep "IGNOREEOF" $HOME/.bashrc` ]] ;then cat >>~/.bashrc <<"EOT"
 
   # `date`, Sunito: Nicht versehentlich Konsolen schließen:
-   export IGNOREEOF=3
+export IGNOREEOF=3
 EOT
 fi
 
@@ -112,12 +112,12 @@ syve_section "Essentielle Programme"
 apt_install davfs2
 
 apt_install vim
-if [[ -z `grep "EDITOR" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
+if [[ -z `grep "EDITOR" $HOME/.bashrc` ]] ;then cat >>$HOME/.bashrc <<"EOT"
    # `date`,  Sunito:
    export EDITOR=vim
 EOT
 fi
-if [[ -z `grep "VISUAL" $HOME/.bash_profile` ]] ;then cat >>~/.bash_profile <<"EOT"
+if [[ -z `grep "VISUAL" $HOME/.bashrc` ]] ;then cat >>$HOME/.bashrc <<"EOT"
    # `date`,  Sunito:
    export VISUAL=vim
 EOT
