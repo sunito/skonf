@@ -104,7 +104,7 @@ if [[ -z "$last_profile" ]] ;then
   fi
 fi
 konsole_profile_file="$konsole_profile_dir/$(basename $last_profile)"
-kwrit econfig --file "$konsole_profile_file" --group General   --key Name $(basename $last_profile .profile)
+kwriteconfig --file "$konsole_profile_file" --group General   --key Name $(basename $last_profile .profile)
 #kwriteconfig --file "$konsole_profile_dir/Shell.profile" --group General   --key Parent FALLBACK/
 kwriteconfig --file "$konsole_profile_file" --group Scrolling --key HistoryMode 2
 
@@ -116,13 +116,16 @@ syve_section "Einfachklick"
 
 kwriteconfig --file $kde_dir/share/config/kdeglobals --group KDE --key SingleClick true
 
-if [ "" ] ;then  # veraltet <2021-Aug,Sv>
+
+if [ ! "trackball-workaround" ] ;then  # veraltet <2021-Aug,Sv>
 syve_section "Logitech-Trackball-Unterstützung"
 
-sudo mkdir /opt/syve
-sudo mkdir /opt/syve/bin
+
+#sudo mkdir /opt/syve
+#sudo mkdir /opt/syve/bin
+
 cat <<eot |sudo tee /opt/syve/bin/trackball-scroll.bash
-# Generiert `date` von syve
+# Generiert `date` von skonf
 # http://blog.karssen.org/2010/09/11/linux-the-logitech-trackman-marble-and-emulating-a-scroll-wheel/
 # http://www.robmeerman.co.uk/unix/xinput#enabling_emulation_ubuntu_1004
 
@@ -135,6 +138,7 @@ xinput set-prop "Logitech USB Trackball" "Evdev Wheel Emulation Axes" 6 7 4 5
 xinput set-int-prop "Logitech USB Trackball" "Evdev Middle Button Emulation" 8 1
 eot
 sudo chmod a+x /opt/syve/bin/trackball-scroll.bash
+
 
 # Und das immer noch für jeden User extra (weil ich nicht extra testen wollte, ob es in rc.local zu früh wäre):
 
@@ -150,7 +154,8 @@ Terminal=false
 Type=Application
 X-KDE-SubstituteUID=false
 eot
-fi # [ "" ] ;then  #Deakitvierung wegen veraltet <2021-Aug,Sv>
+fi # ;then  #Deakitvierung wegen veraltet <2021-Aug,Sv>
+
 
 syve_section "Netzwerk"
 
@@ -256,7 +261,7 @@ fi
 
 #apt_install k4dirstat  <-- buggy (2019-März,Sv)
 apt_install qdirstat
-apt_install kdirstat
+#apt_install kdirstat
 
 apt_install kate
 
@@ -289,7 +294,7 @@ syve_section "grub default"
 if [[ -z `dmesg | grep -i "Hardware name: Acer"` ]] ;then
   echo "This is not an Acer-Computer"
 else
-  echo "Acer-Computer, workaround for vrightness control"
+  echo "Acer-Computer, workaround for brightness control"
   if [[ -z `grep acpi_backlight=vendor /etc/default/grub` ]] ;then
     sudo sed -i -r -e 's/^(GRUB_CMDLINE_LINUX_DEFAULT *)=("?)([^"]*)("?)$/\1=\2\3 acpi_osi=Linux acpi_backlight=vendor\4/' /etc/default/grub
   fi
@@ -320,6 +325,10 @@ Type=Application
 X-KDE-SubstituteUID=false
 eot
 fi
+
+exit 0
+
+
 
 syve_section "Sonstiges"
 
