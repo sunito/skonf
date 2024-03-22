@@ -29,12 +29,23 @@ function apt_install {
   sudo echo
   
 
-  opt=$1
-  if [ ${opt:0:1} == "-" ] ;then   # dann ist es wirklich eine Optionsangabe
+  opt_kandidat=$1
+  opt=""
+  while [ ${opt_kandidat:0:1} == "-" ] ;do   # dann ist es eine Optionsangabe, Optionen müssen am Anfang stehen!!
     #@=("$($@:1}")
+
+    if [ $opt ] ;then
+      opt=$opt,
+    fi
+    opt=$opt${opt_kandidat:1}
+
     shift
-    opt=${opt:1}
-    echo -n "For: $opt " 
+    opt_kandidat=${1:=end}
+    echo "Neu: >>$opt_kandidat<<"
+  done
+
+  if [ $opt ] ;then
+    echo -n "For: $opt "
   else
     opt="all"
   fi
@@ -43,15 +54,15 @@ function apt_install {
 
   cmd="echo Ignoriert: "
   if [ $has_apt ] ;then
-    if [[ $opt == "all"  ||  $opt == "deb" ]] ;then 
+    if [[ $opt == "all"  ||  $opt == *"deb"* ]] ;then
       cmd="apt-get --yes install"
     fi
   elif [ $has_pac ] ;then
-    if [[ $opt == "all"  || $opt == "pac" ]] ;then
+    if [[ $opt == "all"  || $opt == *"pac"* ]] ;then
       cmd="pacman --sync --needed --noconfirm"
     fi
   else
-    if [[ $opt == "all"  ||  $opt == "zyp" ]] ;then 
+    if [[ $opt == "all"  ||  $opt == *"zyp"* ]] ;then
       #sudo zypper -n install $*
       cmd="zypper install -y"
     fi
