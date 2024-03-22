@@ -5,7 +5,7 @@ source $(dirname $own_folder)/lib/sy-common.bash
 
 syve_section "julia"
 echo "aktuelle Verion (2021-Sept) funktioniert nicht !!!!!!!"
-echo apt_repo https://download.opensuse.org/repositories/home:/so_it_team
+#echo apt_repo https://download.opensuse.org/repositories/home:/so_it_team
 echo apt_install julia
 echo
 
@@ -17,7 +17,7 @@ git config --global push.default simple
 
 syve_section "git-Personalisierung"
 
-git config --global user.name "Sven Suska"
+git config --global user.name "Sunito"
 
 syve_section "git-Goodies"
 
@@ -47,20 +47,23 @@ fi
 #syve_section "Julia"
 #apt_install julia 
 
-
 syve_section "MS Teams"
+if [[ ! "teams repo activated" ]] ;then
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo zypper ar https://packages.microsoft.com/yumrepos/ms-teams/ ms-teams
 sudo zypper refresh
+fi
 apt_install teams
 
 
-
+syve_section "Sublime"
+if [[ ! "Sublime repo activated" ]] ;then
 sudo rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
 # unklar, was apt_rpm_repo tut  <2021-Jul, Sven>
 #apt_rpm_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
 apt_repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
 #sudo zypper addrepo -g -f https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo
+fi
 apt_install sublime-text
 
 
@@ -83,6 +86,8 @@ apt_install sqlite3-devel      # rpm
 apt_install ruby-sqlite3
 apt_install sqlitebrowser
 
+
+if [[ ! "Java activated" ]] ;then
 syve_section "Java"
 
 apt_install jdk8-openjdk
@@ -104,9 +109,9 @@ Type=Application
 X-KDE-SubstituteUID=false
 X-KDE-Username=
 EOT
+fi
 
-
-syve_section "IDEs"
+#syve_section "IDEs"
 
 # <2021-Mai, Sv> Wozu war das?
 #apt_repo https://download.opensuse.org/repositories/home:/Herbster0815
@@ -118,11 +123,12 @@ syve_section "IDEs"
 apt_install rust
 
 syve_section "Tools for Low-Level Tasks"
+
 apt_install unetbootin
 apt_install extlinux
 
 
-syve_section "Sonstigese"
+syve_section "Sonstige"
 
 apt_rpm_repo https://bintray.com/resin-io/redhat/rpm bintray-resin-io-redhat.repo
 apt_install etcher-electron
