@@ -24,6 +24,27 @@ fi
 
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/x86_64/ brave-browser
+
+
+syve_section "Wire"
+if [ "wire" ] ;then
+  apt_repo_deb https://wire-app.wire.com/linux/debian https://wire-app.wire.com/linux/releases.key
+  apt_install wire-desktop
+  #sudo snap install wire
+fi
+
+
+# Todo: Repo-Funktion für apt einführen
+brave_repo_datei=/etc/apt/sources.list.d/brave-browser-release.list
+if [ -f $brave_repo_datei ] ;then
+  echo $brave_repo_datei existiert schon
+else
+  brave_baseurl=https://brave-browser-apt-release.s3.brave.com
+  brave_keyring_datei=/usr/share/keyrings/brave-browser-archive-keyring.gpg
+  sudo curl -fsSLo $brave_keyring_datei $brave_baseurl/brave-browser-archive-keyring.gpg
+  echo "deb [signed-by=$brave_keyring_datei] $brave_baseurl/ stable main" |sudo tee $brave_repo_datei
+  sudo apt update
+fi
 apt_install brave-browser
 
 apt_install gnome-keyring
@@ -36,21 +57,20 @@ syve_section "Snap -Teil 2:  Messenger"
  ##### # temporär deaktiviert: <2021-Apr, Sv>
 sudo ln -s /var/lib/snapd/snap /snap             # symlink für die "classic"-Snaps
 
-sudo snap install wire
-#apt_install wire-desktop
 
-
-
-syve_section ""
+if [ ! "Telegram,Discord" ] ;then
+syve_section "Snap -Teil 3: weitere  Messenger"
 #apt_repo https://download.opensuse.org/repositories/home:glebr
 #apt_repo https://download.opensuse.org/repositories/Education
 
 sudo snap install telegram-desktop
 
 apt_install discord
+fi
 
+if [ ! "Archiving-Repo" ] ;then
 
-syve_section "Telefonie"
+syve_section "Archiving-Repo"
 
 if [ $has_apt ] ;then
     # todo:  tmp dir auf andere Stellen übertragen
@@ -67,19 +87,23 @@ else
     #sudo zypper --no-gpg-checks dup --allow-vendor-change --allow-downgrade --from packman
   fi
 fi
+fi
 
-
+if [ ! "Zoom" ] ;then
 syve_section "zoom"
 if [[ -z $(which zoom) ]] ;then
 sudo rpm --import https://zoom.us/linux/download/pubkey
 sudo zypper install -y https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
 fi
+fi
+
+if [ ! "Skype" ] ;then
 #apt_repo https://repo.skype.com/rpm/stable/skype-stable.repo skype-stable
 
 sudo zypper addrepo  --gpgcheck-allow-unsigned  https://repo.skype.com/rpm/stable/skype-stable.repo
 apt_install skypeforlinux # suse
 apt_install skype  # sonstige?
-
+fi
 
 
 if [ $USER != sunito ] ;then
@@ -212,6 +236,8 @@ eot
 apt_install kteatime
 
 syve_section "Weitere Browser"
+
+
 
 if [ -z `which vivaldi` ] ;then 
   sudo zypper addrepo https://repo.vivaldi.com/archive/vivaldi-suse.repo
