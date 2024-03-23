@@ -169,10 +169,75 @@ function apt_repo {
   fi
 }
 
+# https://stackoverflow.com/questions/12187859/create-new-file-but-add-number-if-filename-already-exists-in-bash
+function ensure_nonexist() {
+  fn="$1"
+
+  if [[ -e "$fn"  || -L "$fn" ]] ; then
+    i=1
+
+    ext=""
+    # Extract the file extension (if any), with preceeding '.'
+    [[ "$fn" == *.* ]] && ext=".${fn##*.}"
+
+    fn_base="${fn%.*}";
+
+    while true ; do
+      fn="${fn_base}_${i}${ext}"
+      if [[ -e "$fn" || -L "$fn" ]] ;then
+        let i++
+      else
+        break
+      fi
+    done
+
+  fi
+  echo "$fn"
+}
+
+
+# @Erstellt: 2024-Mar, Sunito
+function apt_repo_deb {
+  repo_url="$1"
+  key_url="$2"
+  key_basename=$(basename $key_url)
+  #key_basename=${key_basename%.*}   # Extension entfernen
+  repo_bn=${repo_url//[^[:alnum:]]/-}
+  repo_bn=${repo_bn//linux/-}
+  repo_bn=${repo_bn//https/-}
+  repo_bn=${repo_bn//-com-/-}
+  repo_bn=${repo_bn//----------/-}
+  repo_bn=${repo_bn//-----/-}
+  repo_bn=${repo_bn//---/-}
+  repo_bn=${repo_bn//--/-}
+  repo_bn=${repo_bn/#-/}
+  repo_bn=${repo_bn/%-/}
+  repo_basename=$repo_bn
+
+  source_datei="$(ensure_nonexist "/etc/apt/sources.list.d/$repo_basename.sources")"
+  if [[ ! -f "$source_datei" ]] ;then
+    #keyring_datei="$(ensure_nonexist "/usr/share/keyrings/$key_basename.gpg")"
+    keyring_datei="$(ensure_nonexist "/usr/share/keyrings/$key_basename")"
+    sudo curl -fsSLo $keyring_datei $key_url
+
+    cat <<EOT |sudo tee $source_datei
+Types: deb
+URIs: $repo_url
+Suites: stable
+Components: main
+signed-by: $keyring_datei
+arch: amd64
+EOT
+    sudo apt-get update
+  fi
+}
+
+
+# @Erstellt: vor 2022
 function apt_ppa {
-  sudo echo
   main_repourl=$1
   basenam=$2
+  sudo echo
   if [ x$basenam == x ] ;then
     basenam=$(basename $main_repourl)
   fi
