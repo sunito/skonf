@@ -1,11 +1,15 @@
 #!/bin/bash
 
 function syve_section {
+  skonf_section "$*"
+}
+
+function skonf_section {
   echo
   echo
   echo "    ############  $*  ############    "
   echo
-  logger syve_section $*
+  logger skonf_section $*
 }
 
 # 2016-Apr, Sv: bei 42.1 ist auch apt-get vorhanden, also umgekehrt:
@@ -174,16 +178,19 @@ function ensure_nonexist() {
   fn="$1"
 
   if [[ -e "$fn"  || -L "$fn" ]] ; then
-    i=1
 
-    ext=""
     # Extract the file extension (if any), with preceeding '.'
-    [[ "$fn" == *.* ]] && ext=".${fn##*.}"
+    if [[ "$fn" == *.* ]] ;then
+      ext=".${fn##*.}"
+    else
+      ext=""
+    fi
 
     fn_base="${fn%.*}";
 
+    i=1
     while true ; do
-      fn="${fn_base}_${i}${ext}"
+      fn="$fn_base-$i$ext"
       if [[ -e "$fn" || -L "$fn" ]] ;then
         let i++
       else
@@ -192,6 +199,7 @@ function ensure_nonexist() {
     done
 
   fi
+
   echo "$fn"
 }
 
@@ -214,7 +222,7 @@ function apt_repo_deb {
   repo_bn=${repo_bn/%-/}
   repo_basename=$repo_bn
 
-  source_datei="$(ensure_nonexist "/etc/apt/sources.list.d/$repo_basename.sources")"
+  source_datei="/etc/apt/sources.list.d/$repo_basename.sources"
   if [[ ! -f "$source_datei" ]] ;then
     #keyring_datei="$(ensure_nonexist "/usr/share/keyrings/$key_basename.gpg")"
     keyring_datei="$(ensure_nonexist "/usr/share/keyrings/$key_basename")"
