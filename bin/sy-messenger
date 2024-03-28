@@ -1,0 +1,57 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+source $(dirname $own_folder)/lib/sy-common.bash
+
+# Messenger, Zoom
+
+
+
+
+
+syve_section "Wire"
+if [ "wire" ] ;then
+  apt_repo_deb https://wire-app.wire.com/linux/debian https://wire-app.wire.com/linux/releases.key
+  apt_install wire-desktop
+  #sudo snap install wire
+fi
+
+apt_repo_deb https://updates.signal.org/desktop/apt https://updates.signal.org/desktop/apt/keys.asc
+
+syve_section "Snap -Teil 2:  Messenger"
+
+
+if [ "Telegram,Discord" ] ;then
+syve_section "weitere  Messenger"
+#apt_repo https://download.opensuse.org/repositories/home:glebr
+#apt_repo https://download.opensuse.org/repositories/Education
+
+apt_install telegram-desktop
+
+apt_install discord
+  if [[ -z $(which discord) ]] ;then
+    discord_deb_lokal="/tmp/discord.deb"
+    # Todo 2024-Mar,Sunito: auch für andere Paketart
+    curl -L "https://discord.com/api/download?platform=linux&format=deb" >"$discord_deb_lokal"
+    apt_install "$discord_deb_lokal"
+  fi
+fi
+
+
+if [ ! "Zoom" ] ;then
+syve_section "zoom"
+  if [[ -z $(which zoom) ]] ;then
+    sudo rpm --import https://zoom.us/linux/download/pubkey
+    sudo zypper install -y https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
+  fi
+fi
+
+if [ ! "Skype" ] ;then
+#apt_repo https://repo.skype.com/rpm/stable/skype-stable.repo skype-stable
+
+sudo zypper addrepo  --gpgcheck-allow-unsigned  https://repo.skype.com/rpm/stable/skype-stable.repo
+apt_install skypeforlinux # suse
+apt_install skype  # sonstige?
+fi
+
+

@@ -3,12 +3,13 @@
 own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
-# snap, Messenger, Zoom, Mail, Office, Browser
+# Browser, Mail, Office?, snap?
 
 syve_section "Gimp"
 apt_install gimp
 
 syve_section "Snap -- Anfang"
+
 apt_repo https://download.opensuse.org/repositories/system:/snappy/
 sudo zypper --gpg-auto-import-keys refresh
 apt_install snapd
@@ -25,13 +26,6 @@ fi
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/x86_64/ brave-browser
 
-
-syve_section "Wire"
-if [ "wire" ] ;then
-  apt_repo_deb https://wire-app.wire.com/linux/debian https://wire-app.wire.com/linux/releases.key
-  apt_install wire-desktop
-  #sudo snap install wire
-fi
 
 
 # Todo: Repo-Funktion für apt einführen
@@ -52,21 +46,11 @@ apt_install gnome-keyring
 
 
 
-syve_section "Snap -Teil 2:  Messenger"
+syve_section "Snap -Teil 2"
 #sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy
  ##### # temporär deaktiviert: <2021-Apr, Sv>
 sudo ln -s /var/lib/snapd/snap /snap             # symlink für die "classic"-Snaps
 
-
-if [ "Telegram,Discord" ] ;then
-syve_section "Snap -Teil 3: weitere  Messenger"
-#apt_repo https://download.opensuse.org/repositories/home:glebr
-#apt_repo https://download.opensuse.org/repositories/Education
-
-apt_install telegram-desktop
-
-apt_install discord
-fi
 
 if [ ! "Archiving-Repo" ] ;then
 
@@ -89,21 +73,6 @@ else
 fi
 fi
 
-if [ ! "Zoom" ] ;then
-syve_section "zoom"
-if [[ -z $(which zoom) ]] ;then
-sudo rpm --import https://zoom.us/linux/download/pubkey
-sudo zypper install -y https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
-fi
-fi
-
-if [ ! "Skype" ] ;then
-#apt_repo https://repo.skype.com/rpm/stable/skype-stable.repo skype-stable
-
-sudo zypper addrepo  --gpgcheck-allow-unsigned  https://repo.skype.com/rpm/stable/skype-stable.repo
-apt_install skypeforlinux # suse
-apt_install skype  # sonstige?
-fi
 
 
 if [ $USER != sunito ] ;then
@@ -123,6 +92,7 @@ StartupNotify=true
 Terminal=false
 Type=Application
 EOT
+
 
 syve_section "Mailprogramm"
 
