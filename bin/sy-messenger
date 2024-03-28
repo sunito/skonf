@@ -8,7 +8,6 @@ source $(dirname $own_folder)/lib/sy-common.bash
 
 
 
-
 syve_section "Wire"
 if [ "wire" ] ;then
   apt_repo_deb https://wire-app.wire.com/linux/debian https://wire-app.wire.com/linux/releases.key
@@ -16,7 +15,13 @@ if [ "wire" ] ;then
   #sudo snap install wire
 fi
 
-apt_repo_deb https://updates.signal.org/desktop/apt https://updates.signal.org/desktop/apt/keys.asc
+syve_section "Signal"
+if [ "wire" ] ;then
+  apt_repo_deb https://updates.signal.org/desktop/apt https://updates.signal.org/desktop/apt/keys.asc $(lsb_release -cs)
+  apt_install signal-desktop
+  #sudo snap install wire
+fi
+
 
 syve_section "Snap -Teil 2:  Messenger"
 
