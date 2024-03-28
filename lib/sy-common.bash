@@ -206,14 +206,22 @@ function ensure_nonexist() {
 
 # @Erstellt: 2024-Mar, Sunito
 function apt_repo_deb {
+  deb_suite="$3"
   repo_url="$1"
   key_url="$2"
-  key_basename=$(basename $key_url)
   #key_basename=${key_basename%.*}   # Extension entfernen
-  repo_bn=${repo_url//[^[:alnum:]]/-}
-  repo_bn=${repo_bn//linux/-}
-  repo_bn=${repo_bn//https/-}
+  repo_bn=${repo_url//[^[:alnum:]]/-}-
+  repo_bn=${repo_bn//https-/-}
+  repo_bn=${repo_bn//http-/-}
+  repo_bn=${repo_bn//-apt-/-}
+  repo_bn=${repo_bn//-app-/-}
   repo_bn=${repo_bn//-com-/-}
+  repo_bn=${repo_bn//-deb-/-}
+  repo_bn=${repo_bn//-debian-/-}
+  repo_bn=${repo_bn//-desktop-/-}
+  repo_bn=${repo_bn//-linux-/-}
+  repo_bn=${repo_bn//-org-/-}
+  repo_bn=${repo_bn//-updates-/-}
   repo_bn=${repo_bn//----------/-}
   repo_bn=${repo_bn//-----/-}
   repo_bn=${repo_bn//---/-}
@@ -222,7 +230,14 @@ function apt_repo_deb {
   repo_bn=${repo_bn/%-/}
   repo_basename=$repo_bn
 
+  key_basename="$repo_basename-$(basename $key_url)"
+
   source_datei="/etc/apt/sources.list.d/$repo_basename.sources"
+
+  if [ ! $deb_suite ] ;then
+    deb_suite=stable
+  fi
+
   if [[ ! -f "$source_datei" ]] ;then
     #keyring_datei="$(ensure_nonexist "/usr/share/keyrings/$key_basename.gpg")"
     keyring_datei="$(ensure_nonexist "/usr/share/keyrings/$key_basename")"
@@ -231,7 +246,7 @@ function apt_repo_deb {
     cat <<EOT |sudo tee $source_datei
 Types: deb
 URIs: $repo_url
-Suites: stable
+Suites: $deb_suite
 Components: main
 signed-by: $keyring_datei
 arch: amd64
