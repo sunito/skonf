@@ -58,12 +58,12 @@ syve_section "Snap -Teil 2:  Messenger"
 sudo ln -s /var/lib/snapd/snap /snap             # symlink für die "classic"-Snaps
 
 
-if [ ! "Telegram,Discord" ] ;then
+if [ "Telegram,Discord" ] ;then
 syve_section "Snap -Teil 3: weitere  Messenger"
 #apt_repo https://download.opensuse.org/repositories/home:glebr
 #apt_repo https://download.opensuse.org/repositories/Education
 
-sudo snap install telegram-desktop
+apt_install telegram-desktop
 
 apt_install discord
 fi
