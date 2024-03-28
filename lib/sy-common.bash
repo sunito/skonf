@@ -9,7 +9,7 @@ function skonf_section {
   echo
   echo "    ############  $*  ############    "
   echo
-  logger skonf_section $*
+  logger skonf_section "$*"
 }
 
 # 2016-Apr, Sv: bei 42.1 ist auch apt-get vorhanden, also umgekehrt:

@@ -16,10 +16,9 @@ if [ "wire" ] ;then
 fi
 
 syve_section "Signal"
-if [ "wire" ] ;then
+if [ -z $(which signal-desktop) ] ;then
   apt_repo_deb https://updates.signal.org/desktop/apt https://updates.signal.org/desktop/apt/keys.asc $(lsb_release -cs)
   apt_install signal-desktop
-  #sudo snap install wire
 fi
 
 
