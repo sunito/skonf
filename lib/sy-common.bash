@@ -12,6 +12,12 @@ function skonf_section {
   logger skonf_section "$*"
 }
 
+function skonf_subsection {
+  echo
+  echo "    ### $* ###"
+  logger skonf_subsection "$*"
+}
+
 # 2016-Apr, Sv: bei 42.1 ist auch apt-get vorhanden, also umgekehrt:
 # ziemlich umständlich, aber funktioniert erstmal
 #has_apt=[ ! $(which zypper) ]
