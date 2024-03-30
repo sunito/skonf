@@ -1,0 +1,66 @@
+#!/bin/bash
+
+own_folder=$(dirname $(readlink -f $0))
+
+source $(dirname $own_folder)/lib/sy-common.bash
+
+syve_section "Migration - noch nicht ausführbar, sondern einzeln manuell"
+
+exit 1
+
+
+syve_section "KWallet"
+
+cp -a /soroot/home/sunito/.local/share/kwalletd/ ~/.local/share/
+
+
+syve_section "Akonadi + KMail"
+
+akonadictl stop
+# .config
+cp -a kmail2.notifyrc kmail2rc kmailsearchindexingrc akonadi* emaildefaults emailidentities mailtransports specialmailcollectionsrc ~/.config/
+# .cache
+cp -a kmail2 akonadi_ical_resource_*  ~/.cache/
+# .local/share
+cd /soroot/home/sunito/.local/share/
+cp -a akonadi akonadi_maildir_resource_2 akonadi_migration_agent contacts local-mail .local-mail.directory phishingurl kmail2 messageviewer ~/.local/share/
+cp -a apps/korganizer ~/.local/share/apps/
+cp -a kxmlgui5/kmail2 ~/.local/share/kxmlgui5/
+
+cp -a /soroot/home/sunito/.mail-signaturen ~
+
+
+syve_section "Brave"
+
+cp -a /soroot/home/sunito/.config/BraveSoftware ~/.config/
+cp -a /soroot/home/sunito/.cache/BraveSoftware ~/.cache/
+
+
+syve_section "linphone"
+
+cp -a /soroot/home/sunito/.config/linphone ~/.config/
+cp -a /soroot/home/sunito/.local/share/linphone ~/.local/share/
+
+
+
+
+
+# (entspr: http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
+sudo add-apt-repository --yes ppa:webupd8team/java
+# im Original steht hier noch: sudo mkdir -p /usr/lib/mozilla/plugins
+sudo apt-get update >/dev/null
+
+
+syve_section "essenziell"
+
+cp -a /soroot/home/sunito/.gitconfig ~/
+cp -a /soroot/home/sunito/.ssh/passwords ~/.ssh/
+
+
+/home/sunito/.config/plasma_calendar_holiday_regions
+/home/sunito/.config/plasmanotifyrc
+/home/sunito/.config/plasma-org.kde.plasma.desktop-appletsrc
+/home/sunito/.config/konsolerc
+/home/sunito/.local/share/konsole/ProfileTestSuni1.profile
+
+/home/sunito/.config/baloofilerc
