@@ -180,11 +180,18 @@ if File.symlink?(ya100_link)
   # move_and_symlink_or_ensure_correctness "#{ya100_link}/100/bin/",                "#{HOME}/bin"
   
   create_dir_unless_exists       "#{ya100_link}/100/yc-dot/"
-  move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/twinkle/",     "#{HOME}/.twinkle"
+
+  # nur temporär deaktiviert <2024-Apr, Su>
+  #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/twinkle/",     "#{HOME}/.twinkle"
+
   move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/sflphone/",    "#{HOME}/.config/sflphone"
+
   move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/bash_aliases", "#{HOME}/.bash_aliases"
-  move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/linphonerc",   "#{HOME}/.config/linphone/linphonerc"
-  # 2020Jan,Sven: Symlinks haben überhauptnicht funktioniert bei flatpak-belledonne 
+
+  # nur temporär deaktiviert <2024-Apr, Su>
+  #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/linphonerc",   "#{HOME}/.config/linphone/linphonerc"
+
+  # 2020Jan,Sven: Symlinks haben überhauptnicht funktioniert bei flatpak-belledonne
   #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/linphonerc",   "#{HOME}/.var/app/com.belledonnecommunications.linphone/config/linphone/linphonerc"   # zwei Links auf dieselbe Datei!
   #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/linphone/",     "#{HOME}/.var/app/com.belledonnecommunications.linphone/config/linphone"   # zwei Links auf dieselbe Datei!
   #move_and_symlink_or_ensure_correctness "#{ya100_link}/100/yc-dot/belledonne-config/",     "#{HOME}/.var/app/com.belledonnecommunications.linphone/config"   # zwei Links auf dieselbe Datei!
@@ -214,7 +221,7 @@ else
   puts "no 222-symlink creation, #{ya222_link} does not exist."  
 end
 
-
+# Die Segmente werden eigentlich oben schon abgefragt, können wir sie früher erstellen? <2024-Apr, Su>
 SEGMENTS.each do |segment|
   # Weniger hart "/dat/aaa" verdrahten:
   create_link_unless_exists install_ziel_dir, "#{YAY_SWITCH_DIR}/ya#{segment}"
@@ -230,7 +237,7 @@ move_and_symlink_or_ensure_correctness "/111/Business/Finanzamt/Winston/dotWinst
 move_and_symlink_or_ensure_correctness "/111/Business/Finanzamt/Winston/dotWinston",     "#{HOME}/.winston"
 
   # 2017-Jul-10, Suse43.2 auf 480G SSD, Sven: Nicht mehr nötig
-move_and_symlink_or_ensure_correctness "/aa/322/local_share/baloo",         "#{HOME}/.local/share/baloo" do
-  balooctl disable   # erstmal nur als Idee, funktioniert noch nicht
-end
+#move_and_symlink_or_ensure_correctness "/aa/322/local_share/baloo",         "#{HOME}/.local/share/baloo" do
+#  balooctl disable   # erstmal nur als Idee, funktioniert noch nicht
+#end
   
