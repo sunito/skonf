@@ -28,13 +28,19 @@ create_dir_unless_exists kmail_dir
 ako_config = yesys_dir / "akonadi-konfig"
 create_dir_unless_exists ako_config
 
+general_config_dir = "/yay/100/yc-dot"
+create_dir_unless_exists general_config_dir
+vbox_dir = general_config_dir / "dotVirtualBox"
+
 pairs = [
   # ["/111/ye-sys/kabc-neu/",                "~/.kde/share/apps/kabc"], veraltet
   
   # ["/111/ye-sys/kmail-neu/",               "~/.kde/share/apps/kmail"], veraltet
   #["/111/ye-sys/kmail-neu/kmailrc,          "~/.kde/share/config/kmailrc"], veraltet
 
-  [kmail_dir / "local-mail/",                  "~/.local/share/local-mail"],
+=begin
+
+  [kmail_dir / "local-mail/",                "~/.local/share/local-mail"],
 
   [ako_config / "config_akonadi",            "~/.config/akonadi"], # das ist ein Ordner
     
@@ -45,9 +51,10 @@ pairs = [
   [ako_config / "ye-signaturen",             "~/.mail-signaturen"],
   
   [yesys_dir / "mozilla-neu",                "~/.mozilla"],
+=end
 
-  ["/yay/211/ye-vbox/dotVirtualBox",         "~/.VirtualBox"]
-
+#  ["/yay/211/ye-vbox/dotVirtualBox",         "~/.config/VirtualBox"]
+  [vbox_dir,                                 "~/.config/VirtualBox"]
   
 ]
 =begin
