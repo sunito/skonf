@@ -60,12 +60,13 @@ if run(ignorestatus(`grep /fdat /proc/mounts`)).exitcode != 0
 end
 run(`df`)
 
+if false
 run(`date`)
 println("--------------- /fdat/b,c ---------------")
 run(ignorestatus(`time sudo rsync  -avx --delete  --exclude baloo/index --exclude aaa  /fdat/ /gup/vivosus-fdat`))
 rufen()
 run(`df`)
-
+end
 
 
 run(`umount /gup/`)
