@@ -219,6 +219,8 @@ function apt_repo_deb {
   repo_bn=${repo_url//[^[:alnum:]]/-}-
   repo_bn=${repo_bn//https-/-}
   repo_bn=${repo_bn//http-/-}
+  repo_bn=${repo_bn//-packages-/-}
+  repo_bn=${repo_bn//-package-/-}
   repo_bn=${repo_bn//-apt-/-}
   repo_bn=${repo_bn//-app-/-}
   repo_bn=${repo_bn//-com-/-}

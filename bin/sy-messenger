@@ -5,6 +5,12 @@ source $(dirname $own_folder)/lib/sy-common.bash
 
 # Messenger, Zoom
 
+syve_section "Element"
+if [ -z $(which element-desktop) ] ;then
+  apt_repo_deb https://packages.element.io/debian/ https://packages.element.io/debian/element-io-archive-keyring.gpg default
+  apt_install element-desktop
+fi
+
 
 
 
