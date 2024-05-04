@@ -66,3 +66,13 @@ cp -a /soroot/home/sunito/.ssh/passwords ~/.ssh/
 /home/sunito/.config/baloofilerc
 
 https://addons.mozilla.org/en-US/firefox/addon/duplicate-tab-shortcut/
+
+### o425:
+W: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://wire-app.wire.com/linux/debian stable InRelease' doesn't support architecture 'i386'
+E: The repository 'https://ppa.launchpadcontent.net/retroshare/stable/ubuntu jammy Release' does not have a Release file.
+W: Updating from such a repository can't be done securely, and is therefore disabled by default.
+W: See apt-secure(8) manpage for repository creation and user configuration details.
+W: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://brave-browser-apt-release.s3.brave.com stable InRelease' doesn't support architecture 'i386'
+E: The repository 'https://updates.signal.org/desktop/apt jammy Release' does not have a Release file.
+W: Updating from such a repository can't be done securely, and is therefore disabled by default.
+W: See apt-secure(8) manpage for repository creation and user configuration details.
