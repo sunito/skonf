@@ -55,14 +55,14 @@ run(`date`)
 println("--------------- /dat ---------------")
 run(ignorestatus(`time sudo rsync -avx --delete  /dat/ /gup/vivosus-dat$SUFFIX`))
 rufen()
-if run(ignorestatus(`grep /fdat /proc/mounts`)).exitcode != 0 
-  run(`mount /fdat/`)
-end
 run(`df`)
 
 if false
 run(`date`)
 println("--------------- /fdat/b,c ---------------")
+if run(ignorestatus(`grep /fdat /proc/mounts`)).exitcode != 0
+  run(`mount /fdat/`)
+end
 run(ignorestatus(`time sudo rsync  -avx --delete  --exclude baloo/index --exclude aaa  /fdat/ /gup/vivosus-fdat`))
 rufen()
 run(`df`)
