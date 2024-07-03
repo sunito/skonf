@@ -53,7 +53,7 @@ run(`date`)
 
 run(`date`)
 println("--------------- /dat ---------------")
-run(ignorestatus(`time sudo rsync -avx --delete  /dat/ /gup/vivosus-dat$SUFFIX`))
+run(ignorestatus(`time sudo rsync -avx --delete  /dat/ /gup/tuxaura2-dat$SUFFIX`))
 rufen()
 run(`df`)
 
