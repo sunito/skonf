@@ -46,7 +46,7 @@ run(`df`)
 
 run(`date`)
 println("--------------- root ---------------")
-run(ignorestatus(`time sudo rsync -avx --delete  --exclude baloo/index --exclude .cache/mozilla --exclude CacheStorage / /gup/tuxaura2-root$(SUFFIX)`))
+run(ignorestatus(`time sudo rsync -avx --delete --exclude /zdut/ --exclude baloo/index --exclude .cache/mozilla --exclude CacheStorage / /gup/tuxaura2-root$(SUFFIX)`))
 rufen()
 run(`df`)
 run(`date`)
