@@ -81,7 +81,7 @@ class Transfer
     puts "xdg_pictures_dir: #{xdg_pictures_dir}"
     [
       "/dat/Sabine/Bilder/", # Sabine
-      "/aa/533/Fotos/",  # Sven
+      "/aa/444/Fotos/",      # Sunito
       "/dat/Eigene/Fotos",  # Mapa
       xdg_pictures_dir,
       "#{ENV['HOME']}/Bilder/",

@@ -11,9 +11,9 @@ YAY_ENTRY_DIR = (BEST_YAY_SWITCH_DIR=="/yay/switch") ? "/yay" : BEST_YAY_SWITCH_
 # SEGMENTS = %w[111 133 311 322 122 411 422 455 811 822]
 SEGMENTS = 
        %w[100 111 122 133             177   
-              211 222             266   
+              211 222 233         266
               311 322 333     355          388  
-                  422     444         477      499
+                  422 433 444         477      499
                   522 533         566  
            ]
 
@@ -29,7 +29,8 @@ SEGMENTS2 =
 00 - config
 11 - arbeit
 22 - system (VMs, Suchindizes etc)
-33 - statisch groß
+33 - Generali
+#old: 33 - statisch groß
 44 - writeonly
 55 - von bekannten
 66 - von fremd
