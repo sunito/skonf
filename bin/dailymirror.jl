@@ -14,7 +14,7 @@ const SUFFIX  = ARGS[2]
 @show (LABEL, SUFFIX)
 
 #if false && run(ignorestatus(`grep /gup /proc/mounts`)).exitcode == 0
-if run(ignorestatus(`grep /gup /proc/mounts`)).exitcode == 0 
+if run(ignorestatus(`grep /gup /proc/mounts`)).exitcode == 0
   println("/gup war schon eingehängt, unmount erstmal")
   run(`umount /gup/`)
   sleep(0.5)
