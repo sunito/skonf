@@ -1,7 +1,8 @@
 
 #const LOCS = Dict(:ynil=>:WANGELAD, :yeta=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
 #const  LOCS = Dict(:ynil=>:WANGELAD, :ykia=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
-const  LOCS = Dict(:y2tt=>:"2T_DAT", :ynil=>:WANGELAD, :ykia=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
+#const  LOCS = Dict(:y2tt=>:"2T_DAT", :ynil=>:WANGELAD, :ykia=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
+const  LOCS = Dict(:y2tt=>:"2T_DAT", :yeta=>:o807Pro1, :ykia=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
 
 if length(ARGS) < 2
   println(LOCS)
@@ -12,6 +13,7 @@ const SUFFIX  = ARGS[2]
 
 @show (LABEL, SUFFIX)
 
+#if false && run(ignorestatus(`grep /gup /proc/mounts`)).exitcode == 0
 if run(ignorestatus(`grep /gup /proc/mounts`)).exitcode == 0 
   println("/gup war schon eingehängt, unmount erstmal")
   run(`umount /gup/`)
@@ -47,6 +49,7 @@ run(`df`)
 run(`date`)
 println("--------------- root ---------------")
 run(ignorestatus(`time sudo rsync -avx --delete --exclude /zdut/ --exclude baloo/index --exclude .cache/mozilla --exclude CacheStorage / /gup/tuxaura2-root$(SUFFIX)`))
+#run(ignorestatus(`time sudo rsync -avx --delete  --exclude baloo/index --exclude .cache/mozilla --exclude CacheStorage / /gup/tuxaura2-root$(SUFFIX)`))
 rufen()
 run(`df`)
 run(`date`)
@@ -56,6 +59,12 @@ println("--------------- /dat ---------------")
 run(ignorestatus(`time sudo rsync -avx --delete  /dat/ /gup/tuxaura2-dat$SUFFIX`))
 rufen()
 run(`df`)
+
+run(`date`)
+println("--------------- /zdut ---------------")
+run(ignorestatus(`time sudo rsync -avx --delete /zdut/  /gup/tuxaura2-root$(SUFFIX)/zdut/`))
+run(`df`)
+
 
 if false
 run(`date`)
