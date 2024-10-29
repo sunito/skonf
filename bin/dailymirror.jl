@@ -2,7 +2,7 @@
 #const LOCS = Dict(:ynil=>:WANGELAD, :yeta=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
 #const  LOCS = Dict(:ynil=>:WANGELAD, :ykia=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
 #const  LOCS = Dict(:y2tt=>:"2T_DAT", :ynil=>:WANGELAD, :ykia=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
-const  LOCS = Dict(:y2tt=>:"2T_DAT", :yeta=>:o807Pro1, :ykia=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A)
+const  LOCS = Dict(:y2tt=>:"2T_DAT", :yeta=>:o807Pro1, :ykia=>:N330WD1B, :ykes=>:N330WD1C, :ygra=>:Seagate5, :yrin=>:N330WD1A, :yint=>:"Int-oa09pol6")
 
 if length(ARGS) < 2
   println(LOCS)
