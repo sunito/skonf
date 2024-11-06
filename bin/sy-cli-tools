@@ -3,10 +3,20 @@
 own_folder=$(dirname $(readlink -f $0))
 source $(dirname $own_folder)/lib/sy-common.bash
 
+if false ;then
+syve_section "veracrypt"
+
+apt_repo_deb https://notesalexp.org/debian/$(lsb_release -sc)  https://notesalexp.org/debian/alexp_key.asc  $(lsb_release -cs)
+apt_install veracrypt
+fi
+
+syve_section "Sonstiges"
+
 apt_install partclone
 
 apt_install OpenIPMI
 apt_install ipmitool
 
 apt_install bridge-utils
+
 
