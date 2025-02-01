@@ -6,39 +6,39 @@ source $(dirname $own_folder)/lib/sy-common.bash
 sudo useradd --uid 1000 -m sunito
 source /wartung/skonf/lib/sy-common.bash ;syve_user sunito 1000 "Sunito"
 
-sudo adduser --uid 1001 --ingroup users --add_extra_groups --force-badname NEW ;sudo chfn -f "Nele Emilie Wunna" NEW ;sudo addgroup NEW sudo
+sudo adduser --uid 1001 --ingroup users --add_extra_groups --force-badname NEW ;sudo chfn -f "Nele Emilie Wunna" NEW ;sudo adduser NEW sudo
 
-sudo adduser --uid 1003 --ingroup users --add_extra_groups martin ;sudo chfn -f "Martin P" martin ;sudo addgroup martin sudo
-sudo useradd --uid 1003 -g users --create-home martin ;sudo chfn -f "Martin P" martin ;sudo addgroup martin sudo
+sudo adduser --uid 1003 --ingroup users --add_extra_groups martin ;sudo chfn -f "Martin P" martin ;sudo adduser martin sudo
+sudo useradd --uid 1003 -g users --create-home martin ;sudo chfn -f "Martin P" martin ;sudo adduser martin sudo
 
 
-sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild ;sudo chfn -f "Brunhild" brunhild ;sudo addgroup brunhild sudo
+sudo adduser --uid 1006 --ingroup users --add_extra_groups brunhild ;sudo chfn -f "Brunhild" brunhild ;sudo adduser brunhild sudo
 
-sudo adduser --uid 1007 --ingroup users --add_extra_groups claudia ;sudo chfn -f "Claudia" claudia ;sudo addgroup claudia sudo
+sudo adduser --uid 1007 --ingroup users --add_extra_groups claudia ;sudo chfn -f "Claudia" claudia ;sudo adduser claudia sudo
 source /wartung/skonf/lib/sy-common.bash ;syve_user radio1 1008 "Nur für Erwachsene"
 source /wartung/skonf/lib/sy-common.bash ;syve_user paul 1017 "Paul"
 
-sudo adduser --uid 1008 --ingroup users --add_extra_groups hans ;sudo chfn -f "Johannes" hans ;sudo addgroup hans sudo
+sudo adduser --uid 1008 --ingroup users --add_extra_groups hans ;sudo chfn -f "Johannes" hans ;sudo adduser hans sudo
 sudo useradd --uid 1008 -g users --create-home hans ;sudo chfn -f "Johannes" hans
 
-sudo adduser --uid 1010 --ingroup users --add_extra_groups gerhard ;sudo chfn -f "Gerhard L" gerhard ;sudo addgroup gerhard sudo
+sudo adduser --uid 1010 --ingroup users --add_extra_groups gerhard ;sudo chfn -f "Gerhard L" gerhard ;sudo adduser gerhard sudo
 
-sudo adduser --uid 1011 --ingroup users --add_extra_groups sylvia ;sudo chfn -f "Sylvia" sylvia ;sudo addgroup sylvia sudo
+sudo adduser --uid 1011 --ingroup users --add_extra_groups sylvia ;sudo chfn -f "Sylvia" sylvia ;sudo adduser sylvia sudo
 
-sudo adduser --uid 1011 --ingroup users --add_extra_groups assistent ;sudo chfn -f "Sabrina" assistent ;sudo addgroup assistent sudo
+sudo adduser --uid 1011 --ingroup users --add_extra_groups assistent ;sudo chfn -f "Sabrina" assistent ;sudo adduser assistent sudo
 sudo useradd --uid 1011 -g users -m assistent ;sudo chfn -f "Sabrina" assistent ;sudo gpasswd -a assistent wheel
 source /wartung/skonf/lib/sy-common.bash ;syve_user assistent 1011 "Sabrina"
 
 sudo adduser --uid 1012 --ingroup users --add_extra_groups hof-urstromland ;sudo chfn -f "Hof Urstromland" hof-urstromland
 
-sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Osa Paul Odigie" osa ;sudo addgroup osa sudo
+sudo adduser --uid 1016 --ingroup users --add_extra_groups osa ;sudo chfn -f "Osa Paul Odigie" osa ;sudo adduser osa sudo
 
 export u=hanna  ;sudo useradd --uid 1018 -g users --create-home $u ;sudo chfn -f "Johanna S" $u ;sudo usermod -a -G wheel $u ;sudo usermod -a -G sudo $u
 export u=dustin ;sudo useradd --uid 1018 -g users --create-home $u ;sudo chfn -f "Dustin" $u ;sudo usermod -a -G wheel $u
 
-sudo useradd --uid 1026 -g users --create-home sabine;sudo chfn -f "Sabine Suska" sabine ;sudo addgroup sabine sudo
-sudo useradd --uid 1027 -g users --create-home maria;sudo chfn -f "Maria Suska" maria ;sudo addgroup maria sudo
-sudo useradd --uid 1028 -g users --create-home julian;sudo chfn -f "Julian Suska" julian ;sudo addgroup julian sudo
+sudo useradd --uid 1026 -g users --create-home sabine;sudo chfn -f "Sabine Suska" sabine ;sudo adduser sabine sudo
+sudo useradd --uid 1027 -g users --create-home maria;sudo chfn -f "Maria Suska" maria ;sudo adduser maria sudo
+sudo useradd --uid 1028 -g users --create-home julian;sudo chfn -f "Julian Suska" julian ;sudo adduser julian sudo
 
 
 sudo useradd --uid 12345 -m -s /bin/bash Gast;sudo chfn -f "Gast-Benutzer" Gast
