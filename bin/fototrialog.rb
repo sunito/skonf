@@ -168,7 +168,7 @@ notfall_label = notfall_fenster = nil
 # 
 #     notfall_label = Qt::Label.new("Fehler aufgetreten")
 #     empty_space = Qt::Label.new
-#     contact_info_label = Qt::Label.new("Bitte Sven informieren: 039881-49194 oder fototrans2013@suska.org")
+#     contact_info_label = Qt::Label.new("Bitte Sunito informieren: 039881-49194 oder fototrans2013@suska.org")
 #     quit_button = Qt::PushButton.new('Beenden') do
 #       connect(SIGNAL :clicked) { Qt::Application.instance.quit }
 #     end
@@ -244,7 +244,7 @@ begin
           @zielort_text = "Ziel: #{@transfer.target_base_dir.to_s}"
         else
           @zielort_text = "Keinen Ziel-Ordner gefunden! 
-                               --> Sven anrufen! (039881-49194) "
+                               --> Sunito anrufen! (039881-49194) "
         end
         true
       else
@@ -333,7 +333,7 @@ rescue
   trc $!.backtrace
   kdialog title: "Fehler --- " + Fototrialog::FENSTERTITEL, msgbox: <<-eot
     Es ist ein Fehler aufgetreten. 
-    Bitte Sven informieren: 039881-49194 oder fototrans2017@suska.org 
+    Bitte Sunito informieren: 039881-49194 oder fototrans2017@suska.org 
 
     Fehlermeldung:
     #{$!}
